@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'leaflet',
+    'cities',
+    'worldcup2030',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +124,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Configuration Leaflet
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (31.7917, -7.0926),  # Coordonnées du Maroc
+    'DEFAULT_ZOOM': 6,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 18,
+    'SCALE': 'both',
+    'ATTRIBUTION_PREFIX': 'Tourisme Maroc 2030',
+}
+
+# Internationalisation
+LANGUAGE_CODE = 'fr'
+LANGUAGES = [
+    ('fr', 'Français'),
+    ('en', 'English'),
+]
+LOCALE_PATHS = [BASE_DIR / 'locale']
