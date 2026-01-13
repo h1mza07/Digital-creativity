@@ -15,10 +15,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'leaflet',
+
+    # Applications du projet
+    'users',
     'cities',
     'worldcup2030',
-    'users',
 ]
 
 MIDDLEWARE = [
@@ -66,33 +67,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'fr'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# 🔐 Redirections de sécurité
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'profile'
-LOGOUT_REDIRECT_URL = 'login'
-
-# 🌍 Leaflet config
-LEAFLET_CONFIG = {
-    'DEFAULT_CENTER': (31.7917, -7.0926),
-    'DEFAULT_ZOOM': 6,
-    'MIN_ZOOM': 3,
-    'MAX_ZOOM': 18,
-    'SCALE': 'both',
-    'ATTRIBUTION_PREFIX': 'Tourisme Maroc 2030',
-}
-
-LANGUAGES = [
-    ('fr', 'Français'),
-    ('en', 'English'),
-]
-
-LOCALE_PATHS = [BASE_DIR / 'locale']
 
