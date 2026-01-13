@@ -66,9 +66,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'fr'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
 USE_TZ = True
 
@@ -76,10 +74,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# 🔐 Redirections de sécurité
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'login'
 
+# 🌍 Leaflet config
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (31.7917, -7.0926),
     'DEFAULT_ZOOM': 6,
@@ -95,3 +95,4 @@ LANGUAGES = [
 ]
 
 LOCALE_PATHS = [BASE_DIR / 'locale']
+
