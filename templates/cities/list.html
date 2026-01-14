@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Villes du Maroc - Tourisme 2030{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">🏙️ Villes du Maroc</h1>
+    <p class="lead">Découvrez les villes marocaines qui accueilleront la Coupe du Monde 2030.</p>
+    
+    <div class="row">
+        <!-- Ville 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://via.placeholder.com/300x200/006233/ffffff?text=Marrakech" class="card-img-top" alt="Marrakech">
+                <div class="card-body">
+                    <h5 class="card-title">Marrakech</h5>
+                    <p class="card-text">La ville rouge, célèbre pour ses marchés, ses palais et ses jardins.</p>
+                    <a href="#" class="btn btn-primary">Voir les lieux touristiques</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ville 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://via.placeholder.com/300x200/C1272D/ffffff?text=Casablanca" class="card-img-top" alt="Casablanca">
+                <div class="card-body">
+                    <h5 class="card-title">Casablanca</h5>
+                    <p class="card-text">Plus grande ville du Maroc, capitale économique et portuaire.</p>
+                    <a href="#" class="btn btn-primary">Voir les lieux touristiques</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ville 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://via.placeholder.com/300x200/000000/ffffff?text=Fès" class="card-img-top" alt="Fès">
+                <div class="card-body">
+                    <h5 class="card-title">Fès</h5>
+                    <p class="card-text">Cité impériale, célèbre pour sa médina classée au patrimoine de l'UNESCO.</p>
+                    <a href="#" class="btn btn-primary">Voir les lieux touristiques</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <p class="text-muted">Page créée par <strong>Ibtissam Ainzura</strong> - Membre 2</p>
+    </div>
+</div>
+{% endblock %}

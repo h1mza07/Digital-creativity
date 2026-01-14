@@ -1,13 +1,28 @@
 from django.contrib import admin
 from django.urls import path, include
+<<<<<<< HEAD
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import TemplateView
+=======
+from django.conf.urls import handler403, handler404
+from django.shortcuts import render
+
+def error_403(request, exception):
+    return render(request, '403.html', status=403)
+
+def error_404(request, exception):
+    return render(request, '404.html', status=404)
+
+handler403 = error_403
+handler404 = error_404
+>>>>>>> a99bebea1a853bc9ae4ade7d29dc1e1475c3dc78
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
+    path('users/', include('users.urls')),
 ]
 
 urlpatterns += i18n_patterns(

@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Coupe du Monde 2030 - Maroc Tourisme{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Bannière principale -->
+    <div class="row align-items-center bg-dark text-white rounded p-4 mb-4">
+        <div class="col-md-2 text-center">
+            <h1 class="display-1">⚽</h1>
+        </div>
+        <div class="col-md-10">
+            <h1 class="display-4">Coupe du Monde 2030</h1>
+            <p class="lead mb-0">Le Maroc, co-organisateur de la plus grande compétition footballistique du monde</p>
+        </div>
+    </div>
+
+    <!-- Introduction -->
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <h2>🏆 Un événement historique</h2>
+            <p>La <strong>Coupe du Monde 2030</strong> sera un tournant pour le Maroc, qui co-organisera l'événement avec l'Espagne et le Portugal. C'est la première fois que le pays africain accueille cette compétition.</p>
+            <p>Cet événement majeur stimulera le tourisme, les infrastructures et l'économie du pays, tout en présentant la richesse culturelle marocaine au monde entier.</p>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">📅 Dates importantes</h5>
+                    <ul class="list-unstyled">
+                        <li>✅ <strong>2030</strong> : Année de la compétition</li>
+                        <li>📍 <strong>3 pays</strong> : Maroc, Espagne, Portugal</li>
+                        <li>🏟️ <strong>10 stades</strong> prévus au Maroc</li>
+                        <li>👥 <strong>48 équipes</strong> participantes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Villes hôtes au Maroc -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">📍 Villes hôtes marocaines</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Ville</th>
+                            <th>Stade</th>
+                            <th>Capacité</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Casablanca</strong></td>
+                            <td>Grand Stade de Casablanca</td>
+                            <td>93,000 places</td>
+                            <td><span class="badge bg-success">En construction</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rabat</strong></td>
+                            <td>Stade Moulay Abdellah</td>
+                            <td>68,000 places</td>
+                            <td><span class="badge bg-warning text-dark">Rénovation</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Marrakech</strong></td>
+                            <td>Stade de Marrakech</td>
+                            <td>45,000 places</td>
+                            <td><span class="badge bg-success">Opérationnel</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tanger</strong></td>
+                            <td>Stade Ibn Batouta</td>
+                            <td>65,000 places</td>
+                            <td><span class="badge bg-info">Extension</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Agadir</strong></td>
+                            <td>Stade Adrar</td>
+                            <td>45,000 places</td>
+                            <td><span class="badge bg-success">Opérationnel</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-muted">* Liste non exhaustive - sujette à modifications</p>
+        </div>
+    </div>
+
+    <!-- Carte et informations -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">🗺️ Carte des stades</h5>
+                </div>
+                <div class="card-body text-center p-5">
+                    <div class="mb-3">
+                        <h1>📍</h1>
+                    </div>
+                    <h4>Carte interactive</h4>
+                    <p>Une carte Leaflet/OpenStreetMap sera intégrée ici pour montrer l'emplacement des stades.</p>
+                    <div class="alert alert-secondary">
+                        <small>
+                            <strong>Intégration technique :</strong> Cette section utilisera 
+                            <code>Leaflet.js</code> et <code>OpenStreetMap</code> pour afficher 
+                            une carte interactive avec les marqueurs des stades.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">📈 Impact touristique</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>🚀 Augmentation du tourisme</strong><br>
+                            Prévision : +40% de visiteurs pendant l'événement
+                        </li>
+                        <li class="list-group-item">
+                            <strong>🏨 Capacité hôtelière</strong><br>
+                            50,000 chambres supplémentaires d'ici 2030
+                        </li>
+                        <li class="list-group-item">
+                            <strong>🚇 Infrastructures</strong><br>
+                            Nouvelles lignes de tramway et autoroutes
+                        </li>
+                        <li class="list-group-item">
+                            <strong>💼 Emplois</strong><br>
+                            Création de 100,000 emplois directs et indirects
+                        </li>
+                        <li class="list-group-item">
+                            <strong>🌍 Image internationale</strong><br>
+                            Promotion du Maroc comme destination touristique premium
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section technique Django -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">🛠️ Intégration Django</h5>
+                </div>
+                <div class="card-body">
+                    <p>Cette page sera dynamique avec Django :</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>📊 Modèles utilisés :</h6>
+                            <pre class="bg-dark text-light p-3 rounded"><code>class HostCity(models.Model):
+    name = models.CharField(max_length=100)
+    stadium_name = models.CharField(max_length=200)
+    capacity = models.IntegerField()
+    status = models.CharField(max_length=50)
+
+class WorldCupInfo(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    image = models.ImageField(upload_to='worldcup/')</code></pre>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>🔗 URLs Django :</h6>
+                            <ul>
+                                <li><code>urls.py</code> : <code>path('worldcup2030/', views.worldcup_home, name='worldcup2030')</code></li>
+                                <li><strong>Template :</strong> <code>worldcup2030/index.html</code></li>
+                                <li><strong>App :</strong> <code>worldcup2030</code></li>
+                                <li><strong>Données :</strong> Administrables via Django Admin</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="mb-0 text-center">
+                        Page créée par <strong>Ibtissam Ainzura</strong> - Membre 2<br>
+                        <small>Section spéciale Coupe du Monde 2030</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript simple pour interactions -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation simple pour les badges de statut
+    const badges = document.querySelectorAll('.badge');
+    badges.forEach(badge => {
+        badge.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1)';
+        });
+        badge.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+
+    console.log('Page Coupe du Monde 2030 chargée - prête pour Django');
+});
+</script>
+{% endblock %}

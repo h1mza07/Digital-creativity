@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Détail Ville - Maroc Tourisme 2030{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- En-tête avec nom de la ville -->
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <h1 class="display-4">🏙️ <span id="city-name">Nom de la Ville</span></h1>
+            <p class="lead" id="city-description">Description de la ville...</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'city_list' %}" class="btn btn-outline-secondary">
+                ← Retour à la liste
+            </a>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <!-- Image et informations -->
+        <div class="col-md-6">
+            <img src="https://via.placeholder.com/600x400/006233/ffffff?text=Image+Ville" 
+                 class="img-fluid rounded" 
+                 alt="Image de la ville" 
+                 id="city-image">
+            
+            <div class="mt-4">
+                <h4>📌 Informations</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>Région :</strong> <span id="city-region">Non spécifié</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Population :</strong> <span id="city-population">Non spécifié</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Spécialités :</strong> <span id="city-specialties">Non spécifié</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Lieux touristiques -->
+        <div class="col-md-6">
+            <h4 class="mb-3">📍 Lieux Touristiques</h4>
+            
+            <div class="list-group">
+                <!-- Lieu 1 -->
+                <div class="list-group-item">
+                    <h5>Nom du Lieu 1</h5>
+                    <p>Description courte du lieu touristique.</p>
+                    <small class="text-muted">Catégorie : Monument</small>
+                </div>
+
+                <!-- Lieu 2 -->
+                <div class="list-group-item">
+                    <h5>Nom du Lieu 2</h5>
+                    <p>Description courte du lieu touristique.</p>
+                    <small class="text-muted">Catégorie : Musée</small>
+                </div>
+
+                <!-- Lieu 3 -->
+                <div class="list-group-item">
+                    <h5>Nom du Lieu 3</h5>
+                    <p>Description courte du lieu touristique.</p>
+                    <small class="text-muted">Catégorie : Nature</small>
+                </div>
+            </div>
+
+            <!-- Section pour les données dynamiques (à remplir par Django) -->
+            <div class="mt-4 p-3 bg-light rounded">
+                <h5>ℹ️ Notes techniques</h5>
+                <p>Cette page sera remplie dynamiquement par Django avec :</p>
+                <ul>
+                    <li><code>{{ city.name }}</code> - Nom de la ville</li>
+                    <li><code>{{ city.description }}</code> - Description</li>
+                    <li><code>{{ city.image.url }}</code> - Image</li>
+                    <li><code>{% for place in city.place_set.all %}</code> - Liste des lieux</li>
+                </ul>
+                <p class="mb-0">Template créé par <strong>Ibtissam Ainzura</strong> - Membre 2</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript simple pour démontrer l'interactivité -->
+<script>
+// Exemple d'interactivité - à remplacer par Django plus tard
+document.addEventListener('DOMContentLoaded', function() {
+    // Simuler le chargement de données
+    console.log('Page détail ville chargée - prête pour Django');
+});
+</script>
+{% endblock %}
