@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {% trans "Tourisme Maroc 2030" %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{% trans "Administration Tourisme Maroc 2030" %}</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
