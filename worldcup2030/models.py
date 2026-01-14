@@ -18,8 +18,10 @@ class HostCity(models.Model):
     
     def __str__(self):
         return f"{self.city.name} (Ville hôte CM 2030)"
-    class Stadium(models.Model):
-    name = models.CharField(_("Nom du stade"), max_length=200)
+
+
+class Stadium(models.Model):  # ← LIGNE 21
+    name = models.CharField(_("Nom du stade"), max_length=200)  # ← DOIT ÊTRE INDENTÉ !
     host_city = models.ForeignKey(HostCity, on_delete=models.CASCADE, related_name='stadiums')
     capacity = models.IntegerField(_("Capacité"))
     construction_year = models.IntegerField(_("Année de construction"))
