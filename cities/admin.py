@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import City, TouristPlace
+from .models import City, TouristPlace 
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
@@ -9,7 +9,7 @@ class CityAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     readonly_fields = ('created_at', 'updated_at')
 
-@admin.register(TouristPlace)
+@admin.register(TouristPlace) 
 class TouristPlaceAdmin(admin.ModelAdmin):
     list_display = ('name', 'city', 'type', 'created_at')
     list_filter = ('type', 'city', 'created_at')
