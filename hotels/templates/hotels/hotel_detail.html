@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ hotel.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ hotel.name }}</h1>
+<p><strong>Ville :</strong> {{ hotel.city }}</p>
+<p><strong>Étoiles :</strong> {{ hotel.stars }}</p>
+<p><strong>Prix par nuit :</strong> {{ hotel.price_per_night }} MAD</p>
+<br>
+<a href="/hotels/city/{{ hotel.city.id }}/">← Retour à la liste</a> |
+<a href="/routes/">Itinéraires</a>
+{% endblock %}
