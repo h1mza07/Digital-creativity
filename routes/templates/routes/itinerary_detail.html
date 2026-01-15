@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ itinerary.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ itinerary.title }}</h1>
+
+<!-- Affichage de l'image -->
+{% if itinerary.image %}
+    <img src="{{ itinerary.image.url }}" alt="{{ itinerary.title }}" style="max-width: 100%; height: auto; margin-bottom: 20px;">
+{% else %}
+    <p>Aucune image disponible.</p>
+{% endif %}
+
+<p><strong>Durée :</strong> {{ itinerary.duration_days }} jours</p>
+<p><strong>Difficulté :</strong> {{ itinerary.difficulty }}</p>
+
+<br>
+<a href="/routes/">← Retour à la liste</a> |
+<a href="/hotels/city/1/">Hôtels</a>
+{% endblock %}
