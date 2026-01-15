@@ -1,22 +1,18 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Hôtels</title>
-</head>
-<body>
-    <h1>Liste des hôtels</h1>
-    <ul>
-        {% for hotel in hotels %}
-            <li>
-                <strong>{{ hotel.name }}</strong> - {{ hotel.city }} 
-                ({{ hotel.stars }} étoiles) - {{ hotel.price_per_night }} MAD/nuit
-            </li>
-        {% empty %}
-            <li>Aucun hôtel trouvé.</li>
-        {% endfor %}
-    </ul>
-    <br>
-    <a href="/routes/">Voir les itinéraires</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Liste des hôtels{% endblock %}
+
+{% block content %}
+<h1>Liste des hôtels</h1>
+<ul>
+    {% for hotel in hotels %}
+        <li>
+            <strong>{{ hotel.name }}</strong> - {{ hotel.city }} 
+            ({{ hotel.stars }} étoiles) - {{ hotel.price_per_night }} MAD/nuit
+        </li>
+    {% empty %}
+        <li>Aucun hôtel trouvé.</li>
+    {% endfor %}
+</ul>
+<a href="/routes/">Voir les itinéraires</a>
+{% endblock %}
