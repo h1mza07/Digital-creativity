@@ -1,9 +1,10 @@
- from django.apps import AppConfig
+# Crée un nouveau fichier apps.py avec une indentation propre
+from django.apps import AppConfig
 
 class PlacesConfig(AppConfig):
     """
     Configuration de l'application 'places' pour la gestion des lieux touristiques.
-    Développée par Ibtissam Ainzura (Membre 2) - Projet Maroc Tourisme 2030.
+    Développée par Ibtissam Ainzura - Projet Maroc Tourisme 2030.
     """
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'places'
