@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, ProfileForm
 from .models import Favorite
@@ -8,7 +8,9 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
             login(request, user)
             return redirect('profile')
     else:
@@ -16,10 +18,10 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
-def user_login(request):
+def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
@@ -27,21 +29,15 @@ def user_login(request):
     return render(request, 'users/login.html')
 
 
-def user_logout(request):
-    logout(request)
-    return redirect('login')
-
-
 @login_required
 def profile(request):
     profile = request.user.profile
-    favorites = Favorite.objects.filter(user=request.user)
+    favorites = request.user.favorites.all()
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('profile')
     else:
         form = ProfileForm(instance=profile)
 
@@ -49,3 +45,15 @@ def profile(request):
         'form': form,
         'favorites': favorites
     })
+
+
+@login_required
+def add_favorite(request, place_name):
+    Favorite.objects.create(user=request.user, place_name=place_name)
+    return redirect('profile')
+
+
+@login_required
+def remove_favorite(request, fav_id):
+    Favorite.objects.filter(id=fav_id, user=request.user).delete()
+    return redirect('profile')

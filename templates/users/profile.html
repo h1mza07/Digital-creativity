@@ -1,33 +1,18 @@
-{% extends 'base.html' %}
-
-{% block content %}
 <h2>Mon Profil</h2>
-
-<p>Utilisateur : {{ user.username }}</p>
-<p>Email : {{ user.email }}</p>
-
-<h3>Photo de profil</h3>
-{% if user.profile.photo %}
-    <img src="{{ user.profile.photo.url }}" width="150">
-{% else %}
-    <p>Aucune photo</p>
-{% endif %}
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Mettre à jour</button>
+    <button type="submit">Mettre à jour la photo</button>
 </form>
 
-<hr>
-
-<h3>Mes lieux favoris</h3>
+<h3>Mes favoris</h3>
 <ul>
     {% for fav in favorites %}
-        <li>{{ fav.place_name }}</li>
+        <li>{{ fav.place_name }} 
+            <a href="{% url 'remove_favorite' fav.id %}">Supprimer</a>
+        </li>
     {% empty %}
-        <li>Aucun favori pour le moment.</li>
+        <li>Aucun favori</li>
     {% endfor %}
 </ul>
-
-{% endblock %}
