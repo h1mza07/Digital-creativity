@@ -2,6 +2,11 @@ from django.db import models
 from cities.models import City
 
 class Itinerary(models.Model):
+    rating = models.PositiveIntegerField(
+    choices=[(i, str(i)) for i in range(1, 6)],
+    default=3,
+    help_text="Note sur 5 étoiles"
+)
     DIFFICULTY_CHOICES = [
         ('easy', 'Facile'),
         ('medium', 'Moyen'),
