@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Applications du projet
-    'users',
+    'users.apps.UsersConfig',
     'cities',
     'worldcup2030',
     'places',
