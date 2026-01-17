@@ -8,8 +8,11 @@ def itinerary_list(request):
 def itinerary_detail(request, itinerary_id):
     itinerary = get_object_or_404(Itinerary, id=itinerary_id)
     return render(request, 'routes/itinerary_detail.html', {'itinerary': itinerary})
-    def profile_view(request):
+def profile_view(request):
     return render(request, 'profile.html')
+
+def itinerary_search(request):
+    return render(request, 'routes/search.html')
 
 def about(request):
     """
@@ -60,3 +63,14 @@ def about(request):
         }
     ]
     return render(request, 'routes/about.html', {'team_members': team_members})
+
+    from django.shortcuts import render
+    from .models import VisitCount
+
+def home(request):
+    # Récupère ou crée l'instance unique de VisitCount
+    visit, created = VisitCount.objects.get_or_create(id=1)
+    visit.total_visits += 1
+    visit.save(update_fields=['total_visits'])
+    
+    return render(request, 'routes/home.html', {'total_visits': visit.total_visits})

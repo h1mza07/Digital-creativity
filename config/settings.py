@@ -1,7 +1,6 @@
-from pathlib import Path
-
+from pathlib import Path 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-x20bp98c^5j$lkcaf-fypt*v^m2*x-9xhl4qu(88qjg5jt!s4u'
+SECRET_KEY = 'django-insecure-x20bp98c^5j$lkcaf-fypt*v^m2*x-9xhl4qu(88qjg5jt!s4u)'
 
 DEBUG = True
 
@@ -12,19 +11,15 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # Applications du projet
-    'users.apps.UsersConfig',
-
+    'django.contrib.messages',     
+    'django.contrib.staticfiles',   
     'routes',
-    
     'users',
     'cities',
     'worldcup2030',
     'places',
 ]
+ 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

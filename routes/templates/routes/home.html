@@ -1,0 +1,35 @@
+<!-- routes/templates/routes/home.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil - Projet Tourisme</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .counter {
+            font-size: 1.2em;
+            margin-top: 30px;
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenue sur notre site de tourisme !</h1>
+    <p>Découvrez les itinéraires, hôtels, et lieux autour de la Coupe du Monde 2030.</p>
+    
+    <div class="counter">
+        👁️ Ce site a été consulté <strong>{{ total_visits }}</strong> fois.
+    </div>
+
+    <p>
+        <a href="{% url 'itinerary_list' %}">Voir les itinéraires</a> |
+        <a href="{% url 'about' %}">À propos</a>
+    </p>
+</body>
+</html>
