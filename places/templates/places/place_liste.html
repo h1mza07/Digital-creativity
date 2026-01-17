@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+
+{% block title %}Lieux Touristiques - Maroc 2030{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>📍 Lieux Touristiques du Maroc</h1>
+    
+    {% if places %}
+        <div class="row">
+            {% for place in places %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if place.image %}
+                        <img src="{{ place.image.url }}" class="card-img-top" alt="{{ place.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ place.name }}</h5>
+                        <p class="card-text">{{ place.description|truncatechars:100 }}</p>
+                        <p class="text-muted">
+                            <strong>Ville :</strong> {{ place.city.name }}
+                        </p>
+                        <a href="{% url 'places:place_detail' place.pk %}" class="btn btn-primary">
+                            Voir détails
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            Aucun lieu touristique disponible pour le moment.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+ 
