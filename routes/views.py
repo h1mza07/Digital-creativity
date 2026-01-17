@@ -2,8 +2,17 @@ from django.shortcuts import render, get_object_or_404
 from .models import Itinerary
 
 def itinerary_list(request):
+    rating_filter = request.GET.get('rating')
     itineraries = Itinerary.objects.all()
-    return render(request, 'routes/itinerary_list.html', {'itineraries': itineraries})
+
+    if rating_filter:
+        itineraries = itineraries.filter(rating__gte=int(rating_filter))
+
+    context = {
+        'itineraries': itineraries,
+        'selected_rating': rating_filter or '',
+    }
+    return render(request, 'routes/itinerary_list.html', context)
 
 def itinerary_detail(request, itinerary_id):
     itinerary = get_object_or_404(Itinerary, id=itinerary_id)
