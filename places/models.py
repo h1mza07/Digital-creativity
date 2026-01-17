@@ -1,8 +1,7 @@
-#new version
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from cities.models import City
+
 class Place(models.Model):
     """Modèle pour les lieux touristiques du Maroc"""
     
@@ -38,13 +37,15 @@ class Place(models.Model):
         verbose_name=_("Description"),
         help_text=_("Décrivez le lieu en 2-3 phrases")
     )
+    
     city = models.ForeignKey(
-        City,
+        'cities.City',  # Référence à l'application cities
         on_delete=models.CASCADE,
-        related_name='places_list',
         verbose_name=_("Ville"),
+        related_name='place_list',  # CHANGÉ: 'places' → 'place_list' pour éviter conflit
         help_text=_("Ville marocaine où se trouve le lieu")
     )
+    
     # Informations pratiques
     address = models.CharField(
         max_length=300, 
@@ -201,7 +202,7 @@ class VisitorReview(models.Model):
     place = models.ForeignKey(
         Place,
         on_delete=models.CASCADE,
-        related_name='reviews',
+        related_name='place_reviews',  # CHANGÉ: 'reviews' → 'place_reviews'
         verbose_name=_("Lieu")
     )
     
