@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Itinéraires{% endblock %}
+
+{% block content %}
+<h1>Liste des itinéraires</h1>
+<ul>
+    {% for itinerary in itineraries %}
+        <li>
+            <a href="/routes/{{ itinerary.id }}/">{{ itinerary.title }}</a> 
+            ({{ itinerary.duration_days }} jours, difficulté : {{ itinerary.difficulty }})
+        </li>
+    {% empty %}
+        <li>Aucun itinéraire trouvé.</li>
+    {% endfor %}
+</ul>
+<a href="/hotels/city/1/">Voir les hôtels</a>
+{% endblock %}

@@ -33,7 +33,7 @@ class TouristPlace(models.Model):
     ]
     
     name = models.CharField(_("Nom"), max_length=200)
-    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='places')
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='tourist_places')
     description = models.TextField(_("Description"))
     type = models.CharField(_("Type"), max_length=20, choices=PLACE_TYPES)
     image = models.ImageField(_("Image"), upload_to='places/', null=True, blank=True)

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ itinerary.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ itinerary.title }}</h1>
+
+<!-- Image -->
+{% if itinerary.image %}
+    <img src="{{ itinerary.image.url }}" alt="{{ itinerary.title }}" class="img-fluid mb-3">
+{% else %}
+    <p>Aucune image disponible.</p>
+{% endif %}
+
+<p><strong>Durée :</strong> {{ itinerary.duration_days }} jours</p>
+<p><strong>Difficulté :</strong> {{ itinerary.difficulty }}</p>
+
+<!-- Boutons -->
+<div class="mt-3">
+    <a href="#" class="btn btn-success">✅ Réserver</a>
+    <a href="#" class="btn btn-outline-danger">❤️ Ajouter à mes favoris</a>
+</div>
+
+<br>
+<a href="/routes/">← Retour à la liste</a> |
+<a href="/hotels/city/1/">Hôtels</a>
+{% endblock %}
+<!-- Forcé par EL Assioui Imane -->
