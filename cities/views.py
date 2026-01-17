@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import City
+from django.utils.translation import gettext as _
 
 def home_page(request):
     return render(request, 'home.html')
@@ -8,14 +9,13 @@ def home_page(request):
 def city_list(request):
     cities = City.objects.all()
     
-    # HTML avec CSS INTERNE amélioré
     html = """
     <!DOCTYPE html>
     <html lang="fr">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Villes Marocaines - Maroc Tourisme 2030</title>
+        <title>""" + _("Villes Marocaines - Maroc Tourisme 2030") + """</title>
         <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
@@ -155,17 +155,17 @@ def city_list(request):
     <body>
         <div class="container">
             <div class="nav-bar">
-                <a href="/" class="logo">🇲🇦 Maroc Tourisme <span class="worldcup-badge">CM 2030</span></a>
-                <a href="/" class="btn">Accueil</a>
+                <a href="/" class="logo">🇲🇦 """ + _("Maroc Tourisme") + """ <span class="worldcup-badge">""" + _("CM 2030") + """</span></a>
+                <a href="/" class="btn">""" + _("Accueil") + """</a>
             </div>
             
             <header>
-                <h1>Villes Marocaines</h1>
-                <p class="subtitle">Découvrez les principales villes du Maroc pour la Coupe du Monde 2030</p>
+                <h1>""" + _("Villes Marocaines") + """</h1>
+                <p class="subtitle">""" + _("Découvrez les principales villes du Maroc pour la Coupe du Monde 2030") + """</p>
             </header>
             
             <div class="stats">
-                🏙️ <strong>""" + str(cities.count()) + """ villes</strong> disponibles à la découverte
+                🏙️ <strong>""" + str(cities.count()) + " " + _("villes") + """</strong> """ + _("disponibles à la découverte") + """
             </div>
             
             <div class="city-grid">
@@ -181,10 +181,10 @@ def city_list(request):
                         <div class="city-name">{city.name}</div>
                         <p class="city-desc">{city.description[:120]}...</p>
                         <div class="city-info">
-                            <span>👥 {city.population} habitants</span>
+                            <span>👥 {city.population} """ + _("habitants") + """</span>
                             <span>📍 {city.latitude}, {city.longitude}</span>
                         </div>
-                        <a href="/cities/{city.slug}/" class="btn">Explorer cette ville →</a>
+                        <a href="/cities/{city.slug}/" class="btn">""" + _("Explorer cette ville") + """ →</a>
                     </div>
                 </div>
         """
@@ -192,7 +192,7 @@ def city_list(request):
     html += """
             </div>
             
-            <a href="/" class="back-link">← Retour à la page d'accueil</a>
+            <a href="/" class="back-link">← """ + _("Retour à la page d'accueil") + """</a>
         </div>
     </body>
     </html>
@@ -203,14 +203,13 @@ def city_list(request):
 def city_detail(request, slug):
     city = get_object_or_404(City, slug=slug)
     
-    # HTML avec design moderne
     html = f"""
     <!DOCTYPE html>
     <html lang="fr">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{city.name} - Maroc Tourisme 2030</title>
+        <title>{city.name} - """ + _("Maroc Tourisme 2030") + """</title>
         <style>
             * {{ margin: 0; padding: 0; box-sizing: border-box; }}
             body {{
@@ -328,10 +327,10 @@ def city_detail(request, slug):
     <body>
         <div class="container">
             <div class="nav-bar">
-                <a href="/" class="logo">🇲🇦 Maroc Tourisme <span class="worldcup-badge">CM 2030</span></a>
+                <a href="/" class="logo">🇲🇦 """ + _("Maroc Tourisme") + """ <span class="worldcup-badge">""" + _("CM 2030") + """</span></a>
                 <div>
-                    <a href="/cities/" class="btn">← Retour aux villes</a>
-                    <a href="/" class="btn btn-secondary">Accueil</a>
+                    <a href="/cities/" class="btn">← """ + _("Retour aux villes") + """</a>
+                    <a href="/" class="btn btn-secondary">""" + _("Accueil") + """</a>
                 </div>
             </div>
             
@@ -345,34 +344,34 @@ def city_detail(request, slug):
             
             <div class="info-grid">
                 <div class="info-card">
-                    <h3>📊 Informations</h3>
+                    <h3>📊 """ + _("Informations") + """</h3>
                     <div class="info-item">
                         <span class="info-icon">👥</span>
                         <div>
-                            <strong>Population:</strong> {city.population} habitants
+                            <strong>""" + _("Population") + """:</strong> {city.population} """ + _("habitants") + """
                         </div>
                     </div>
                     <div class="info-item">
                         <span class="info-icon">📍</span>
                         <div>
-                            <strong>Coordonnées GPS:</strong><br>
-                            Latitude: {city.latitude}<br>
-                            Longitude: {city.longitude}
+                            <strong>""" + _("Coordonnées GPS") + """:</strong><br>
+                            """ + _("Latitude") + """: {city.latitude}<br>
+                            """ + _("Longitude") + """: {city.longitude}
                         </div>
                     </div>
                 </div>
                 
                 <div class="info-card">
-                    <h3>🗺️ Localisation</h3>
+                    <h3>🗺️ """ + _("Localisation") + """</h3>
                     <div class="map-placeholder">
-                        Carte interactive de {city.name}<br>
-                        (Leaflet JS à intégrer)
+                        """ + _("Carte interactive de") + """ {city.name}<br>
+                        (Leaflet JS """ + _("à intégrer") + """)
                     </div>
                 </div>
             </div>
             
             <div style="text-align: center; margin-top: 40px;">
-                <a href="/cities/" class="btn">← Voir toutes les villes</a>
+                <a href="/cities/" class="btn">← """ + _("Voir toutes les villes") + """</a>
             </div>
         </div>
     </body>
