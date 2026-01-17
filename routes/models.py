@@ -2,11 +2,21 @@ from django.db import models
 from cities.models import City
 
 class Itinerary(models.Model):
-    rating = models.PositiveIntegerField(
-    choices=[(i, str(i)) for i in range(1, 6)],
-    default=3,
-    help_text="Note sur 5 étoiles"
-)
+     rating = models.PositiveIntegerField(
+        choices=[(i, str(i)) for i in range(1, 6)],
+        default=3,
+        help_text="Note sur 5 étoiles"  
+    ) 
+    views_count = models.IntegerField(default=0, verbose_name="Nombre de vues")
+    
+class Comment(models.Model):
+    itinerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE, related_name='comments')
+    author = models.CharField(max_length=100, default="Anonyme")
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Commentaire par {self.author} sur {self.itinerary.name}"
     DIFFICULTY_CHOICES = [
         ('easy', 'Facile'),
         ('medium', 'Moyen'),
