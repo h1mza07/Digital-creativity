@@ -73,4 +73,8 @@ def add_comment(request, itinerary_id):
             author=author,
             text=text
         )
-    return redirect('itinerary_detail', itinerary_id=itinerary_id)
+        messages.success(request, "Votre commentaire a été ajouté avec succès !")
+    else:
+        messages.error(request, "Le commentaire ne peut pas être vide.")
+    
+    return redirect('itinerary_detail', itinerary_id=itinerary_id
