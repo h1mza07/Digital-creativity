@@ -35,3 +35,12 @@ Bootstrap 5, Leaflet
 SQLite, i18n (FR/EN)
 
 Accès : http://127.0.0.1:8000 | Admin : http://127.0.0.1:8000/admin
+
+
+## 👩‍💻 Contributions de EL Assioui Imane
+
+- Création de la page **“À propos”** avec présentation de l’équipe
+- Implémentation du **compteur de vues global** sur la page d’accueil
+- Ajout du **filtre par note (1 à 5 étoiles)** dans la liste des itinéraires
+- Intégration du **thème sombre/bascule** avec persistance
+- Amélioration de l’**accessibilité** et du **SEO**
