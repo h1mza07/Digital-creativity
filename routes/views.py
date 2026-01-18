@@ -2,11 +2,20 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from .models import Itinerary, Comment, VisitCount
 
-def home(request):
-    visit, created = VisitCount.objects.get_or_create(id=1)
-    visit.total_visits += 1
-    visit.save(update_fields=['total_visits'])
-    return render(request, 'routes/home.html', {'total_visits': visit.total_visits})
+ef home(request):
+    # Clé de cache unique pour cette session ou IP
+    visitor_key = f"visitor_{request.session.session_key or request.META.get('REMOTE_ADDR', 'unknown')}"
+    
+    if not cache.get(visitor_key):
+        # Première visite de cet utilisateur → incrémenter
+        visit, created = VisitCount.objects.get_or_create(id=1)
+        visit.total_visits += 1
+        visit.save(update_fields=['total_visits'])
+        # Marquer comme vu pendant 1 heure
+        cache.set(visitor_key, True, timeout=3600)
+    
+    total_visits = VisitCount.objects.get(id=1).total_visits
+    return render(request, 'routes/home.html', {'total_visits': total_visits})
 
 def about(request):
     team_members = [
