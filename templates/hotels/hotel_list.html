@@ -64,3 +64,16 @@
     <p><a href="/">← Retour à l'accueil</a></p>
 </body>
 </html>
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?q={{ query }}&page=1">« Première</a>
+        <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Précédent</a>
+    {% endif %}
+
+    <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">Suivant</a>
+        <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">Dernière »</a>
+    {% endif %}
+</div>
