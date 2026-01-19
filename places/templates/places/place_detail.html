@@ -1,0 +1,55 @@
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">📍 Localisation</h5>
+        <div id="map" style="height: 400px;"></div>
+    </div>
+</div>
+
+{% block extra_js %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    {% if place.latitude and place.longitude %}
+    var map = L.map('map').setView([{{ place.latitude }}, {{ place.longitude }}], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+    
+    L.marker([{{ place.latitude }}, {{ place.longitude }}])
+        .addTo(map)
+        .bindPopup('<strong>{{ place.name }}</strong><br>{{ place.address }}')
+        .openPopup();
+    {% else %}
+    document.getElementById('map').innerHTML = 
+        '<div class="alert alert-info text-center p-4">Aucune localisation disponible</div>';
+    {% endif %}
+</script>
+{% endblock %}
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">📍 Localisation</h5>
+        <div id="map" style="height: 400px;"></div>
+    </div>
+</div>
+
+{% block extra_js %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    {% if place.latitude and place.longitude %}
+    var map = L.map('map').setView([{{ place.latitude }}, {{ place.longitude }}], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+    
+    L.marker([{{ place.latitude }}, {{ place.longitude }}])
+        .addTo(map)
+        .bindPopup('<strong>{{ place.name }}</strong><br>{{ place.address }}')
+        .openPopup();
+    {% else %}
+    document.getElementById('map').innerHTML = 
+        '<div class="alert alert-info text-center p-4">Aucune localisation disponible</div>';
+    {% endif %}
+</script>
+{% endblock %}

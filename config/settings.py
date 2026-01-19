@@ -1,7 +1,8 @@
-from pathlib import Path
+from pathlib import Path 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-x20bp98c^5j$lkcaf-fypt*v^m2*x-9xhl4qu(88qjg5jt!s4u'
+
+SECRET_KEY = 'django-insecure-x20bp98c^5j$lkcaf-fypt*v^m2*x-9xhl4qu(88qjg5jt!s4u)'
 
 DEBUG = True
 
@@ -15,15 +16,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-   
+    # Applications du projet
     'users.apps.UsersConfig',
-
     'routes',
-    'hotels',
-    #'users',
     'cities',
     'worldcup2030',
     'places',
+    'hotels',
+    
+    # Configurations avancées (optionnel)
+    'hotels.apps.HotelsConfig',
+    'places.apps.PlacesConfig',
 ]
 
 MIDDLEWARE = [
@@ -34,7 +37,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     ]
+]
 
 ROOT_URLCONF = 'config.urls'
 
@@ -71,12 +74,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGES = [
-    ('fr', 'Français'),      # Français
-    ('en', 'English'),       # Anglais
-    ('es', 'Español'),       # Espagnol
-    ('ar', 'العربية'),       # Arabe
-    ('de', 'Deutsch'),       # Allemand
-    ('pt', 'Português'),     # Portugais
+    ('fr', 'Français'),
+    ('en', 'English'),
+    ('es', 'Español'),
+    ('ar', 'العربية'),
+    ('de', 'Deutsch'),
+    ('pt', 'Português'),
 ]
 
 LANGUAGE_CODE = 'fr'
@@ -84,6 +87,7 @@ LANGUAGE_CODE = 'fr'
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -97,3 +101,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Cache en mémoire (pour le développement)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}

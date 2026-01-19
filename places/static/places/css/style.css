@@ -1,0 +1,27 @@
+/* places/static/places/css/style.css */
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.badge-category {
+    font-size: 0.8em;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+#map {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.place-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}

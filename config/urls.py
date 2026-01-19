@@ -6,9 +6,10 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+   path('', include('routes.urls')),  # Page d'accueil via routes
     path('cities/', include('cities.urls')),
     path('users/', include('users.urls')),
+    path('', include('routes.urls')), 
 ]
 
 if settings.DEBUG:
