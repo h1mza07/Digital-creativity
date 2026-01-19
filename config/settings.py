@@ -15,12 +15,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Applications du projet
+   
     'users.apps.UsersConfig',
 
     'routes',
-    
-    'users',
+    'hotels',
+    #'users',
     'cities',
     'worldcup2030',
     'places',
