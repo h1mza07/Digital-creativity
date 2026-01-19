@@ -18,6 +18,9 @@ INSTALLED_APPS = [
     'cities',
     'worldcup2030',
     'places',
+    'hotels',
+    'hotels.apps.HotelsConfig',
+    'places.apps.PlacesConfig',
 ]
  
 

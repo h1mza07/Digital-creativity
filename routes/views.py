@@ -1,90 +1,48 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.decorators.http import require_POST
-from .models import Itinerary, Comment, VisitCount
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import CustomItinerary, ItineraryStop
+from places.models import Place
+from hotels.models import Hotel
 
-def home(request):
-    # Clé de cache unique pour cette session ou IP
-    visitor_key = f"visitor_{request.session.session_key or request.META.get('REMOTE_ADDR', 'unknown')}"
-    
-    if not cache.get(visitor_key):
-        # Première visite de cet utilisateur / incrémenter
-        visit, created = VisitCount.objects.get_or_create(id=1)
-        visit.total_visits += 1
-        visit.save(update_fields=['total_visits'])
-        # Marquer comme vu pendant 1 heure
-        cache.set(visitor_key, True, timeout=3600)
-    
-    total_visits = VisitCount.objects.get(id=1).total_visits
-    return render(request, 'routes/home.html', {'total_visits': total_visits})
+@login_required
+def itinerary_create(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        itinerary = CustomItinerary.objects.create(user=request.user, title=title)
+        return redirect('itinerary_detail', pk=itinerary.pk)
+    return render(request, 'routes/itinerary_form.html')
 
-def about(request):
-    team_members = [
-        {
-            'name': 'Hamza Layachi',
-            'role': 'Chef de projet & Core Backend',
-            'responsibilities': ['Initialisation du projet', 'Modèles: City, HostCity']
-        },
-        {
-            'name': 'Ibtissam Ainzura',
-            'role': 'Lieux touristiques & Cartographie',
-            'responsibilities': ['App: places', 'Intégration Leaflet']
-        },
-        {
-            'name': 'EL Assioui Imane',
-            'role': 'Hôtels & Itinéraires',
-            'responsibilities': ['Apps: hotels, routes', 'Modèles: Hotel, Itinerary']
-        },
-        {
-            'name': 'Amina Chetti',
-            'role': 'Utilisateurs, Sécurité & UX',
-            'responsibilities': ['App: users', 'Authentification', 'UX']
-        }
-    ]
-    return render(request, 'routes/about.html', {'team_members': team_members})
-
-def itinerary_list(request):
-    query = request.GET.get('q')
-    itineraries = Itinerary.objects.all()
-
-    if query:
-        itineraries = itineraries.filter(title__icontains=query)
-
-    return render(request, 'routes/itinerary_list.html', {
-        'itineraries': itineraries,
-        'query': query
-    })
-    
-    return render(request, 'routes/itinerary_list.html', context)
-
-def itinerary_search(request):
-    message = "Recherche d'itinéraires (à remplacer plus tard par une vraie recherche)."
-    return render(request, 'routes/search.html', {'message': message})
-
-def profile_view(request):
-    return render(request, 'routes/profile.html')
-
-def itinerary_detail(request, itinerary_id):
-    itinerary = get_object_or_404(Itinerary, id=itinerary_id)
-    comments = itinerary.comments.all().order_by('-created_at')
+@login_required
+def itinerary_detail(request, pk):
+    itinerary = get_object_or_404(CustomItinerary, pk=pk, user=request.user)
+    places = Place.objects.all()
+    hotels = Hotel.objects.all()
     return render(request, 'routes/itinerary_detail.html', {
         'itinerary': itinerary,
-        'comments': comments,
+        'places': places,
+        'hotels': hotels
     })
 
-@require_POST
-def add_comment(request, itinerary_id):
-    itinerary = get_object_or_404(Itinerary, id=itinerary_id)
-    author = request.POST.get('author', 'Anonyme').strip() or 'Anonyme'
-    text = request.POST.get('text', '').strip()
-    
-    if text:
-        Comment.objects.create(
-            itinerary=itinerary,
-            author=author,
-            text=text
-        )
-        messages.success(request, "Votre commentaire a été ajouté avec succès !")
-    else:
-        messages.error(request, "Le commentaire ne peut pas être vide.")
-    
-    return redirect ('itinerary_detail', itinerary_id=itinerary_id)
+@login_required
+def add_stop(request, pk):
+    itinerary = get_object_or_404(CustomItinerary, pk=pk, user=request.user)
+    if request.method == "POST":
+        place_id = request.POST.get('place')
+        hotel_id = request.POST.get('hotel')
+        order = itinerary.stops.count() + 1
+
+        if place_id:
+            place = get_object_or_404(Place, id=place_id)
+            ItineraryStop.objects.create(itinerary=itinerary, order=order, place=place)
+        elif hotel_id:
+            hotel = get_object_or_404(Hotel, id=hotel_id)
+            ItineraryStop.objects.create(itinerary=itinerary, order=order, hotel=hotel)
+
+    return redirect('itinerary_detail', pk=pk)
+
+@login_required
+def remove_stop(request, itinerary_id, stop_id):
+    stop = get_object_or_404(ItineraryStop, id=stop_id, itinerary_id=itinerary_id)
+    if stop.itinerary.user == request.user:
+        stop.delete()
+    return redirect('itinerary_detail', pk=itinerary_id)
