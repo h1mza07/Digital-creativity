@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import CustomItinerary, ItineraryStop
+from .models import CustomItinerary, ItineraryStop, Itinerary
 from places.models import Place
 from hotels.models import Hotel
 
@@ -46,3 +46,22 @@ def remove_stop(request, itinerary_id, stop_id):
     if stop.itinerary.user == request.user:
         stop.delete()
     return redirect('itinerary_detail', pk=itinerary_id)
+
+def itinerary_list(request):
+    """
+    Affiche la liste des itineraries publics
+    """
+    # Itineraries publics
+    public_itineraries = Itinerary.objects.all()
+    
+    context = {
+        'public_itineraries': public_itineraries,
+        'title': 'Itinéraires'
+    }
+    
+    # Itineraires personnels (si connecté)
+    if request.user.is_authenticated:
+        personal_itineraries = CustomItinerary.objects.filter(user=request.user)
+        context['personal_itineraries'] = personal_itineraries
+    
+    return render(request, 'routes/itinerary_list.html', context)

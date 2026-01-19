@@ -16,15 +16,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Applications du projet
     'users.apps.UsersConfig',
     'routes',
     'cities',
     'worldcup2030',
-    'places',
-    'hotels',
+    #'places',
+    #'hotels',
     
-    # Configurations avancées (optionnel)
+    
     'hotels.apps.HotelsConfig',
     'places.apps.PlacesConfig',
 ]
@@ -101,7 +100,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Cache en mémoire (pour le développement)
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
