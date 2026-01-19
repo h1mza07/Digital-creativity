@@ -2,12 +2,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from .models import Itinerary, Comment, VisitCount
 
-ef home(request):
+def home(request):
     # Clé de cache unique pour cette session ou IP
     visitor_key = f"visitor_{request.session.session_key or request.META.get('REMOTE_ADDR', 'unknown')}"
     
     if not cache.get(visitor_key):
-        # Première visite de cet utilisateur → incrémenter
+        # Première visite de cet utilisateur / incrémenter
         visit, created = VisitCount.objects.get_or_create(id=1)
         visit.total_visits += 1
         visit.save(update_fields=['total_visits'])
@@ -43,16 +43,17 @@ def about(request):
     return render(request, 'routes/about.html', {'team_members': team_members})
 
 def itinerary_list(request):
-    rating_filter = request.GET.get('rating')
+    query = request.GET.get('q')
     itineraries = Itinerary.objects.all()
 
-    if rating_filter:
-        itineraries = itineraries.filter(rating__gte=int(rating_filter))
+    if query:
+        itineraries = itineraries.filter(title__icontains=query)
 
-    context = {
+    return render(request, 'routes/itinerary_list.html', {
         'itineraries': itineraries,
-        'selected_rating': rating_filter or '',
-    }
+        'query': query
+    })
+    
     return render(request, 'routes/itinerary_list.html', context)
 
 def itinerary_search(request):
@@ -86,4 +87,4 @@ def add_comment(request, itinerary_id):
     else:
         messages.error(request, "Le commentaire ne peut pas être vide.")
     
-    return redirect('itinerary_detail', itinerary_id=itinerary_id
+    return redirect ('itinerary_detail', itinerary_id=itinerary_id)
