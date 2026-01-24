@@ -5,11 +5,12 @@ from places.models import Place
 from hotels.models import Hotel
 
 @login_required
-def itinerary_create(request):
+def itinerary_list(request):
     if request.method == "POST":
         title = request.POST.get('title')
         itinerary = CustomItinerary.objects.create(user=request.user, title=title)
         return redirect('itinerary_detail', pk=itinerary.pk)
+def itinerary_create(request):
     return render(request, 'routes/itinerary_form.html')
 
 @login_required
@@ -47,6 +48,8 @@ def remove_stop(request, itinerary_id, stop_id):
         stop.delete()
     return redirect('itinerary_detail', pk=itinerary_id)
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 def itinerary_list(request):
     """
     Affiche la liste des itineraries publics
@@ -65,3 +68,13 @@ def itinerary_list(request):
         context['personal_itineraries'] = personal_itineraries
     
     return render(request, 'routes/itinerary_list.html', context)
+=======
+    # routes/views.py
+from django.shortcuts import render
+
+>>>>>>> Stashed changes
+=======
+    # routes/views.py
+from django.shortcuts import render
+
+>>>>>>> Stashed changes
