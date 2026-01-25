@@ -1,0 +1,14 @@
+<!-- templates/routes/itinerary_detail.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ itinerary.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ itinerary.name }}</h1>
+<p>{{ itinerary.description }}</p>
+<p><strong>Durée :</strong> {{ itinerary.duration_days }} jours</p>
+<p><strong>Difficulté :</strong> {{ itinerary.get_difficulty_display }}</p>
+<p><strong>Note :</strong> {{ itinerary.rating }} étoiles</p>
+
+<a href="/routes/my-itineraries/" class="btn btn-secondary">← Retour à la liste</a>
+{% endblock %}
