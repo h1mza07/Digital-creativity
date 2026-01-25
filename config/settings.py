@@ -1,4 +1,5 @@
 from pathlib import Path 
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -16,14 +17,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
-    #'routes',
-    #'cities',
     'worldcup2030',
     'cities.apps.CitiesConfig',
     'places.apps.PlacesConfig',
-    'hotels.apps.HotelsConfig',
     'routes.apps.RoutesConfig',
-
+    'hotels.apps.HotelsConfig',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +92,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

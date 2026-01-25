@@ -1,0 +1,16 @@
+<!-- templates/hotels/hotel_detail.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ hotel.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ hotel.name }}</h1>
+    <p>{{ hotel.description }}</p>
+    <p><strong>Ville :</strong> {{ hotel.city.name }}</p>
+    <p><strong>Note :</strong> {{ hotel.rating }} ⭐</p>
+    <p><strong>Prix :</strong> {{ hotel.price }} MAD/nuit</p>
+    
+    <a href="{% url 'hotel_list' %}" class="btn btn-secondary">← Retour à la liste</a>
+</div>
+{% endblock %}

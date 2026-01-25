@@ -10,7 +10,7 @@ class Itinerary(models.Model):
         ('medium', 'Moyen'),
         ('hard', 'Difficile'),
     ]
-    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200)
     description = models.TextField()
     duration_days = models.PositiveIntegerField(help_text="Durée en jours")
@@ -25,7 +25,7 @@ class Itinerary(models.Model):
     ) 
     views_count = models.IntegerField(default=0, verbose_name="Nombre de vues")
     
-    def __str__(self):
+def __str__(self):
         return f"{self.name} ({self.duration_days} jours)"
 
 
