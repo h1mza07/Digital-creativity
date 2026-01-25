@@ -1,22 +1,26 @@
 # routes/views.py
 from django.shortcuts import render, get_object_or_404
-from .models import Itinerary
+from .models import ItineraryStop, Itinerary
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 def itinerary_list(request):
-    """
-    Affiche la liste des itineraries publics et personnels
-    """
-    # Itineraries publics
-    public_itineraries = Itinerary.objects.all()
+    public_itineraries = Itinerary.objects.filter(user__isnull=True)  # Itinéraires publics
     
-    context = {
+    if request.user.is_authenticated:
+        personal_itineraries = Itinerary.objects.filter(user=request.user)  # Itinéraires personnels
+    else:
+        personal_itineraries = []
+    
+    return render(request, 'routes/itinerary_list.html', {
         'public_itineraries': public_itineraries,
-        'title': 'Itinéraires'
-    }
+        'personal_itineraries': personal_itineraries,
+        'title': 'Mes itinéraires'
+    })
     
     # Itineraires personnels (si connecté)
     if request.user.is_authenticated:
-        personal_itineraries = CustomItinerary.objects.filter(user=request.user)
+        personal_itineraries = Itinerary.objects.filter(user=request.user)
         context['personal_itineraries'] = personal_itineraries
     
     return render(request, 'routes/itinerary_list.html', context)
@@ -28,16 +32,19 @@ def itinerary_create(request):
     """
     if request.method == "POST":
         title = request.POST.get('title')
-        itinerary = CustomItinerary.objects.create(user=request.user, title=title)
+        itinerary = Itinerary.objects.create(
+            user=request.user, 
+            title=title, 
+            name=name, 
+            description=description,)
         return redirect('itinerary_detail', pk=itinerary.pk)
-    return render(request, 'routes/itinerary_form.html')
 
-@login_required
+
 def itinerary_detail(request, pk):
     """
     Affiche le détail d'un itinéraire personnalisé
     """
-    itinerary = get_object_or_404(CustomItinerary, pk=pk, user=request.user)
+    itinerary = get_object_or_404(Itinerary, pk=pk, user=request.user)
     places = Place.objects.all()
     hotels = Hotel.objects.all()
     return render(request, 'routes/itinerary_detail.html', {
@@ -51,7 +58,7 @@ def add_stop(request, pk):
     """
     Ajoute une étape (lieu ou hôtel) à un itinéraire
     """
-    itinerary = get_object_or_404(CustomItinerary, pk=pk, user=request.user)
+    itinerary = get_object_or_404(Itinerary, pk=pk, user=request.user)
     if request.method == "POST":
         place_id = request.POST.get('place')
         hotel_id = request.POST.get('hotel')

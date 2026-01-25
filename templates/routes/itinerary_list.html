@@ -30,3 +30,18 @@
 
 <a href="/" class="btn btn-secondary mt-3">← Retour à l'accueil</a>
 {% endblock %}
+{% if personal_itineraries %}
+    <h2>Mes itinéraires</h2>
+    <div class="row">
+    {% for itinerary in personal_itineraries %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ itinerary.name }} (Personnel)</h5>
+                    <a href="{% url 'itinerary_detail' pk=itinerary.pk %}" class="btn btn-sm btn-primary">Voir</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endif %}
