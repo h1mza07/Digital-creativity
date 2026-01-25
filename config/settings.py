@@ -16,14 +16,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
-    #'routes',
-    #'cities',
     'worldcup2030',
     'cities.apps.CitiesConfig',
     'places.apps.PlacesConfig',
-    'hotels.apps.HotelsConfig',
     'routes.apps.RoutesConfig',
-
+    'hotels.apps.HotelsConfig',
 ]
 
 MIDDLEWARE = [

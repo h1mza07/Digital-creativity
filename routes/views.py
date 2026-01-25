@@ -1,10 +1,7 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import CustomItinerary, ItineraryStop, Itinerary
-from places.models import Place
-from hotels.models import Hotel
+# routes/views.py
+from django.shortcuts import render, get_object_or_404
+from .models import Itinerary
 
-@login_required
 def itinerary_list(request):
     """
     Affiche la liste des itineraries publics et personnels
@@ -78,3 +75,20 @@ def remove_stop(request, itinerary_id, stop_id):
     if stop.itinerary.user == request.user:
         stop.delete()
     return redirect('itinerary_detail', pk=itinerary_id)
+    public_itineraries = Itinerary.objects.all()
+    return render(request, 'routes/itinerary_list.html', {
+        'public_itineraries': public_itineraries,
+        'title': 'Liste des itinéraires'
+    })
+
+def itinerary_detail(request, pk):
+    itinerary = get_object_or_404(Itinerary, pk=pk)
+    return render(request, 'routes/itinerary_detail.html', {
+        'itinerary': itinerary
+    })
+
+def itinerary_create(request):
+    # on redirige vers la liste
+    from django.shortcuts import redirect
+    return redirect('itinerary_list')
+

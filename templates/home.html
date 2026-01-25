@@ -287,7 +287,6 @@
                 MAROC TOURISME 2030
                 <span class="badge bg-danger ms-2">⚽ CM 2030</span>
             </a>
-            
             <div class="navbar-nav ms-auto">
                 <a class="nav-link nav-link-custom active" href="/">
                     <i class="fas fa-home me-2"></i>Accueil
@@ -304,6 +303,20 @@
                 <a class="nav-link nav-link-custom" href="#">
                     <i class="fas fa-hotel me-2"></i>Hôtels
                 </a>
+            <div class="navbar-nav me-auto">
+                <a class="nav-link" href="/">Accueil</a>
+                <a class="nav-link" href="/cities/">Villes</a>
+                <a class="nav-link" href="/worldcup2030/">Coupe du Monde</a>
+                <a class="nav-link" href="/routes/my-itineraries/">Itinéraires</a> 
+            </div>
+
+            <form class="d-flex search-form" method="get" action="#">
+                <input class="form-control me-2" type="text" name="q" placeholder="Rechercher..." required>
+                <button class="btn btn-outline-success" type="submit">🔍</button>
+            </form>
+            
+            <div class="navbar-nav">
+                <a class="nav-link" href="#">Mon Profil</a>
             </div>
         </div>
     </nav>
@@ -350,6 +363,47 @@
                     <div class="card-body p-4">
                         <div class="card-icon">
                             <i class="fas fa-city"></i>
+        
+                <div class="row mt-5">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-city text-primary"></i> Villes Marocaines
+                                </h5>
+                                <p class="card-text">
+                                    Explorez les villes marocaines et leurs attractions touristiques.
+                                </p>
+                                <a href="/cities/" class="btn btn-outline-primary">Découvrir</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-futbol text-success"></i> Coupe du Monde 2030
+                                </h5>
+                                <p class="card-text">
+                                    Informations sur les villes hôtes et les stades du Mondial 2030.
+                                </p>
+                                <a href="/worldcup2030/" class="btn btn-outline-success">Explorer</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-route text-info"></i> Itinéraires
+                                </h5>
+                                <p class="card-text">
+                                    Parcours recommandés pour découvrir le Maroc.
+                                </p>
+                                <a href="/routes/my-itineraries/" class="btn btn-outline-info">Voir itinéraires</a> 
+                            </div>
                         </div>
                         <h3 class="card-title-custom mb-3">
                             Villes Marocaines

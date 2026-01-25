@@ -12,6 +12,7 @@ urlpatterns = [
     path('cities/', include('cities.urls')),
     path('test-villes/', TemplateView.as_view(template_name='cities/list.html'), name='test_villes'),
     path('users/', include('users.urls')),
+    path('hotels/', include('hotels.urls')),
 ]
 
 if settings.DEBUG:
