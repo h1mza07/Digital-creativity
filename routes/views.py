@@ -1,9 +1,10 @@
-# routes/views.py
-from django.shortcuts import render, get_object_or_404
-from .models import ItineraryStop, Itinerary
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from .models import CustomItinerary, ItineraryStop, Itinerary
+from places.models import Place
+from hotels.models import Hotel
 
+@login_required
 def itinerary_list(request):
     public_itineraries = Itinerary.objects.filter(user__isnull=True)  # Itinéraires publics
     

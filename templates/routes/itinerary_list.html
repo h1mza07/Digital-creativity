@@ -7,6 +7,7 @@
 <h1>🌍 Liste des itinéraires</h1>
 
 {% if public_itineraries %}
+    <h2>Itinéraires publics</h2>
     <div class="row">
     {% for itinerary in public_itineraries %}
         <div class="col-md-4 mb-4">
@@ -24,24 +25,27 @@
     </div>
 {% else %}
     <div class="alert alert-info">
-        Aucun itinéraire trouvé. Créez-en un dans l'administration.
+        Aucun itinéraire public trouvé.
     </div>
 {% endif %}
 
-<a href="/" class="btn btn-secondary mt-3">← Retour à l'accueil</a>
-{% endblock %}
 {% if personal_itineraries %}
-    <h2>Mes itinéraires</h2>
+    <h2 class="mt-5">Mes itinéraires</h2>
     <div class="row">
     {% for itinerary in personal_itineraries %}
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card border-success">
                 <div class="card-body">
-                    <h5 class="card-title">{{ itinerary.name }} (Personnel)</h5>
-                    <a href="{% url 'itinerary_detail' pk=itinerary.pk %}" class="btn btn-sm btn-primary">Voir</a>
+                    <h5 class="card-title text-success">{{ itinerary.name }} <small>(Personnel)</small></h5>
+                    <p class="card-text">{{ itinerary.description|truncatewords:15 }}</p>
+                    <a href="{% url 'itinerary_detail' pk=itinerary.pk %}" class="btn btn-success">Voir</a>
                 </div>
             </div>
         </div>
     {% endfor %}
     </div>
 {% endif %}
+
+<a href="/" class="btn btn-secondary mt-4">← Retour à l'accueil</a>
+
+{% endblock %}
