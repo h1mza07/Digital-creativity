@@ -7,8 +7,8 @@ def hotel_list(request):
     hotels = Hotel.objects.all()
     return render(request, 'hotels/hotel_list.html', {'hotels': hotels})
 
-def hotel_detail(request, hotel_id):
-    hotel = get_object_or_404(Hotel, id=hotel_id)
+def hotel_detail(request, pk):
+    hotel = get_object_or_404(Hotel, pk=pk)
     return render(request, 'hotels/hotel_detail.html', {'hotel': hotel})
 
 def hotel_list_by_city(request, city_id):
