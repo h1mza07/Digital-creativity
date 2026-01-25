@@ -17,17 +17,17 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
-
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(
+            request,
+            username=request.POST['username'],
+            password=request.POST['password']
+        )
         if user:
             login(request, user)
             return redirect('profile')
     return render(request, 'users/login.html')
-
 
 @login_required
 def profile(request):
@@ -46,14 +46,16 @@ def profile(request):
         'favorites': favorites
     })
 
-
 @login_required
 def add_favorite(request, place_name):
     Favorite.objects.create(user=request.user, place_name=place_name)
     return redirect('profile')
 
-
 @login_required
 def remove_favorite(request, fav_id):
     Favorite.objects.filter(id=fav_id, user=request.user).delete()
     return redirect('profile')
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')   # redirection vers la page d'accueil

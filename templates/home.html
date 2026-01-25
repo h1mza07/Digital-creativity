@@ -279,7 +279,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navigation - Version fusionnée -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
             <a class="navbar-brand navbar-brand-custom" href="/">
@@ -287,6 +287,7 @@
                 MAROC TOURISME 2030
                 <span class="badge bg-danger ms-2">⚽ CM 2030</span>
             </a>
+
             <div class="navbar-nav ms-auto">
                 <a class="nav-link nav-link-custom active" href="/">
                     <i class="fas fa-home me-2"></i>Accueil
@@ -303,11 +304,31 @@
                 <a class="nav-link nav-link-custom" href="/hotels/">
                     <i class="fas fa-hotel me-2"></i>Hôtels
                 </a>
+
+                <!-- Partie ajoutée par les autres - liens de connexion -->
+                {% if user.is_authenticated %}
+                    <a class="nav-link nav-link-custom" href="{% url 'profile' %}">
+                        <i class="fas fa-user me-2"></i>Profil
+                    </a>
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link nav-link-custom btn btn-link p-0">
+                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                        </button>
+                    </form>
+                {% else %}
+                    <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                    </a>
+                    <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                        <i class="fas fa-user-plus me-2"></i>Inscription
+                    </a>
+                {% endif %}
             </div>
         </div>
     </nav>
 
-    <!-- Hero Banner -->
+    <!-- Le reste de votre page corrigée (identique à votre version) -->
     <div class="hero-banner">
         <div class="container">
             <h1 class="hero-title">
@@ -470,7 +491,7 @@
                 <p class="lead">
                     Ce site a été développé dans le cadre du module <strong>Développement Web avec Django</strong>.
                 </p>
-                <p>
+                <p">
                     Il présente les attractions touristiques du Maroc en prévision de la Coupe du Monde 2030,
                     combinant technologie moderne et richesses culturelles marocaines.
                 </p>

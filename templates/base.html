@@ -1,30 +1,105 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Maroc Tourisme 2030{% endblock %}</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #f8f9fa;
+        }
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-top: 90px;
+        }
+        .card, .container {
+            background-color: var(--card-bg);
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            border: none;
+            background: none;
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">Maroc Tourisme <span class="badge bg-success">CM 2030</span></a>
-            <div class="navbar-nav">
-                <a class="nav-link" href="/">Accueil</a>
-                <a class="nav-link" href="/routes/my-itineraries/">Itinéraires</a>
-            </div>
+
+<button class="theme-toggle" id="themeToggle">🌙</button>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container d-flex justify-content-between">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-flag"></i> Maroc Tourisme <span class="badge bg-success">CM 2030</span>
+        </a>
+
+        <div class="d-flex gap-2 align-items-center">
+            <a href="/" class="btn btn-outline-secondary">Accueil</a>
+
+            {% if user.is_authenticated %}
+
+                {% if request.path != '/users/profile/' %}
+                    <a href="{% url 'profile' %}" class="btn btn-outline-primary">Profil</a>
+                {% endif %}
+
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </button>
+                </form>
+
+            {% else %}
+
+                {% if request.path != '/users/login/' %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-success">Connexion</a>
+                {% endif %}
+
+                {% if request.path != '/users/register/' %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-info">Inscription</a>
+                {% endif %}
+
+            {% endif %}
         </div>
-    </nav>
-
-    <div class="container mt-4">
-        {% block content %}
-        <!-- Contenu spécifique de chaque page -->
-        {% endblock %}
     </div>
+</nav>
 
-    <footer class="text-center py-3 mt-5 bg-light">
-        <p>© 2026 - Projet Tourisme Maroc 2030</p>
-    </footer>
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    if (currentTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        toggleButton.textContent = '☀️';
+    }
+
+    toggleButton.addEventListener('click', () => {
+        const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        toggleButton.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+});
+</script>
+
 </body>
 </html>
