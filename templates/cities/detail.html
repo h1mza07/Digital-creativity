@@ -1,98 +1,518 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Détail Ville - Maroc Tourisme 2030{% endblock %}
+{% block title %}{{ city.name }} - Maroc Tourisme 2030 ⚽{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --maroc-red: #C1272D;
+        --maroc-green: #006233;
+        --maroc-gold: #D4AF37;
+        --maroc-blue: #1E3A8A;
+    }
+    
+    .city-detail-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                    url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0 80px;
+        margin-bottom: 50px;
+        border-radius: 0 0 40px 40px;
+        position: relative;
+    }
+    
+    .city-detail-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -50px;
+        left: -10%;
+        width: 120%;
+        height: 100px;
+        background: white;
+        transform: rotate(-3deg);
+    }
+    
+    .city-main-image {
+        height: 400px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        margin-bottom: 30px;
+    }
+    
+    .city-main-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .city-stats-card {
+        background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 15px 35px rgba(0, 98, 51, 0.3);
+        margin-bottom: 30px;
+    }
+    
+    .stat-item-large {
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .stat-number-large {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--maroc-gold);
+        margin-bottom: 10px;
+    }
+    
+    .attraction-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        margin-bottom: 25px;
+    }
+    
+    .attraction-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    
+    .attraction-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .attraction-content {
+        padding: 20px;
+    }
+    
+    .info-badge {
+        background: var(--maroc-gold);
+        color: #333;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+    
+    .map-container {
+        height: 400px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    .btn-maroc {
+        background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        border: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-maroc:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+        color: white;
+    }
+    
+    .btn-outline-maroc {
+        border: 2px solid var(--maroc-green);
+        color: var(--maroc-green);
+        background: transparent;
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-maroc:hover {
+        background: var(--maroc-green);
+        color: white;
+    }
+    
+    .worldcup-highlight {
+        background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin: 30px 0;
+        box-shadow: 0 10px 30px rgba(193, 39, 45, 0.3);
+    }
+    
+    .accordion-custom .accordion-button {
+        background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+        color: white;
+        font-weight: 600;
+        border: none;
+    }
+    
+    .accordion-custom .accordion-button:not(.collapsed) {
+        background: linear-gradient(45deg, var(--maroc-blue), var(--maroc-green));
+        color: white;
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+        margin: 30px 0;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(to bottom, var(--maroc-green), var(--maroc-blue));
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 25px;
+        padding-left: 20px;
+    }
+    
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -30px;
+        top: 5px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: var(--maroc-green);
+        border: 3px solid white;
+        box-shadow: 0 0 0 3px var(--maroc-green);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- En-tête avec nom de la ville -->
-    <div class="row mt-4">
-        <div class="col-md-8">
-            <h1 class="display-4">🏙️ <span id="city-name">Nom de la Ville</span></h1>
-            <p class="lead" id="city-description">Description de la ville...</p>
-        </div>
-        <div class="col-md-4 text-end">
-            <a href="{% url 'city_list' %}" class="btn btn-outline-secondary">
-                ← Retour à la liste
-            </a>
+    <!-- Hero Section -->
+    <div class="city-detail-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-transparent p-0">
+                            <li class="breadcrumb-item"><a href="/" class="text-white">Accueil</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'city_list' %}" class="text-white">Villes</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">{{ city.name }}</li>
+                        </ol>
+                    </nav>
+                    
+                    <h1 class="display-2 fw-bold mb-3">{{ city.name }}</h1>
+                    
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <span class="info-badge">
+                            {% if city.host_city %}🏟️ Ville hôte CM2030{% else %}🏙️ Ville marocaine{% endif %}
+                        </span>
+                        {% if city.unesco_heritage %}
+                        <span class="info-badge" style="background: var(--maroc-blue); color: white;">
+                            🏛️ Patrimoine UNESCO
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="lead fs-4">{{ city.description|truncatechars:250 }}</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="city-main-image">
+                        <img src="{% if city.image %}{{ city.image.url }}{% else %}https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80{% endif %}" 
+                             alt="{{ city.name }}" 
+                             class="img-fluid">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <hr>
-
-    <div class="row">
-        <!-- Image et informations -->
-        <div class="col-md-6">
-            <img src="https://via.placeholder.com/600x400/006233/ffffff?text=Image+Ville" 
-                 class="img-fluid rounded" 
-                 alt="Image de la ville" 
-                 id="city-image">
-            
-            <div class="mt-4">
-                <h4>📌 Informations</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <strong>Région :</strong> <span id="city-region">Non spécifié</span>
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Population :</strong> <span id="city-population">Non spécifié</span>
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Spécialités :</strong> <span id="city-specialties">Non spécifié</span>
-                    </li>
-                </ul>
+    <div class="container">
+        <!-- Statistiques principales -->
+        <div class="city-stats-card">
+            <div class="row text-center">
+                <div class="col-md-3 col-6">
+                    <div class="stat-item-large">
+                        <div class="stat-number-large">
+                            {% if city.population %}
+                                {{ city.population|floatformat:0 }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <div>Habitants</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item-large">
+                        <div class="stat-number-large">
+                            {% if city.area %}
+                                {{ city.area }} km²
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <div>Superficie</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item-large">
+                        <div class="stat-number-large">
+                            {% if city.founded_year %}
+                                {{ city.founded_year }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <div>Année de fondation</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item-large">
+                        <div class="stat-number-large">
+                            {% if city.altitude %}
+                                {{ city.altitude }}m
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <div>Altitude</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Lieux touristiques -->
-        <div class="col-md-6">
-            <h4 class="mb-3">📍 Lieux Touristiques</h4>
+        <!-- Description complète et informations -->
+        <div class="row mt-5">
+            <div class="col-lg-8">
+                <h2 class="mb-4" style="color: var(--maroc-green);">
+                    <i class="fas fa-landmark me-3"></i>À propos de {{ city.name }}
+                </h2>
+                <div class="lead mb-4">
+                    {{ city.description|linebreaks }}
+                </div>
+                
+                <!-- Section Coupe du Monde (si ville hôte) -->
+                {% if city.host_city %}
+                <div class="worldcup-highlight">
+                    <h3 class="mb-3"><i class="fas fa-trophy me-2"></i>Coupe du Monde 2030</h3>
+                    <p class="mb-0">
+                        {{ city.name }} sera l'une des villes hôtes de la Coupe du Monde 2030 ! 
+                        La ville accueillera des matchs dans son stade moderne et offrira une 
+                        expérience unique aux visiteurs du monde entier.
+                    </p>
+                </div>
+                {% endif %}
+                
+                <!-- Attractions touristiques -->
+                <h3 class="mb-4 mt-5" style="color: var(--maroc-green);">
+                    <i class="fas fa-camera me-3"></i>Attractions touristiques
+                </h3>
+                <div class="row">
+                    {% for attraction in city.attractions|slice:":3" %}
+                    <div class="col-md-4">
+                        <div class="attraction-card">
+                            <div class="attraction-image" 
+                                 style="background-image: url('{% if attraction.image %}{{ attraction.image.url }}{% else %}https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80{% endif %}');">
+                            </div>
+                            <div class="attraction-content">
+                                <h5>{{ attraction.name }}</h5>
+                                <p class="text-muted small">{{ attraction.description|truncatechars:80 }}</p>
+                                <small class="text-muted">{{ attraction.category }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <!-- Attractions par défaut -->
+                    <div class="col-md-4">
+                        <div class="attraction-card">
+                            <div class="attraction-image" 
+                                 style="background-image: url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                            </div>
+                            <div class="attraction-content">
+                                <h5>Place Jemaa el-Fna</h5>
+                                <p class="text-muted small">Place emblématique au cœur de la médina.</p>
+                                <small class="text-muted">Patrimoine culturel</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="attraction-card">
+                            <div class="attraction-image" 
+                                 style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                            </div>
+                            <div class="attraction-content">
+                                <h5>Médina historique</h5>
+                                <p class="text-muted small">Découvrez les souks et l'artisanat local.</p>
+                                <small class="text-muted">Site historique</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="attraction-card">
+                            <div class="attraction-image" 
+                                 style="background-image: url('https://images.unsplash.com/photo-1564507004663-b6dfb3e2ede5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                            </div>
+                            <div class="attraction-content">
+                                <h5>Jardin Majorelle</h5>
+                                <p class="text-muted small">Jardin botanique et musée d'art islamique.</p>
+                                <small class="text-muted">Jardin botanique</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             
-            <div class="list-group">
-                <!-- Lieu 1 -->
-                <div class="list-group-item">
-                    <h5>Nom du Lieu 1</h5>
-                    <p>Description courte du lieu touristique.</p>
-                    <small class="text-muted">Catégorie : Monument</small>
+            <div class="col-lg-4">
+                <!-- Carte -->
+                <div class="map-container mb-4">
+                    <i class="fas fa-map-marked-alt fa-3x mb-3" style="color: var(--maroc-green);"></i>
+                    <h4>Carte de {{ city.name }}</h4>
+                    <p class="text-muted text-center px-3">
+                        Latitude: {{ city.latitude|default:"Non spécifié" }}<br>
+                        Longitude: {{ city.longitude|default:"Non spécifié" }}
+                    </p>
+                    <div class="alert alert-info mt-3">
+                        <small>
+                            <i class="fas fa-info-circle"></i> 
+                            Carte interactive à intégrer avec Leaflet/Google Maps
+                        </small>
+                    </div>
                 </div>
-
-                <!-- Lieu 2 -->
-                <div class="list-group-item">
-                    <h5>Nom du Lieu 2</h5>
-                    <p>Description courte du lieu touristique.</p>
-                    <small class="text-muted">Catégorie : Musée</small>
+                
+                <!-- Informations pratiques -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-gradient text-white" 
+                         style="background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));">
+                        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Informations pratiques</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong><i class="fas fa-language me-2"></i>Langue :</strong><br>
+                            Arabe (officielle), Français, Amazigh
+                        </div>
+                        <div class="mb-3">
+                            <strong><i class="fas fa-money-bill-wave me-2"></i>Monnaie :</strong><br>
+                            Dirham marocain (MAD)
+                        </div>
+                        <div class="mb-3">
+                            <strong><i class="fas fa-cloud-sun me-2"></i>Climat :</strong><br>
+                            {% if city.name == 'Marrakech' %}
+                            Méditerranéen, chaud et sec
+                            {% elif city.name == 'Casablanca' %}
+                            Océanique tempéré
+                            {% else %}
+                            Tempéré méditerranéen
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <strong><i class="fas fa-utensils me-2"></i>Spécialités :</strong><br>
+                            {% if city.name == 'Marrakech' %}
+                            Tajine, couscous, thé à la menthe
+                            {% elif city.name == 'Fès' %}
+                            Pastilla, harira, gâteaux marocains
+                            {% else %}
+                            Cuisine marocaine traditionnelle
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Lieu 3 -->
-                <div class="list-group-item">
-                    <h5>Nom du Lieu 3</h5>
-                    <p>Description courte du lieu touristique.</p>
-                    <small class="text-muted">Catégorie : Nature</small>
+                
+                <!-- Actions -->
+                <div class="d-grid gap-2">
+                    <a href="{% url 'city_list' %}" class="btn btn-outline-maroc">
+                        <i class="fas fa-arrow-left me-2"></i>Retour aux villes
+                    </a>
+                    <a href="/routes/" class="btn-maroc text-center">
+                        <i class="fas fa-route me-2"></i>Créer un itinéraire
+                    </a>
                 </div>
             </div>
-
-            <!-- Section pour les données dynamiques (à remplir par Django) -->
-            <div class="mt-4 p-3 bg-light rounded">
-                <h5>ℹ️ Notes techniques</h5>
-                <p>Cette page sera remplie dynamiquement par Django avec :</p>
-                <ul>
-                    <li><code>{{ city.name }}</code> - Nom de la ville</li>
-                    <li><code>{{ city.description }}</code> - Description</li>
-                    <li><code>{{ city.image.url }}</code> - Image</li>
-                    <li><code>{% for place in city.place_set.all %}</code> - Liste des lieux</li>
-                </ul>
-                <p class="mb-0">Template créé par <strong>Ibtissam Ainzura</strong> - Membre 2</p>
-            </div>
+        </div>
+        
+        <!-- Note de bas de page -->
+        <div class="text-center mt-5 pt-5 border-top">
+            <p class="text-muted">
+                Page créée par <strong>Ibtissam Ainzura</strong> - Membre 2<br>
+                <small>Données dynamiques via Django - Modèle City</small>
+            </p>
         </div>
     </div>
-</div>
+{% endblock %}
 
-<!-- JavaScript simple pour démontrer l'interactivité -->
+{% block extra_js %}
 <script>
-// Exemple d'interactivité - à remplacer par Django plus tard
-document.addEventListener('DOMContentLoaded', function() {
-    // Simuler le chargement de données
-    console.log('Page détail ville chargée - prête pour Django');
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page détail ville {{ city.name }} chargée!');
+        
+        // Animation des cartes d'attractions
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        document.querySelectorAll('.attraction-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+        
+        // Animation des statistiques
+        const statNumbers = document.querySelectorAll('.stat-number-large');
+        statNumbers.forEach(stat => {
+            if (stat.textContent !== '-') {
+                const finalValue = parseFloat(stat.textContent.replace(/[^0-9.-]+/g, ""));
+                if (!isNaN(finalValue)) {
+                    let startValue = 0;
+                    const duration = 2000;
+                    const increment = finalValue / (duration / 16);
+                    
+                    const timer = setInterval(() => {
+                        startValue += increment;
+                        if (startValue >= finalValue) {
+                            stat.textContent = stat.textContent.includes('km²') ? 
+                                finalValue.toFixed(0) + ' km²' : 
+                                stat.textContent.includes('m') ?
+                                finalValue.toFixed(0) + 'm' :
+                                finalValue.toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(startValue).toLocaleString();
+                        }
+                    }, 16);
+                }
+            }
+        });
+    });
 </script>
 {% endblock %}

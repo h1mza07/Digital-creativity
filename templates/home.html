@@ -3,131 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil - Maroc Tourisme 2030</title>
+    <title>Accueil - Maroc Tourisme 2030 ⚽</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        body { padding-top: 70px; }
-        .navbar-brand { font-weight: bold; color: #006233; }
-        .worldcup-badge { background-color: #006233; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; }
-        .search-form { margin-left: auto; }
-        .footer { background-color: #f8f9fa; border-top: 1px solid #dee2e6; margin-top: 50px; padding: 20px 0; }
+        :root {
+            --maroc-red: #C1272D;
+            --maroc-green: #006233;
+            --maroc-gold: #D4AF37;
+            --maroc-blue: #1E3A8A;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 50px;
+            border-radius: 0 0 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -10%;
+            width: 120%;
+            height: 100px;
+            background: white;
+            transform: rotate(-3deg);
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(0, 98, 51, 0.4);
+            border: 2px solid var(--maroc-gold);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Navigation améliorée */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            border-bottom: 3px solid var(--maroc-green);
+        }
+        
+        .navbar-brand-custom {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--maroc-green) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 10px 20px !important;
+            margin: 0 5px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        /* Cartes améliorées */
+        .feature-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 98, 51, 0.3);
+        }
+        
+        .card-title-custom {
+            color: var(--maroc-green);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        /* Boutons */
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
+        /* Statistiques */
+        .stats-section {
+            background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
+            color: white;
+            padding: 60px 0;
+            margin: 50px 0;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '⚽';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+            margin-bottom: 10px;
+        }
+        
+        /* Footer */
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+        }
+        
+        .flag-animation {
+            display: inline-block;
+            animation: wave 3s infinite;
+            font-size: 2rem;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+        
+        /* Images de fond pour les cartes */
+        .card-bg-cities {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+        }
+        
+        .card-bg-worldcup {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+        }
+        
+        .card-bg-routes {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-banner {
+                padding: 60px 0;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-flag"></i> Maroc Tourisme
-                <span class="worldcup-badge">CM 2030</span>
+            <a class="navbar-brand navbar-brand-custom" href="/">
+                <span class="flag-animation">🇲🇦</span>
+                MAROC TOURISME 2030
+                <span class="badge bg-danger ms-2">⚽ CM 2030</span>
             </a>
             
-            <div class="navbar-nav me-auto">
-                <a class="nav-link" href="/">Accueil</a>
-                <a class="nav-link" href="/cities/">Villes</a>
-                <a class="nav-link" href="/worldcup2030/">Coupe du Monde</a>
-                <a class="nav-link" href="/routes/">Itinéraires</a>
-            </div>
-
-            <form class="d-flex search-form" method="get" action="#">
-                <input class="form-control me-2" type="text" name="q" placeholder="Rechercher..." required>
-                <button class="btn btn-outline-success" type="submit">🔍</button>
-            </form>
-            
-            <div class="navbar-nav">
-                <a class="nav-link" href="#">Mon Profil</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link nav-link-custom active" href="/">
+                    <i class="fas fa-home me-2"></i>Accueil
+                </a>
+                <a class="nav-link nav-link-custom" href="/cities/">
+                    <i class="fas fa-city me-2"></i>Villes
+                </a>
+                <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                    <i class="fas fa-trophy me-2"></i>Coupe du Monde
+                </a>
+                <a class="nav-link nav-link-custom" href="/routes/">
+                    <i class="fas fa-route me-2"></i>Itinéraires
+                </a>
+                <a class="nav-link nav-link-custom" href="#">
+                    <i class="fas fa-hotel me-2"></i>Hôtels
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-8">
-                <h1 class="mb-4">Bienvenue au Maroc pour la Coupe du Monde 2030</h1>
-                
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+        <div class="container">
+            <h1 class="hero-title">
+                MAROC 2030
+            </h1>
+            <p class="hero-subtitle">
+                Bienvenue dans la destination phare de la Coupe du Monde 2030
+            </p>
+            <span class="hero-badge">
+                🇲🇦 • 🇪🇸 • 🇵🇹 Coupe du Monde Tripartite
+            </span>
+            <p class="mt-4">
+                Découvrez la richesse culturelle, historique et touristique du Maroc<br>
+                à l'occasion du plus grand événement sportif mondial
+            </p>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4" style="color: var(--maroc-green);">
+                    Explorez le Maroc comme jamais auparavant
+                </h2>
                 <p class="lead">
-                    Découvrez la richesse culturelle, historique et touristique du Maroc à l'occasion de la Coupe du Monde de Football 2030.
+                    En 2030, le Maroc accueille avec fierté la Coupe du Monde de la FIFA. 
+                    Une occasion unique de découvrir notre patrimoine, nos villes vibrantes 
+                    et notre hospitalité légendaire.
                 </p>
-                
-                <div class="row mt-5">
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-city text-primary"></i> Villes Marocaines
-                                </h5>
-                                <p class="card-text">
-                                    Explorez les villes marocaines et leurs attractions touristiques.
-                                </p>
-                                <a href="/cities/" class="btn btn-outline-primary">Découvrir</a>
-                            </div>
+            </div>
+        </div>
+
+        <!-- Cartes de fonctionnalités -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="card-bg-cities"></div>
+                    <div class="card-body p-4">
+                        <div class="card-icon">
+                            <i class="fas fa-city"></i>
                         </div>
-                    </div>
-                    
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-futbol text-success"></i> Coupe du Monde 2030
-                                </h5>
-                                <p class="card-text">
-                                    Informations sur les villes hôtes et les stades du Mondial 2030.
-                                </p>
-                                <a href="/worldcup2030/" class="btn btn-outline-success">Explorer</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-route text-info"></i> Itinéraires
-                                </h5>
-                                <p class="card-text">
-                                    Parcours recommandés pour découvrir le Maroc.
-                                </p>
-                                <a href="/routes/" class="btn btn-outline-info">Voir itinéraires</a>
-                            </div>
-                        </div>
+                        <h3 class="card-title-custom mb-3">
+                            Villes Marocaines
+                        </h3>
+                        <p class="text-muted mb-4">
+                            Explorez les 8 villes hôtes marocaines avec leurs attractions 
+                            touristiques uniques, des médinas historiques aux stations balnéaires modernes.
+                        </p>
+                        <a href="/cities/" class="btn btn-maroc w-100">
+                            <i class="fas fa-map-marked-alt me-2"></i>Découvrir les Villes
+                        </a>
                     </div>
                 </div>
             </div>
             
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">À propos du projet</h5>
-                    </div>
-                    <div class="card-body">
-                        <p>Site développé dans le cadre du module Développement Web avec Django.</p>
-                        <p>Présente les attractions touristiques du Maroc pour la Coupe du Monde 2030.</p>
+                <div class="feature-card">
+                    <div class="card-bg-worldcup"></div>
+                    <div class="card-body p-4">
+                        <div class="card-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3 class="card-title-custom mb-3">
+                            Coupe du Monde 2030
+                        </h3>
+                        <p class="text-muted mb-4">
+                            Tout sur le Mondial 2030 : stades, villes hôtes, programme des matchs, 
+                            et comment vivre cette expérience unique au Maroc.
+                        </p>
+                        <a href="/worldcup2030/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));">
+                            <i class="fas fa-futbol me-2"></i>Explorer le Mondial
+                        </a>
                     </div>
                 </div>
-                
-                <div class="card mt-4">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">Statistiques</h5>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="card-bg-routes"></div>
+                    <div class="card-body p-4">
+                        <div class="card-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3 class="card-title-custom mb-3">
+                            Itinéraires Touristiques
+                        </h3>
+                        <p class="text-muted mb-4">
+                            Parcours recommandés pour découvrir le Maroc entre deux matchs. 
+                            Des circuits personnalisables selon vos intérêts et durée de séjour.
+                        </p>
+                        <a href="/routes/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, var(--maroc-blue), #6f42c1);">
+                            <i class="fas fa-compass me-2"></i>Voir les Itinéraires
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <p><i class="fas fa-city"></i> 8 villes marocaines</p>
-                        <p><i class="fas fa-map-marker-alt"></i> 5 stades de la CM 2030</p>
-                        <p><i class="fas fa-flag"></i> 3 villes hôtes au Maroc</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Statistiques -->
+        <div class="stats-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">8</div>
+                        <p>VILLES HÔTES<br>AU MAROC</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">5</div>
+                        <p>STADES DE<br>CLASSE MONDIALE</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">48</div>
+                        <p>ÉQUIPES<br>PARTICIPANTES</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">104</div>
+                        <p>MATCHS<br>EN 2030</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section À propos -->
+        <div class="row mt-5 align-items-center">
+            <div class="col-md-6">
+                <h2 class="mb-4" style="color: var(--maroc-green);">
+                    <i class="fas fa-info-circle me-3"></i>À propos du projet
+                </h2>
+                <p class="lead">
+                    Ce site a été développé dans le cadre du module <strong>Développement Web avec Django</strong>.
+                </p>
+                <p>
+                    Il présente les attractions touristiques du Maroc en prévision de la Coupe du Monde 2030,
+                    combinant technologie moderne et richesses culturelles marocaines.
+                </p>
+                <div class="mt-4">
+                    <button class="btn btn-maroc me-3">
+                        <i class="fas fa-code me-2"></i>Voir le code source
+                    </button>
+                    <button class="btn btn-outline-secondary">
+                        <i class="fas fa-users me-2"></i>Équipe de développement
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card feature-card">
+                    <div class="card-body p-4">
+                        <h4 class="card-title-custom mb-3">
+                            <i class="fas fa-cogs me-2"></i>Technologies utilisées
+                        </h4>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-primary p-3 w-100">Django 4.2</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-success p-3 w-100">Bootstrap 5</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-info p-3 w-100">PostgreSQL</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-warning p-3 w-100">JavaScript</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-danger p-3 w-100">Python</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-dark p-3 w-100">Git/GitHub</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="footer mt-5 py-3 bg-light">
-        <div class="container text-center">
-            <p class="mb-0">Projet Django - Développement Web</p>
-            <p class="text-muted">Maroc Tourisme 2030 - Coupe du Monde</p>
+    <!-- Footer -->
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3">
+                        🇲🇦 MAROC 2030
+                    </div>
+                    <p>
+                        Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Liens rapides</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
+                        <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
+                        <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Contact</h5>
+                    <p>
+                        <i class="fas fa-university me-2"></i>Université ENSA<br>
+                        <i class="fas fa-graduation-cap me-2"></i>Module : Digital creativity<br>
+                        <i class="fas fa-users me-2"></i>Équipe projet Django
+                    </p>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Projet académique - Tous droits réservés
+                </p>
+                <p class="text-muted mt-2">
+                    Made with <i class="fas fa-heart text-danger"></i> for the FIFA World Cup 2030
+                </p>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Animation pour les cartes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation au scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observer les cartes
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Animation du badge
+            const badge = document.querySelector('.hero-badge');
+            setInterval(() => {
+                badge.style.transform = badge.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+            }, 2000);
+            
+            console.log('Page d\'accueil Maroc 2030 chargée avec succès! ⚽');
+        });
+    </script>
 </body>
 </html>
