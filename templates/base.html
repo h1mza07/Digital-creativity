@@ -2,156 +2,96 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <style>
-        :root {
-      --bg-color: #ffffff;
-      --text-color: #333333;
-      --card-bg: #f8f9fa;
-}
-[data-theme="dark"] {
-      --bg-color: #121212;
-      --text-color: #e0e0e0;
-      --card-bg: #1e1e1e;
-}
-
-body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      transition: background-color 0.3s, color 0.3s;
-}
-
-  .card, .team-member, .container {
-    background-color: var(--card-bg);
-    transition: background-color 0.3s;
-}
-
-
-  .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      z-index: 1000;
-      color: var(--text-color);
-}
-    </style>
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Accueil - Maroc Tourisme 2030" %}</title>
+    <title>{% block title %}Maroc Tourisme 2030{% endblock %}</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #f8f9fa;
+        }
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-top: 90px;
+        }
+        .card, .container {
+            background-color: var(--card-bg);
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            border: none;
+            background: none;
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
 <body>
-     <button class="theme-toggle" id="themeToggle">🌙</button>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-flag"></i> {% trans "Maroc Tourisme" %}
-                <span class="badge bg-success">{% trans "CM 2030" %}</span>
-            </a>
-            <a href="/" class="btn btn-outline-secondary">{% trans "Retour à l'accueil" %}</a>
-        </div>
-    </nav>
 
-    <div class="container mt-5 pt-4">
-        <h1 class="mb-4">{% trans "Bienvenue au Maroc pour la Coupe du Monde 2030" %}</h1>
-        
-        <p class="lead">
-            {% trans "Découvrez la richesse culturelle, historique et touristique du Maroc à l'occasion de la Coupe du Monde de Football 2030." %}
-        </p>
-        
-        <div class="row mt-5">
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-city text-primary"></i> {% trans "Villes Marocaines" %}
-                        </h5>
-                        <p class="card-text">
-                            {% trans "Explorez les villes marocaines et leurs attractions touristiques." %}
-                        </p>
-                        <a href="/cities/" class="btn btn-outline-primary">{% trans "Découvrir" %}</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-futbol text-success"></i> {% trans "Coupe du Monde 2030" %}
-                        </h5>
-                        <p class="card-text">
-                            {% trans "Informations sur les villes hôtes et les stades du Mondial 2030." %}
-                        </p>
-                        <a href="/worldcup2030/" class="btn btn-outline-success">{% trans "Explorer" %}</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-route text-info"></i> {% trans "Itinéraires" %}
-                        </h5>
-                        <p class="card-text">
-                            {% trans "Parcours recommandés pour découvrir le Maroc." %}
-                        </p>
-                        <a href="/routes/" class="btn btn-outline-info">{% trans "Voir itinéraires" %}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">{% trans "À propos du projet" %}</h5>
-                </div>
-                <div class="card-body">
-                    <p>{% trans "Site développé dans le cadre du module Développement Web avec Django." %}</p>
-                    <p>{% trans "Présente les attractions touristiques du Maroc pour la Coupe du Monde 2030." %}</p>
-                </div>
-            </div>
-            
-            <div class="card mt-4">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">{% trans "Statistiques" %}</h5>
-                </div>
-                <div class="card-body">
-                    <p><i class="fas fa-city"></i> {% trans "8 villes marocaines" %}</p>
-                    <p><i class="fas fa-map-marker-alt"></i> {% trans "5 stades de la CM 2030" %}</p>
-                    <p><i class="fas fa-flag"></i> {% trans "3 villes hôtes au Maroc" %}</p>
-                </div>
-            </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container d-flex justify-content-between">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-flag"></i> Maroc Tourisme <span class="badge bg-success">CM 2030</span>
+        </a>
+
+        <div class="d-flex gap-2 align-items-center">
+            <a href="/" class="btn btn-outline-secondary">Accueil</a>
+
+            {% if user.is_authenticated %}
+
+                {% if request.path != '/users/profile/' %}
+                    <a href="{% url 'profile' %}" class="btn btn-outline-primary">Profil</a>
+                {% endif %}
+
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </button>
+                </form>
+
+            {% else %}
+
+                {% if request.path != '/users/login/' %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-success">Connexion</a>
+                {% endif %}
+
+                {% if request.path != '/users/register/' %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-info">Inscription</a>
+                {% endif %}
+
+            {% endif %}
         </div>
     </div>
+</nav>
 
-    <footer class="footer mt-5 py-3 bg-light">
-        <div class="container text-center">
-            <p class="mb-0">{% trans "Projet Django - Développement Web" %}</p>
-            <p class="text-muted">{% trans "Maroc Tourisme 2030 - Coupe du Monde" %}</p>
-        </div>
-    </footer>
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.getElementById('themeToggle');
     const currentTheme = localStorage.getItem('theme') || 'light';
-    
-    // Appliquer le thème sauvegardé
+
     if (currentTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
         toggleButton.textContent = '☀️';
     }
 
-    // Bascule au clic
     toggleButton.addEventListener('click', () => {
         const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
@@ -160,5 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+
 </body>
 </html>

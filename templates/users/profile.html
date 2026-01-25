@@ -1,12 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
 <h2>Mon Profil</h2>
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Mettre à jour la photo</button>
+    <button type="submit" class="btn btn-primary">Mettre à jour la photo</button>
 </form>
 
-<h3>Mes favoris</h3>
+<h3 class="mt-4">Mes favoris</h3>
 <ul>
     {% for fav in favorites %}
         <li>{{ fav.place_name }} 
@@ -16,3 +19,5 @@
         <li>Aucun favori</li>
     {% endfor %}
 </ul>
+{% endblock %}
+
