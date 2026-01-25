@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des itinéraires</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c3e50; }
+        form { margin-bottom: 20px; }
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #8e44ad; }
+        ul { list-style-type: none; padding: 0; }
+        li {
+            padding: 12px;
+            margin: 8px 0;
+            background-color: #f9f9f9;
+            border-left: 4px solid #9b59b6;
+        }
+        a {
+            color: #27ae60;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>🗺️ Liste des itinéraires</h1>
+
+    <!-- Formulaire de recherche -->
+    <form method="get">
+        <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Rechercher un itinéraire..." />
+        <button type="submit">🔍 Rechercher</button>
+    </form>
+
+    <!-- Résultats -->
+    {% if itineraries %}
+        <ul>
+            {% for itinerary in itineraries %}
+                <li>
+                    <strong>{{ itinerary.title }}</strong> — {{ itinerary.duration_days }} jours — {{ itinerary.difficulty }}
+                    <a href="{% url 'itinerary_detail' itinerary.id %}">Voir le détail →</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="color: #e74c3c;">Aucun itinéraire trouvé.</p>
+    {% endif %}
+
+    <!-- Lien vers la page d'accueil ou autre -->
+    <p><a href="/">← Retour à l'accueil</a></p>
+</body>
+</html>

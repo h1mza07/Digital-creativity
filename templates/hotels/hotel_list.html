@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des hôtels</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c3e50; }
+        form { margin-bottom: 20px; }
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #2980b9; }
+        ul { list-style-type: none; padding: 0; }
+        li {
+            padding: 12px;
+            margin: 8px 0;
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+        }
+        a {
+            color: #27ae60;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1> Liste des hôtels</h1>
+
+    <!-- Formulaire de recherche -->
+    <form method="get">
+        <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Rechercher un hôtel..." />
+        <button type="submit">🔍 Rechercher</button>
+    </form>
+
+    <!-- Résultats -->
+    {% if hotels %}
+        <ul>
+            {% for hotel in hotels %}
+                <li>
+                    <strong>{{ hotel.name }}</strong> — {{ hotel.city }} — {{ hotel.stars }}★ — {{ hotel.price_per_night }}€/nuit
+                    <a href="{% url 'hotel_detail' hotel.id %}">Voir le détail →</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="color: #e74c3c;">Aucun hôtel trouvé.</p>
+    {% endif %}
+
+    <!-- Lien vers la page d'accueil ou autre -->
+    <p><a href="/">← Retour à l'accueil</a></p>
+</body>
+</html>
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?q={{ query }}&page=1">« Première</a>
+        <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Précédent</a>
+    {% endif %}
+
+    <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">Suivant</a>
+        <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">Dernière »</a>
+    {% endif %}
+</div>

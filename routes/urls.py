@@ -2,24 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Page d'accueil
-    path('', views.home, name='home'),
 
-    # Liste des itinéraires
-    path('itineraries/', views.itinerary_list, name='itinerary_list'),
-
-    # Page "À propos"
-    path('about/', views.about, name='about'),
-
-    # Recherche d'itinéraires
-    path('search/', views.itinerary_search, name='itinerary_search'),
-
-    # Vue temporaire pour le profil
-    path('profile/', views.profile_view, name='profile'),
-
-    # Détail d'un itinéraire
-    path('itinerary/<int:itinerary_id>/', views.itinerary_detail, name='itinerary_detail'),
-
-    # Ajout d'un commentaire sur un itinéraire
-    path('itinerary/<int:itinerary_id>/comment/', views.add_comment, name='add_comment'),
+    path('my-itineraries/', views.itinerary_list, name='itinerary_list'), #hh
+    path('itinerary/create/', views.itinerary_create, name='itinerary_create'),
+    path('itinerary/<int:pk>/', views.itinerary_detail, name='itinerary_detail'),
+    path('itinerary/<int:pk>/add-stop/', views.add_stop, name='add_stop'),
+    path('itinerary/<int:itinerary_id>/remove-stop/<int:stop_id>/', views.remove_stop, name='remove_stop'), 
 ]
