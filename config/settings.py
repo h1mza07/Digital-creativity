@@ -6,7 +6,7 @@ SECRET_KEY = 'django-insecure-x20bp98c^5j$lkcaf-fypt*v^m2*x-9xhl4qu(88qjg5jt!s4u
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -15,17 +15,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'users.apps.UsersConfig',
     'routes',
     'cities',
     'worldcup2030',
-    #'places',
-    #'hotels',
-    
-    
     'hotels.apps.HotelsConfig',
+    'cities.apps.CitiesConfig',
     'places.apps.PlacesConfig',
+    'hotels.apps.HotelsConfig',
+    'routes.apps.RoutesConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
