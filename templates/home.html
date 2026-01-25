@@ -15,6 +15,7 @@
             --maroc-green: #006233;
             --maroc-gold: #D4AF37;
             --maroc-blue: #1E3A8A;
+            --map-green: #28a745;
         }
         
         * {
@@ -148,7 +149,6 @@
         .card-icon {
             width: 70px;
             height: 70px;
-            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -237,10 +237,26 @@
             75% { transform: rotate(-10deg); }
         }
         
-        /* Images de fond pour les cartes */
+        /* Images de fond pour les cartes avec photos du Maroc */
         .card-bg-cities {
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
                         url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+        }
+        
+        .card-bg-places {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1590080667306-eb444a5c5c8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+        }
+        
+        .card-bg-maps {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1539020140153-e479b8c22e70?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             height: 200px;
@@ -275,11 +291,21 @@
             .stat-number {
                 font-size: 2.5rem;
             }
+            
+            .col-md-3 {
+                width: 50%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .col-md-3 {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation - Version fusionnée -->
+    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
             <a class="navbar-brand navbar-brand-custom" href="/">
@@ -287,13 +313,19 @@
                 MAROC TOURISME 2030
                 <span class="badge bg-danger ms-2">⚽ CM 2030</span>
             </a>
-
+            
             <div class="navbar-nav ms-auto">
                 <a class="nav-link nav-link-custom active" href="/">
                     <i class="fas fa-home me-2"></i>Accueil
                 </a>
                 <a class="nav-link nav-link-custom" href="/cities/">
                     <i class="fas fa-city me-2"></i>Villes
+                </a>
+                <a class="nav-link nav-link-custom" href="/places/">
+                    <i class="fas fa-landmark me-2"></i>Lieux Touristiques
+                </a>
+                <a class="nav-link nav-link-custom" href="/places/map/">
+                    <i class="fas fa-map-marked-alt me-2"></i>Cartographie
                 </a>
                 <a class="nav-link nav-link-custom" href="/worldcup2030/">
                     <i class="fas fa-trophy me-2"></i>Coupe du Monde
@@ -305,14 +337,13 @@
                     <i class="fas fa-hotel me-2"></i>Hôtels
                 </a>
 
-                <!-- Partie ajoutée par les autres - liens de connexion -->
                 {% if user.is_authenticated %}
                     <a class="nav-link nav-link-custom" href="{% url 'profile' %}">
                         <i class="fas fa-user me-2"></i>Profil
                     </a>
                     <form method="post" action="{% url 'logout' %}" class="d-inline">
                         {% csrf_token %}
-                        <button type="submit" class="nav-link nav-link-custom btn btn-link p-0">
+                        <button type="submit" class="nav-link nav-link-custom btn btn-link p-0 border-0">
                             <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
                         </button>
                     </form>
@@ -328,7 +359,7 @@
         </div>
     </nav>
 
-    <!-- Le reste de votre page corrigée (identique à votre version) -->
+    <!-- Hero Banner -->
     <div class="hero-banner">
         <div class="container">
             <h1 class="hero-title">
@@ -364,11 +395,12 @@
 
         <!-- Cartes de fonctionnalités -->
         <div class="row g-4 mb-5">
-            <div class="col-md-4">
+            <!-- Villes -->
+            <div class="col-md-3">
                 <div class="feature-card">
                     <div class="card-bg-cities"></div>
                     <div class="card-body p-4">
-                        <div class="card-icon">
+                        <div class="card-icon" style="background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));">
                             <i class="fas fa-city"></i>
                         </div>
                         <h3 class="card-title-custom mb-3">
@@ -376,52 +408,191 @@
                         </h3>
                         <p class="text-muted mb-4">
                             Explorez les 8 villes hôtes marocaines avec leurs attractions 
-                            touristiques uniques, des médinas historiques aux stations balnéaires modernes.
+                            touristiques uniques.
                         </p>
                         <a href="/cities/" class="btn btn-maroc w-100">
-                            <i class="fas fa-map-marked-alt me-2"></i>Découvrir les Villes
+                            <i class="fas fa-map-marked-alt me-2"></i>Découvrir
                         </a>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-4">
+            <!-- Lieux Touristiques -->
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div class="card-bg-places"></div>
+                    <div class="card-body p-4">
+                        <div class="card-icon" style="background: linear-gradient(45deg, var(--map-green), #20c997);">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <h3 class="card-title-custom mb-3">
+                            Lieux Touristiques
+                        </h3>
+                        <p class="text-muted mb-4">
+                            Sites historiques, monuments et attractions 
+                            à visiter dans chaque ville marocaine.
+                        </p>
+                        <a href="/places/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, var(--map-green), #20c997);">
+                            <i class="fas fa-map-marker-alt me-2"></i>Explorer
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cartographie -->
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div class="card-bg-maps"></div>
+                    <div class="card-body p-4">
+                        <div class="card-icon" style="background: linear-gradient(45deg, #17a2b8, #0dcaf0);">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h3 class="card-title-custom mb-3">
+                            Cartographie
+                        </h3>
+                        <p class="text-muted mb-4">
+                            Carte interactive du Maroc avec tous les lieux touristiques
+                            et villes hôtes de la Coupe du Monde.
+                        </p>
+                        <a href="/places/map/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, #17a2b8, #0dcaf0);">
+                            <i class="fas fa-globe-africa me-2"></i>Voir la carte
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coupe du Monde -->
+            <div class="col-md-3">
                 <div class="feature-card">
                     <div class="card-bg-worldcup"></div>
                     <div class="card-body p-4">
-                        <div class="card-icon">
+                        <div class="card-icon" style="background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));">
                             <i class="fas fa-trophy"></i>
                         </div>
                         <h3 class="card-title-custom mb-3">
-                            Coupe du Monde 2030
+                            Coupe du Monde
                         </h3>
                         <p class="text-muted mb-4">
-                            Tout sur le Mondial 2030 : stades, villes hôtes, programme des matchs, 
-                            et comment vivre cette expérience unique au Maroc.
+                            Tout sur le Mondial 2030 : stades, villes hôtes, 
+                            programme des matchs.
                         </p>
                         <a href="/worldcup2030/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));">
-                            <i class="fas fa-futbol me-2"></i>Explorer le Mondial
+                            <i class="fas fa-futbol me-2"></i>Découvrir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deuxième ligne de cartes -->
+        <div class="row g-4 mb-5">
+            <!-- Itinéraires -->
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div class="card-bg-routes"></div>
+                    <div class="card-body p-4">
+                        <div class="card-icon" style="background: linear-gradient(45deg, var(--maroc-blue), #6f42c1);">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3 class="card-title-custom mb-3">
+                            Itinéraires
+                        </h3>
+                        <p class="text-muted mb-4">
+                            Parcours recommandés pour découvrir le Maroc 
+                            entre deux matchs.
+                        </p>
+                        <a href="/routes/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, var(--maroc-blue), #6f42c1);">
+                            <i class="fas fa-compass me-2"></i>Voir
                         </a>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-4">
+            <!-- Hôtels -->
+            <div class="col-md-3">
                 <div class="feature-card">
-                    <div class="card-bg-routes"></div>
+                    <div style="
+                        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                                    url('https://images.unsplash.com/photo-1564501049418-3c27787d01e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+                        background-size: cover;
+                        background-position: center;
+                        height: 200px;
+                    "></div>
                     <div class="card-body p-4">
-                        <div class="card-icon">
-                            <i class="fas fa-route"></i>
+                        <div class="card-icon" style="background: linear-gradient(45deg, #fd7e14, #ffc107);">
+                            <i class="fas fa-hotel"></i>
                         </div>
                         <h3 class="card-title-custom mb-3">
-                            Itinéraires Touristiques
+                            Hôtels
                         </h3>
                         <p class="text-muted mb-4">
-                            Parcours recommandés pour découvrir le Maroc entre deux matchs. 
-                            Des circuits personnalisables selon vos intérêts et durée de séjour.
+                            Trouvez votre hébergement près des stades 
+                            et attractions touristiques.
                         </p>
-                        <a href="/routes/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, var(--maroc-blue), #6f42c1);">
-                            <i class="fas fa-compass me-2"></i>Voir les Itinéraires
+                        <a href="/hotels/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, #fd7e14, #ffc107);">
+                            <i class="fas fa-bed me-2"></i>Rechercher
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mon Compte -->
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div style="
+                        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                                    url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+                        background-size: cover;
+                        background-position: center;
+                        height: 200px;
+                    "></div>
+                    <div class="card-body p-4">
+                        <div class="card-icon" style="background: linear-gradient(45deg, #6f42c1, #d63384);">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 class="card-title-custom mb-3">
+                            Mon Compte
+                        </h3>
+                        <p class="text-muted mb-4">
+                            Créez votre compte pour sauvegarder vos 
+                            lieux favoris et itinéraires.
+                        </p>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, #6f42c1, #d63384);">
+                            <i class="fas fa-user me-2"></i>Mon Profil
+                        </a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, #6f42c1, #d63384);">
+                            <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Administration -->
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div style="
+                        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                                    url('https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+                        background-size: cover;
+                        background-position: center;
+                        height: 200px;
+                    "></div>
+                    <div class="card-body p-4">
+                        <div class="card-icon" style="background: linear-gradient(45deg, #343a40, #495057);">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h3 class="card-title-custom mb-3">
+                            Administration
+                        </h3>
+                        <p class="text-muted mb-4">
+                            Interface d'administration pour gérer 
+                            les données du site (réservé aux admins).
+                        </p>
+                        <a href="/admin/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, #343a40, #495057);">
+                            <i class="fas fa-lock me-2"></i>Admin
                         </a>
                     </div>
                 </div>
@@ -437,12 +608,12 @@
                         <p>VILLES HÔTES<br>AU MAROC</p>
                     </div>
                     <div class="col-md-3 mb-4">
-                        <div class="stat-number">5</div>
-                        <p>STADES DE<br>CLASSE MONDIALE</p>
+                        <div class="stat-number">50+</div>
+                        <p>LIEUX<br>TOURISTIQUES</p>
                     </div>
                     <div class="col-md-3 mb-4">
-                        <div class="stat-number">48</div>
-                        <p>ÉQUIPES<br>PARTICIPANTES</p>
+                        <div class="stat-number">5</div>
+                        <p>STADES<br>DE CLASSE MONDIALE</p>
                     </div>
                     <div class="col-md-3 mb-4">
                         <div class="stat-number">104</div>
@@ -452,31 +623,42 @@
             </div>
         </div>
 
-        <!-- Carte Hôtels -->
-        <div class="row g-4 mb-5 justify-content-center">
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="card-bg-hotel" style="
-                        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                                    url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
-                        background-size: cover;
-                        background-position: center;
-                        height: 200px;
-                    "></div>
-                    <div class="card-body p-4">
-                        <div class="card-icon">
-                            <i class="fas fa-hotel"></i>
+        <!-- Section spéciale Lieux Touristiques -->
+        <div class="row mt-5 mb-5">
+            <div class="col-lg-10 mx-auto">
+                <div class="card feature-card">
+                    <div class="card-body p-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="mb-3" style="color: var(--map-green);">
+                                    <i class="fas fa-landmark me-3"></i>
+                                    Découvrez nos Lieux Touristiques
+                                </h2>
+                                <p class="lead mb-4">
+                                    Explorez les sites les plus emblématiques du Maroc, 
+                                    des médinas historiques aux paysages naturels époustouflants.
+                                </p>
+                                <div class="d-flex gap-3">
+                                    <a href="/places/" class="btn btn-lg" style="
+                                        background: linear-gradient(45deg, var(--map-green), #20c997);
+                                        color: white;
+                                        padding: 12px 30px;
+                                        border-radius: 50px;
+                                        font-weight: 600;
+                                    ">
+                                        <i class="fas fa-compass me-2"></i>
+                                        Explorer tous les lieux
+                                    </a>
+                                    <a href="/places/city/4/" class="btn btn-outline-success btn-lg">
+                                        <i class="fas fa-city me-2"></i>
+                                        Voir Marrakech
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <i class="fas fa-map-marked-alt fa-6x" style="color: var(--map-green); opacity: 0.7;"></i>
+                            </div>
                         </div>
-                        <h3 class="card-title-custom mb-3">
-                            Hôtels & Hébergements
-                        </h3>
-                        <p class="text-muted mb-4">
-                            Découvrez les meilleurs hôtels près des stades et des sites touristiques.
-                            Réservez votre séjour idéal pour la Coupe du Monde 2030.
-                        </p>
-                        <a href="/hotels/" class="btn btn-maroc w-100" style="background: linear-gradient(45deg, #FF6B6B, #4ECDC4);">
-                            <i class="fas fa-bed me-2"></i>Voir les Hôtels
-                        </a>
                     </div>
                 </div>
             </div>
@@ -491,14 +673,14 @@
                 <p class="lead">
                     Ce site a été développé dans le cadre du module <strong>Développement Web avec Django</strong>.
                 </p>
-                <p">
+                <p>
                     Il présente les attractions touristiques du Maroc en prévision de la Coupe du Monde 2030,
                     combinant technologie moderne et richesses culturelles marocaines.
                 </p>
                 <div class="mt-4">
-                    <button class="btn btn-maroc me-3">
-                        <i class="fas fa-code me-2"></i>Voir le code source
-                    </button>
+                    <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-maroc me-3">
+                        <i class="fab fa-github me-2"></i>Voir le code source
+                    </a>
                     <button class="btn btn-outline-secondary">
                         <i class="fas fa-users me-2"></i>Équipe de développement
                     </button>
@@ -547,23 +729,36 @@
                     <p>
                         Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
                     </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Équipe :</strong> 4 membres<br>
+                        <strong>Technologie :</strong> Django Full Stack
+                    </p>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <h5 class="mb-3">Liens rapides</h5>
+                    <h5 class="mb-3">Navigation</h5>
                     <ul class="list-unstyled">
                         <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
                         <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/places/" class="text-light text-decoration-none mb-2 d-block">Lieux Touristiques</a></li>
                         <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
                         <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                        <li><a href="/admin/" class="text-light text-decoration-none mb-2 d-block">Administration</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <h5 class="mb-3">Contact</h5>
-                    <p>
-                        <i class="fas fa-university me-2"></i>Université ENSA<br>
-                        <i class="fas fa-graduation-cap me-2"></i>Module : Digital creativity<br>
-                        <i class="fas fa-users me-2"></i>Équipe projet Django
-                    </p>
+                    <h5 class="mb-3">Rôles de l'équipe</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Membre 1 : Configuration & Villes</li>
+                        <li class="mb-2">Membre 2 : Lieux & Cartographie</li>
+                        <li class="mb-2">Membre 3 : Hôtels & Itinéraires</li>
+                        <li class="mb-2">Membre 4 : Utilisateurs & Sécurité</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
                 </div>
             </div>
             <hr class="bg-light my-4">
@@ -612,7 +807,9 @@
                 badge.style.transform = badge.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
             }, 2000);
             
-            console.log('Page d\'accueil Maroc 2030 chargée avec succès! ⚽');
+            // Message de bienvenue
+            console.log('Maroc Tourisme 2030 - Page d\'accueil chargée avec succès! ⚽');
+            console.log('Membre 2: Lieux Touristiques & Cartographie activés ✅');
         });
     </script>
 </body>
