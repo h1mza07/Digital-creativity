@@ -1,13 +1,268 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hotel.name }} - Projet Tourisme</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px 0;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .hotel-detail {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            margin-top: 30px;
+        }
+        
+        .hotel-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .hotel-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .hotel-header .location {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .hotel-header .stars {
+            font-size: 1.8rem;
+            color: gold;
+            margin-bottom: 20px;
+        }
+        
+        .hotel-image {
+            height: 400px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .hotel-body {
+            padding: 40px;
+        }
+        
+        .hotel-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .hotel-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .info-box {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-label {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+        
+        .info-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .price-section {
+            background: linear-gradient(135deg, #ff8a00, #da1b60);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .price-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .price-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .btn-book {
+            background: white;
+            color: #da1b60;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-book:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-btn {
+            background: #e0e0e0;
+            color: #555;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+        
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-hotel"></i> Projet Tourisme
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">🏠 Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/routes/my-itineraries/">🗺️ Itinéraires</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/hotels/">🏨 Hôtels</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-{% block title %}{{ hotel.name }}{% endblock %}
+    <div class="container">
+        <div class="hotel-detail">
+            <!-- Header -->
+            <div class="hotel-header">
+                <h1>{{ hotel.name }}</h1>
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i> {{ hotel.city.name }}, Maroc
+                </div>
+                <div class="stars">
+                    {% for i in hotel.rating|make_list %}
+                        <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {{ hotel.rating }}/5
+                </div>
+            </div>
 
-{% block content %}
-<h1>{{ hotel.name }}</h1>
-<p><strong>Ville :</strong> {{ hotel.city }}</p>
-<p><strong>Étoiles :</strong> {{ hotel.stars }}</p>
-<p><strong>Prix par nuit :</strong> {{ hotel.price_per_night }} MAD</p>
-<br>
-<a href="/hotels/city/{{ hotel.city.id }}/">← Retour à la liste</a> |
-<a href="/routes/">Itinéraires</a>
-{% endblock %}
+            <!-- Image -->
+            {% if hotel.image %}
+                <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="hotel-image">
+            {% else %}
+                <div style="height: 400px; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-hotel" style="font-size: 8rem; color: white; opacity: 0.5;"></i>
+                </div>
+            {% endif %}
+
+            <!-- Body -->
+            <div class="hotel-body">
+                <!-- Description -->
+                <div class="hotel-section">
+                    <h2 class="section-title">📝 Description</h2>
+                    <p class="hotel-description">
+                        {{ hotel.description }}
+                    </p>
+                </div>
+
+                <!-- Informations -->
+                <div class="hotel-section">
+                    <h2 class="section-title">📊 Informations</h2>
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-label">🛏️ Chambres</div>
+                            <div class="info-value">{{ hotel.rooms_count }}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">📍 Ville</div>
+                            <div class="info-value">{{ hotel.city.name }}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">⭐ Note</div>
+                            <div class="info-value">{{ hotel.rating }}/5</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">📍 Adresse</div>
+                            <div class="info-value" style="font-size: 1rem;">{{ hotel.address|slice:":15" }}...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prix -->
+                <div class="price-section">
+                    <div class="price-label">💰 Prix par nuit</div>
+                    <div class="price-value">{{ hotel.price }} MAD</div>
+                    <a href="#" class="btn btn-book">
+                        <i class="fas fa-book"></i> Réserver maintenant
+                    </a>
+                </div>
+
+                <!-- Bouton retour -->
+                <div class="text-center">
+                    <a href="/hotels/" class="btn back-btn">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

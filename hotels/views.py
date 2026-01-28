@@ -5,14 +5,14 @@ from django.core.paginator import Paginator
 def hotel_list(request):
     query = request.GET.get('q')
     if query:
-        hotels = Hotel.objects.filter(
+        hotels = Hotel.objects.all(
             name__icontains=query
         ) | Hotel.objects.filter(
             city__name__icontains=query
         )
     else:
         hotels = Hotel.objects.all()
-    
+
     return render(request, 'hotels/hotel_list.html', {'hotels': hotels})
 
 def hotel_detail(request, pk):

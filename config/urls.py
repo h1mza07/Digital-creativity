@@ -11,6 +11,7 @@ urlpatterns = [
     path('routes/', include('routes.urls')),
     path('cities/', include('cities.urls')),
     path('users/', include('users.urls')),
+    path('hotels/', include('hotels.urls')),
 ]
 
 if settings.DEBUG:
