@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -31,10 +32,9 @@
             padding-top: 80px;
         }
         
-        /* Hero Banner */
         .hero-banner {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+                        url('https://images.pexels.com/photos/12433313/pexels-photo-12433313.jpeg?_gl=1*19sr5d0*_ga*MjIzNTg1NzczLjE3NjQ3MDE3MDc.*_ga_8JE65Q40S6*czE3Njk1NDg1MzIkbzIkZzEkdDE3Njk1NDg4NjYkajQwJGwwJGgw');
             background-size: cover;
             background-position: center;
             color: white;
@@ -90,32 +90,55 @@
             100% { transform: scale(1); }
         }
         
-        /* Navigation améliorée */
         .navbar-custom {
             background: rgba(255, 255, 255, 0.95) !important;
             backdrop-filter: blur(10px);
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            padding: 15px 0;
+            padding: 5px 0;
             border-bottom: 3px solid var(--maroc-green);
+            min-height: 80px;
         }
         
         .navbar-brand-custom {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--maroc-green) !important;
             display: flex;
             align-items: center;
-            gap: 10px;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
         }
         
         .nav-link-custom {
             color: #333 !important;
             font-weight: 600;
-            padding: 10px 20px !important;
-            margin: 0 5px;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
             border-radius: 25px;
             transition: all 0.3s ease;
             position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
         }
         
         .nav-link-custom:hover {
@@ -130,7 +153,62 @@
             color: white !important;
         }
         
-        /* Cartes améliorées */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 10px;
+        }
+        
+        .dropdown-item {
+            border-radius: 10px;
+            padding: 8px 15px;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .dropdown-menu {
+                width: 100%;
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+        }
+        
         .feature-card {
             border: none;
             border-radius: 20px;
@@ -165,7 +243,6 @@
             font-size: 1.5rem;
         }
         
-        /* Boutons */
         .btn-maroc {
             background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
             color: white;
@@ -183,7 +260,6 @@
             color: white;
         }
         
-        /* Statistiques */
         .stats-section {
             background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
             color: white;
@@ -211,7 +287,6 @@
             margin-bottom: 10px;
         }
         
-        /* Footer */
         .footer-custom {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: white;
@@ -225,22 +300,9 @@
             color: var(--maroc-gold);
         }
         
-        .flag-animation {
-            display: inline-block;
-            animation: wave 3s infinite;
-            font-size: 2rem;
-        }
-        
-        @keyframes wave {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg); }
-            75% { transform: rotate(-10deg); }
-        }
-        
-        /* Images de fond pour les cartes avec photos du Maroc */
         .card-bg-cities {
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                        url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+                        url('https://images.unsplash.com/photo-1538600838042-6a0c694ffab5?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-size: cover;
             background-position: center;
             height: 200px;
@@ -264,7 +326,7 @@
         
         .card-bg-worldcup {
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                        url('https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+                        url('https://images.unsplash.com/photo-1637203727317-3cc1a557cdbf?q=80&w=1112&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-size: cover;
             background-position: center;
             height: 200px;
@@ -278,7 +340,6 @@
             height: 200px;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
@@ -305,61 +366,75 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
             <a class="navbar-brand navbar-brand-custom" href="/">
-                <span class="flag-animation">🇲🇦</span>
-                MAROC TOURISME 2030
-                <span class="badge bg-danger ms-2">⚽ CM 2030</span>
+                <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
             </a>
             
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link nav-link-custom active" href="/">
-                    <i class="fas fa-home me-2"></i>Accueil
-                </a>
-                <a class="nav-link nav-link-custom" href="/cities/">
-                    <i class="fas fa-city me-2"></i>Villes
-                </a>
-                <a class="nav-link nav-link-custom" href="/places/">
-                    <i class="fas fa-landmark me-2"></i>Lieux Touristiques
-                </a>
-                <a class="nav-link nav-link-custom" href="/places/map/">
-                    <i class="fas fa-map-marked-alt me-2"></i>Cartographie
-                </a>
-                <a class="nav-link nav-link-custom" href="/worldcup2030/">
-                    <i class="fas fa-trophy me-2"></i>Coupe du Monde
-                </a>
-                <a class="nav-link nav-link-custom" href="/routes/">
-                    <i class="fas fa-route me-2"></i>Itinéraires
-                </a>
-                <a class="nav-link nav-link-custom" href="/hotels/">
-                    <i class="fas fa-hotel me-2"></i>Hôtels
-                </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom active" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/map/">
+                        <i class="fas fa-map me-1"></i>Carte
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
 
-                {% if user.is_authenticated %}
-                    <a class="nav-link nav-link-custom" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i>Profil
-                    </a>
-                    <form method="post" action="{% url 'logout' %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="nav-link nav-link-custom btn btn-link p-0 border-0">
-                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
-                        </button>
-                    </form>
-                {% else %}
-                    <a class="nav-link nav-link-custom" href="{% url 'login' %}">
-                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
-                    </a>
-                    <a class="nav-link nav-link-custom" href="{% url 'register' %}">
-                        <i class="fas fa-user-plus me-2"></i>Inscription
-                    </a>
-                {% endif %}
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>Compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Banner -->
     <div class="hero-banner">
         <div class="container">
             <h1 class="hero-title">
@@ -378,7 +453,6 @@
         </div>
     </div>
 
-    <!-- Contenu principal -->
     <div class="container">
         <div class="row mb-5">
             <div class="col-lg-8 mx-auto text-center">
@@ -393,9 +467,7 @@
             </div>
         </div>
 
-        <!-- Cartes de fonctionnalités -->
         <div class="row g-4 mb-5">
-            <!-- Villes -->
             <div class="col-md-3">
                 <div class="feature-card">
                     <div class="card-bg-cities"></div>
@@ -417,7 +489,6 @@
                 </div>
             </div>
             
-            <!-- Lieux Touristiques -->
             <div class="col-md-3">
                 <div class="feature-card">
                     <div class="card-bg-places"></div>
@@ -439,7 +510,6 @@
                 </div>
             </div>
             
-            <!-- Cartographie -->
             <div class="col-md-3">
                 <div class="feature-card">
                     <div class="card-bg-maps"></div>
@@ -461,7 +531,6 @@
                 </div>
             </div>
             
-            <!-- Coupe du Monde -->
             <div class="col-md-3">
                 <div class="feature-card">
                     <div class="card-bg-worldcup"></div>
@@ -484,9 +553,7 @@
             </div>
         </div>
 
-        <!-- Deuxième ligne de cartes -->
         <div class="row g-4 mb-5">
-            <!-- Itinéraires -->
             <div class="col-md-3">
                 <div class="feature-card">
                     <div class="card-bg-routes"></div>
@@ -508,7 +575,6 @@
                 </div>
             </div>
             
-            <!-- Hôtels -->
             <div class="col-md-3">
                 <div class="feature-card">
                     <div style="
@@ -536,7 +602,6 @@
                 </div>
             </div>
             
-            <!-- Mon Compte -->
             <div class="col-md-3">
                 <div class="feature-card">
                     <div style="
@@ -570,7 +635,6 @@
                 </div>
             </div>
             
-            <!-- Administration -->
             <div class="col-md-3">
                 <div class="feature-card">
                     <div style="
@@ -599,7 +663,6 @@
             </div>
         </div>
 
-        <!-- Section Statistiques -->
         <div class="stats-section">
             <div class="container">
                 <div class="row text-center">
@@ -623,7 +686,6 @@
             </div>
         </div>
 
-        <!-- Section spéciale Lieux Touristiques -->
         <div class="row mt-5 mb-5">
             <div class="col-lg-10 mx-auto">
                 <div class="card feature-card">
@@ -664,7 +726,6 @@
             </div>
         </div>
 
-        <!-- Section À propos -->
         <div class="row mt-5 align-items-center">
             <div class="col-md-6">
                 <h2 class="mb-4" style="color: var(--maroc-green);">
@@ -718,7 +779,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer-custom">
         <div class="container">
             <div class="row">
@@ -776,9 +836,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Animation pour les cartes
         document.addEventListener('DOMContentLoaded', function() {
-            // Animation au scroll
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
@@ -793,7 +851,6 @@
                 });
             }, observerOptions);
             
-            // Observer les cartes
             document.querySelectorAll('.feature-card').forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
@@ -801,15 +858,10 @@
                 observer.observe(card);
             });
             
-            // Animation du badge
             const badge = document.querySelector('.hero-badge');
             setInterval(() => {
                 badge.style.transform = badge.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
             }, 2000);
-            
-            // Message de bienvenue
-            console.log('Maroc Tourisme 2030 - Page d\'accueil chargée avec succès! ⚽');
-            console.log('Membre 2: Lieux Touristiques & Cartographie activés ✅');
         });
     </script>
 </body>

@@ -1,204 +1,624 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coupe du Monde 2030 - Maroc Tourisme</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            padding-top: 20px;
+        :root {
+            --maroc-red: #C1272D;
+            --maroc-green: #006233;
+            --maroc-gold: #D4AF37;
+            --maroc-blue: #1E3A8A;
         }
-        .worldcup-header {
-            background: linear-gradient(135deg, #006233 0%, #c1272d 100%);
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1637203727317-3cc1a557cdbf?q=80&w=1112&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
             color: white;
-            border-radius: 15px;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 50px;
+            border-radius: 0 0 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -10%;
+            width: 120%;
+            height: 100px;
+            background: white;
+            transform: rotate(-3deg);
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(193, 39, 45, 0.4);
+            border: 2px solid var(--maroc-gold);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            border-bottom: 3px solid var(--maroc-green);
+            min-height: 80px;
+        }
+        
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, var(--maroc-red) 0%, var(--maroc-gold) 100%);
+            color: white;
+            padding: 60px 0;
+            margin: 50px 0;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '⚽';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
             margin-bottom: 30px;
         }
-        .card {
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: none;
-            margin-bottom: 20px;
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
-        .badge {
-            cursor: pointer;
-            transition: transform 0.2s;
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 98, 51, 0.3);
         }
-        .badge:hover {
-            transform: scale(1.1);
-        }
-        .table-hover tbody tr:hover {
-            background-color: rgba(0, 98, 51, 0.1);
-        }
-        .list-group-item {
-            border-left: 4px solid #006233;
+        
+        .card-title-custom {
+            color: var(--maroc-green);
+            font-weight: 700;
+            font-size: 1.5rem;
             margin-bottom: 10px;
         }
-        pre {
-            border-radius: 8px;
-            overflow-x: auto;
+        
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
+        .btn-worldcup {
+            background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(193, 39, 45, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-worldcup:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(193, 39, 45, 0.5);
+            color: white;
+        }
+        
+        .table-custom {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .table-custom thead th {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+        
+        .badge-custom {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            border: none;
+        }
+        
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+            border-radius: 30px 30px 0 0;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+        }
+        
+        .worldcup-highlight {
+            background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(193, 39, 45, 0.3);
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-banner {
+                padding: 60px 0;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- MÊME NAVIGATION QUE HOME.HTML -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="/">
+                <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/" class="active">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-banner">
+        <div class="container">
+            <h1 class="hero-title">
+                COUPE DU MONDE 2030
+            </h1>
+            <p class="hero-subtitle">
+                Le Maroc, co-organisateur de la plus grande compétition footballistique du monde
+            </p>
+            <span class="hero-badge">
+                🇲🇦 • 🇪🇸 • 🇵🇹 Tripartite Historique
+            </span>
+            <p class="mt-4">
+                Un événement historique qui stimulera le tourisme, les infrastructures<br>
+                et présentera la richesse culturelle marocaine au monde entier
+            </p>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- Bannière principale -->
-        <div class="row align-items-center worldcup-header p-4 mb-4">
-            <div class="col-md-2 text-center">
-                <h1 class="display-1">⚽</h1>
-            </div>
-            <div class="col-md-10">
-                <h1 class="display-4">Coupe du Monde 2030</h1>
-                <p class="lead mb-0">Le Maroc, co-organisateur de la plus grande compétition footballistique du monde</p>
-            </div>
-        </div>
-
-        <!-- Introduction -->
-        <div class="row mb-5">
-            <div class="col-md-8">
-                <h2>🏆 Un événement historique</h2>
-                <p>La <strong>Coupe du Monde 2030</strong> sera un tournant pour le Maroc, qui co-organisera l'événement avec l'Espagne et le Portugal. C'est la première fois que le pays africain accueille cette compétition.</p>
-                <p>Cet événement majeur stimulera le tourisme, les infrastructures et l'économie du pays, tout en présentant la richesse culturelle marocaine au monde entier.</p>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-primary text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">📅 Dates importantes</h5>
-                        <ul class="list-unstyled">
-                            <li>✅ <strong>2030</strong> : Année de la compétition</li>
-                            <li>📍 <strong>3 pays</strong> : Maroc, Espagne, Portugal</li>
-                            <li>🏟️ <strong>10 stades</strong> prévus au Maroc</li>
-                            <li>👥 <strong>48 équipes</strong> participantes</li>
-                        </ul>
+        <div class="stats-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">3</div>
+                        <p>PAYS ORGANISATEURS</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">48</div>
+                        <p>ÉQUIPES PARTICIPANTES</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">104</div>
+                        <p>MATCHS EN 2030</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">5</div>
+                        <p>STADES AU MAROC</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Villes hôtes au Maroc -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <h2 class="mb-4">📍 Villes hôtes marocaines</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Ville</th>
-                                <th>Stade</th>
-                                <th>Capacité</th>
-                                <th>Statut</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Casablanca</strong></td>
-                                <td>Grand Stade de Casablanca</td>
-                                <td>93,000 places</td>
-                                <td><span class="badge bg-success">En construction</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Rabat</strong></td>
-                                <td>Stade Moulay Abdellah</td>
-                                <td>68,000 places</td>
-                                <td><span class="badge bg-warning text-dark">Rénovation</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Marrakech</strong></td>
-                                <td>Stade de Marrakech</td>
-                                <td>45,000 places</td>
-                                <td><span class="badge bg-success">Opérationnel</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tanger</strong></td>
-                                <td>Stade Ibn Batouta</td>
-                                <td>65,000 places</td>
-                                <td><span class="badge bg-info">Extension</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Agadir</strong></td>
-                                <td>Stade Adrar</td>
-                                <td>45,000 places</td>
-                                <td><span class="badge bg-success">Opérationnel</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p class="text-muted">* Liste non exhaustive - sujette à modifications</p>
-            </div>
-        </div>
-
-        <!-- Carte et informations -->
-        <div class="row mb-5">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">🗺️ Carte des stades</h5>
-                    </div>
-                    <div class="card-body text-center p-5">
-                        <div class="mb-3">
-                            <h1>📍</h1>
+        <div class="row mt-5">
+            <div class="col-lg-8">
+                <div class="feature-card">
+                    <div class="card-body p-5">
+                        <h2 class="mb-4" style="color: var(--maroc-red);">
+                            <i class="fas fa-trophy me-3"></i>Un événement historique
+                        </h2>
+                        <div class="lead mb-4">
+                            La <strong>Coupe du Monde 2030</strong> sera un tournant pour le Maroc, 
+                            qui co-organisera l'événement avec l'Espagne et le Portugal. 
+                            C'est la première fois que le pays africain accueille cette compétition.
                         </div>
-                        <h4>Carte interactive</h4>
-                        <p>Une carte Leaflet/OpenStreetMap sera intégrée ici pour montrer l'emplacement des stades.</p>
-                        <div class="alert alert-secondary">
+                        <p>
+                            Cet événement majeur stimulera le tourisme, les infrastructures 
+                            et l'économie du pays, tout en présentant la richesse culturelle 
+                            marocaine au monde entier.
+                        </p>
+                        
+                        <div class="worldcup-highlight mt-4">
+                            <h4 class="mb-3"><i class="fas fa-calendar-alt me-2"></i>Dates importantes</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><i class="fas fa-check-circle me-2"></i> <strong>2030</strong> : Année de la compétition</p>
+                                    <p><i class="fas fa-map-marker-alt me-2"></i> <strong>3 pays</strong> : Maroc, Espagne, Portugal</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><i class="fas fa-futbol me-2"></i> <strong>5 stades</strong> prévus au Maroc</p>
+                                    <p><i class="fas fa-users me-2"></i> <strong>48 équipes</strong> participantes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <div class="card-icon" style="background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <h4 class="card-title-custom">Carte des stades</h4>
+                        </div>
+                        
+                        <div class="text-center p-4 border rounded mb-4">
+                            <i class="fas fa-map-marker-alt fa-4x mb-3" style="color: var(--maroc-red);"></i>
+                            <h5>Carte interactive</h5>
+                            <p class="text-muted mt-3">
+                                Une carte interactive montrant l'emplacement 
+                                des stades au Maroc.
+                            </p>
+                        </div>
+                        
+                        <div class="alert alert-info">
                             <small>
-                                <strong>Intégration technique :</strong> Cette section utilisera 
-                                <code>Leaflet.js</code> et <code>OpenStreetMap</code> pour afficher 
-                                une carte interactive avec les marqueurs des stades.
+                                <i class="fas fa-code me-1"></i>
+                                Intégration technique : Cette section utilisera 
+                                <strong>Leaflet.js</strong> et <strong>OpenStreetMap</strong>
                             </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mb-4 mt-5" style="color: var(--maroc-green);">
+            <i class="fas fa-city me-3"></i>Villes hôtes marocaines
+        </h3>
+        
+        <div class="table-responsive table-custom">
+            <table class="table table-hover mb-5">
+                <thead>
+                    <tr>
+                        <th>Ville</th>
+                        <th>Stade</th>
+                        <th>Capacité</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Casablanca</strong></td>
+                        <td>Grand Stade de Casablanca</td>
+                        <td>93,000 places</td>
+                        <td><span class="badge badge-custom bg-success">En construction</span></td>
+                        <td>
+                            <a href="/cities/casablanca/" class="btn btn-sm btn-maroc">
+                                <i class="fas fa-eye me-1"></i>Voir
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rabat</strong></td>
+                        <td>Stade Moulay Abdellah</td>
+                        <td>68,000 places</td>
+                        <td><span class="badge badge-custom bg-warning text-dark">Rénovation</span></td>
+                        <td>
+                            <a href="/cities/rabat/" class="btn btn-sm btn-maroc">
+                                <i class="fas fa-eye me-1"></i>Voir
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marrakech</strong></td>
+                        <td>Stade de Marrakech</td>
+                        <td>45,000 places</td>
+                        <td><span class="badge badge-custom bg-success">Opérationnel</span></td>
+                        <td>
+                            <a href="/cities/marrakech/" class="btn btn-sm btn-maroc">
+                                <i class="fas fa-eye me-1"></i>Voir
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tanger</strong></td>
+                        <td>Stade Ibn Batouta</td>
+                        <td>65,000 places</td>
+                        <td><span class="badge badge-custom bg-info">Extension</span></td>
+                        <td>
+                            <a href="/cities/tanger/" class="btn btn-sm btn-maroc">
+                                <i class="fas fa-eye me-1"></i>Voir
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agadir</strong></td>
+                        <td>Stade Adrar</td>
+                        <td>45,000 places</td>
+                        <td><span class="badge badge-custom bg-success">Opérationnel</span></td>
+                        <td>
+                            <a href="/cities/agadir/" class="btn btn-sm btn-maroc">
+                                <i class="fas fa-eye me-1"></i>Voir
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="card-body p-4">
+                        <h4 class="card-title-custom mb-4">
+                            <i class="fas fa-chart-line me-2"></i>Impact touristique
+                        </h4>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item border-0 px-0 py-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-rocket fa-lg me-3" style="color: var(--maroc-red);"></i>
+                                    <div>
+                                        <strong>Augmentation du tourisme</strong>
+                                        <div class="text-muted small">Prévision : +40% de visiteurs pendant l'événement</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item border-0 px-0 py-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-hotel fa-lg me-3" style="color: var(--maroc-green);"></i>
+                                    <div>
+                                        <strong>Capacité hôtelière</strong>
+                                        <div class="text-muted small">50,000 chambres supplémentaires d'ici 2030</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item border-0 px-0 py-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-subway fa-lg me-3" style="color: var(--maroc-blue);"></i>
+                                    <div>
+                                        <strong>Infrastructures</strong>
+                                        <div class="text-muted small">Nouvelles lignes de tramway et autoroutes</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item border-0 px-0 py-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-briefcase fa-lg me-3" style="color: var(--maroc-gold);"></i>
+                                    <div>
+                                        <strong>Emplois</strong>
+                                        <div class="text-muted small">Création de 100,000 emplois directs et indirects</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">📈 Impact touristique</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <strong>🚀 Augmentation du tourisme</strong><br>
-                                Prévision : +40% de visiteurs pendant l'événement
-                            </li>
-                            <li class="list-group-item">
-                                <strong>🏨 Capacité hôtelière</strong><br>
-                                50,000 chambres supplémentaires d'ici 2030
-                            </li>
-                            <li class="list-group-item">
-                                <strong>🚇 Infrastructures</strong><br>
-                                Nouvelles lignes de tramway et autoroutes
-                            </li>
-                            <li class="list-group-item">
-                                <strong>💼 Emplois</strong><br>
-                                Création de 100,000 emplois directs et indirects
-                            </li>
-                            <li class="list-group-item">
-                                <strong>🌍 Image internationale</strong><br>
-                                Promotion du Maroc comme destination touristique premium
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section technique Django -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card border-primary">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">🛠️ Intégration Django</h5>
-                    </div>
-                    <div class="card-body">
-                        <p>Cette page sera dynamique avec Django :</p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6>📊 Modèles utilisés :</h6>
-                                <pre class="bg-dark text-light p-3 rounded"><code>class HostCity(models.Model):
+                <div class="feature-card">
+                    <div class="card-body p-4">
+                        <h4 class="card-title-custom mb-4">
+                            <i class="fas fa-code me-2"></i>Intégration Django
+                        </h4>
+                        <p class="mb-3">Cette page sera dynamique avec Django :</p>
+                        
+                        <div class="mb-4">
+                            <h6 class="mb-2" style="color: var(--maroc-blue);">
+                                <i class="fas fa-database me-1"></i>Modèles utilisés :
+                            </h6>
+                            <pre class="bg-dark text-light p-3 rounded small"><code>class HostCity(models.Model):
     name = models.CharField(max_length=100)
     stadium_name = models.CharField(max_length=200)
     capacity = models.IntegerField()
@@ -208,45 +628,112 @@ class WorldCupInfo(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     image = models.ImageField(upload_to='worldcup/')</code></pre>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>🔗 URLs Django :</h6>
-                                <ul>
-                                    <li><code>urls.py</code> : <code>path('worldcup2030/', views.worldcup_home, name='worldcup2030')</code></li>
-                                    <li><strong>Template :</strong> <code>worldcup2030/index.html</code></li>
-                                    <li><strong>App :</strong> <code>worldcup2030</code></li>
-                                    <li><strong>Données :</strong> Administrables via Django Admin</li>
-                                </ul>
-                            </div>
                         </div>
-                        <hr>
-                        <p class="mb-0 text-center">
-                            Page créée par <strong>Ibtissam Ainzura</strong> - Membre 2<br>
-                            <small>Section spéciale Coupe du Monde 2030</small>
-                        </p>
+                        
+                        <div>
+                            <h6 class="mb-2" style="color: var(--maroc-green);">
+                                <i class="fas fa-link me-1"></i>URLs Django :
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-chevron-right me-2 text-muted"></i>
+                                    <code>urls.py</code> : <code class="text-primary">path('worldcup2030/', views.worldcup_home, name='worldcup2030')</code>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-chevron-right me-2 text-muted"></i>
+                                    <strong>Template :</strong> <code>worldcup2030/index.html</code>
+                                </li>
+                                <li>
+                                    <i class="fas fa-chevron-right me-2 text-muted"></i>
+                                    <strong>App :</strong> <code>worldcup2030</code>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="text-center mt-5">
+            <a href="/cities/" class="btn-worldcup me-3">
+                <i class="fas fa-city me-2"></i>Voir les villes hôtes
+            </a>
+            <a href="/routes/" class="btn-maroc">
+                <i class="fas fa-route me-2"></i>Créer un itinéraire
+            </a>
+        </div>
     </div>
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Animation pour les badges
-        const badges = document.querySelectorAll('.badge');
-        badges.forEach(badge => {
-            badge.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.1)';
-            });
-            badge.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-        });
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="footer-logo mb-3">
+                        🇲🇦 COUPE DU MONDE 2030
+                    </div>
+                    <p>
+                        Section spéciale dédiée à la Coupe du Monde 2030 au Maroc.
+                    </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Membre 2 :</strong> Ibtissam Ainzura<br>
+                        <strong>Rôle :</strong> Lieux & Cartographie
+                    </p>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h5 class="mb-3">Navigation rapide</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="/" class="btn btn-outline-light btn-sm">Accueil</a>
+                        <a href="/cities/" class="btn btn-outline-light btn-sm">Villes</a>
+                        <a href="/places/" class="btn btn-outline-light btn-sm">Lieux Touristiques</a>
+                        <a href="/worldcup2030/" class="btn btn-outline-light btn-sm">CM 2030</a>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Coupe du Monde 2030
+                </p>
+                <p class="text-muted mt-2">
+                    Made with <i class="fas fa-heart text-danger"></i> for the FIFA World Cup 2030
+                </p>
+            </div>
+        </div>
+    </footer>
 
-        console.log('Page Coupe du Monde 2030 chargée');
-    });
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            console.log('Page Coupe du Monde 2030 - Design home.html appliqué ✅');
+        });
     </script>
 </body>
 </html>
