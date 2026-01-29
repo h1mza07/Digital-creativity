@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Interactive - Maroc Tourisme</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0d5e9c 0%, #1a365d 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: #ffd700;
+        }
+        
+        .user-menu a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        .user-menu a:hover {
+            color: #ffd700;
+        }
+        
+        .header-title {
+            text-align: center;
+            padding: 15px 0;
+        }
+        
+        .header-title h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .header-title h2 {
+            font-size: 20px;
+            font-weight: normal;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+        
+        .badge {
+            background-color: #ffd700;
+            color: #1a365d;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: 16px;
+        }
+        
+        /* Main Container */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 180px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 350px;
+            background: white;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-box {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #0d5e9c;
+            box-shadow: 0 0 0 3px rgba(13, 94, 156, 0.2);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .filter-section {
+            margin-bottom: 25px;
+        }
+        
+        .filter-title {
+            color: #1a365d;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #0d5e9c;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .filter-option {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .filter-option:hover {
+            background: #e9ecef;
+        }
+        
+        .filter-option.active {
+            background: #0d5e9c;
+            color: white;
+            border-color: #0d5e9c;
+        }
+        
+        .filter-option i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .places-list {
+            margin-top: 25px;
+        }
+        
+        .place-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .place-item:hover {
+            background: #f8f9fa;
+            border-left-color: #0d5e9c;
+        }
+        
+        .place-item.active {
+            background: #e3f2fd;
+            border-left: 4px solid #0d5e9c;
+        }
+        
+        .place-name {
+            font-weight: bold;
+            color: #1a365d;
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .place-city {
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .place-category {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #666;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0d5e9c;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Map Container */
+        .map-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .map-btn {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        .map-btn:hover {
+            background: #0d5e9c;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1a365d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-logo {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 350px;
+            }
+            
+            .map-container {
+                height: 500px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-links a {
+                margin: 0 10px;
+            }
+        }
+        
+        /* Custom Marker Styles */
+        .custom-marker {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid;
+            color: white;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .marker-historique {
+            border-color: #0d5e9c;
+            background: #0d5e9c;
+        }
+        
+        .marker-culturel {
+            border-color: #27ae60;
+            background: #27ae60;
+        }
+        
+        .marker-religieux {
+            border-color: #e74c3c;
+            background: #e74c3c;
+        }
+        
+        .marker-architectural {
+            border-color: #8e44ad;
+            background: #8e44ad;
+        }
+        
+        .marker-naturel {
+            border-color: #2ecc71;
+            background: #2ecc71;
+        }
+        
+        .marker-artisanal {
+            border-color: #d35400;
+            background: #d35400;
+        }
+        
+        .marker-royal {
+            border-color: #f39c12;
+            background: #f39c12;
+        }
+        
+        .marker-moderne {
+            border-color: #16a085;
+            background: #16a085;
+        }
+        
+        .marker-educatif {
+            border-color: #9b59b6;
+            background: #9b59b6;
+        }
+        
+        .marker-default {
+            border-color: #7f8c8d;
+            background: #7f8c8d;
+        }
+        
+        /* Popup Styles */
+        .leaflet-popup-content {
+            min-width: 280px;
+            font-family: Arial, sans-serif;
+            padding: 5px;
+        }
+        
+        .popup-title {
+            font-size: 18px;
+            color: #1a365d;
+            margin-bottom: 8px;
+            font-weight: bold;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #0d5e9c;
+        }
+        
+        .popup-city {
+            color: #0d5e9c;
+            margin-bottom: 8px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .popup-category {
+            display: inline-block;
+            background: #0d5e9c;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .popup-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        .popup-description {
+            margin-bottom: 15px;
+            line-height: 1.5;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .popup-details {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        
+        .popup-details div {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .popup-details strong {
+            color: #1a365d;
+        }
+        
+        .popup-btn {
+            width: 100%;
+            padding: 10px;
+            background: #0d5e9c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .popup-btn:hover {
+            background: #1a365d;
+        }
+        
+        /* User Location Marker */
+        .user-location-marker {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #e74c3c;
+            color: #e74c3c;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        /* Image par défaut si non trouvée */
+        .image-not-found {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #0d5e9c 0%, #1a365d 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-top">
+            <div class="logo">
+                <i class="fas fa-monument"></i>
+                <span>Maroc Tourisme</span>
+            </div>
+            <div class="user-menu">
+                <a href="#"><i class="fas fa-home"></i> Accueil</a>
+                <a href="#"><i class="fas fa-user"></i> Profil</a>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+        </div>
+        <div class="header-title">
+            <h1>Carte Interactive du Maroc</h1>
+            <h2>Trouvez vos prochaines destinations</h2>
+            <div class="badge">
+                <i class="fas fa-compass"></i> CM 2030
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Search -->
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Rechercher un monument, une ville...">
+            </div>
+            
+            <!-- Filters -->
+            <div class="filter-section">
+                <div class="filter-title">
+                    <i class="fas fa-filter"></i>
+                    <span>Filtrer par ville</span>
+                </div>
+                <div class="filter-options">
+                    <div class="filter-option active" data-filter="all">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Toutes les villes (24)</span>
+                    </div>
+                    <div class="filter-option" data-filter="Tanger">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Tanger (3)</span>
+                    </div>
+                    <div class="filter-option" data-filter="Marrakech">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Marrakech (3)</span>
+                    </div>
+                    <div class="filter-option" data-filter="Fès">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Fès (3)</span>
+                    </div>
+                    <div class="filter-option" data-filter="Meknès">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Meknès (3)</span>
+                    </div>
+                    <div class="filter-option" data-filter="Rabat">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Rabat (3)</span>
+                    </div>
+                    <div class="filter-option" data-filter="Casablanca">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Casablanca (3)</span>
+                    </div>
+                    <div class="filter-option" data-filter="Oujda">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Oujda (3)</span>
+                    </div>
+                    <div class="filter-option" data-filter="Agadir">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Agadir (3)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Places List -->
+            <div class="places-list">
+                <div class="filter-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Monuments (<span id="placeCount">24</span>)</span>
+                </div>
+                <div id="placeList">
+                    <!-- Places will be loaded here by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalPlaces">24</div>
+                    <div class="stat-label">Monuments</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="citiesCount">8</div>
+                    <div class="stat-label">Villes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="categoriesCount">10</div>
+                    <div class="stat-label">Catégories</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-controls">
+                <button class="map-btn" id="zoomIn" title="Zoom avant">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button class="map-btn" id="zoomOut" title="Zoom arrière">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="map-btn" id="locateMe" title="Me localiser">
+                    <i class="fas fa-location-crosshairs"></i>
+                </button>
+                <button class="map-btn" id="resetView" title="Vue d'ensemble">
+                    <i class="fas fa-globe-africa"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-flag"></i> Maroc Tourisme - CM 2030
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-info-circle"></i> À propos</a>
+                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="#"><i class="fas fa-shield-alt"></i> Confidentialité</a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Carte Interactive des Monuments Historiques du Maroc | Tous droits réservés
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // ===========================================
+        // DONNÉES DES 24 MONUMENTS DU MAROC
+        // AVEC LES CHEMINS D'IMAGES LOCAUX
+        // ===========================================
+        const monumentsData = [
+            // ============ TANGER ============
+            {
+                id: 1,
+                name: 'Kasbah des Musées',
+                city: 'Tanger',
+                description: 'Ancienne résidence des sultans, transformée en musée d\'art marocain avec vue panoramique sur le détroit de Gibraltar.',
+                latitude: 35.788,
+                longitude: -5.812,
+                category: 'Historique',
+                image: '/static/places/images/kasbah_musee.jpg',
+                image_alt: 'Kasbah des Musées à Tanger',
+                hours: '9h00 - 18h00',
+                price: '20 DH',
+                best_time: 'Avril à Juin',
+                full_description: 'La Kasbah des Musées est une forteresse historique située au point le plus haut de la médina de Tanger. Elle abrite aujourd\'hui le Musée d\'Art Marocain et le Musée des Antiquités. La vue depuis ses remparts sur le détroit de Gibraltar est spectaculaire.'
+            },
+            {
+                id: 2,
+                name: 'Grottes d\'Hercule',
+                city: 'Tanger',
+                description: 'Grottes naturelles spectaculaires avec une ouverture en forme d\'Afrique sur l\'océan Atlantique.',
+                latitude: 35.752,
+                longitude: -5.928,
+                category: 'Naturel',
+                image: '/static/places/images/grottes_hercule.jpg',
+                image_alt: 'Grottes d\'Hercule à Tanger',
+                hours: '8h00 - 19h00',
+                price: '10 DH',
+                best_time: 'Toute l\'année',
+                full_description: 'Les Grottes d\'Hercule sont des cavités naturelles creusées par l\'érosion marine. L\'ouverture principale a la forme du continent africain. Elles doivent leur nom à la légende selon laquelle Hercule s\'y reposait après avoir accompli ses travaux.'
+            },
+            {
+                id: 3,
+                name: 'Médina de Tanger',
+                city: 'Tanger',
+                description: 'Vieille ville historique aux ruelles étroites, souks animés, et architecture traditionnelle marocaine.',
+                latitude: 35.786,
+                longitude: -5.813,
+                category: 'Culturel',
+                image: '/static/places/images/medina_tanger.jpg',
+                image_alt: 'Médina de Tanger',
+                hours: 'Toute la journée',
+                price: 'Gratuit',
+                best_time: 'Matin ou fin d\'après-midi',
+                full_description: 'La médina de Tanger est un labyrinthe de ruelles colorées, de souks animés et de maisons blanches. C\'est le cœur historique de la ville, où se mêlent influences marocaines, andalouses et européennes.'
+            },
+            
+            // ============ MARRAKECH ============
+            {
+                id: 4,
+                name: 'Place Jemaa el-Fna',
+                city: 'Marrakech',
+                description: 'Place emblématique classée au patrimoine de l\'UNESCO, cœur animé de la ville.',
+                latitude: 31.626,
+                longitude: -7.989,
+                category: 'Culturel',
+                image: '/static/places/images/jemaa_elfna.jpg',
+                image_alt: 'Place Jemaa el-Fna à Marrakech',
+                hours: '24h/24',
+                price: 'Gratuit',
+                best_time: 'En soirée',
+                full_description: 'Cœur battant de Marrakech, cette place historique s\'anime dès le coucher du soleil avec conteurs, musiciens, charmeurs de serpents, vendeurs de jus d\'orange et restaurants de rue.'
+            },
+            {
+                id: 5,
+                name: 'Palais Bahia',
+                city: 'Marrakech',
+                description: 'Chef-d\'œuvre de l\'architecture marocaine du 19ème siècle avec jardins andalous.',
+                latitude: 31.619,
+                longitude: -7.973,
+                category: 'Architectural',
+                image: '/static/places/images/palais_bahia.jpg',
+                image_alt: 'Palais Bahia à Marrakech',
+                hours: '9h00 - 17h00',
+                price: '70 DH',
+                best_time: 'Octobre à Avril',
+                full_description: 'Construit à la fin du 19ème siècle pour le grand vizir Ahmed ben Moussa, le Palais Bahia compte 150 pièces réparties sur 8 hectares de jardins, patios et fontaines.'
+            },
+            {
+                id: 6,
+                name: 'Mosquée Koutoubia',
+                city: 'Marrakech',
+                description: 'Symbole de Marrakech, son minaret du 12ème siècle a inspiré la Giralda de Séville.',
+                latitude: 31.624,
+                longitude: -7.994,
+                category: 'Religieux',
+                image: '/static/places/images/mosquee_koutoubia.jpg',
+                image_alt: 'Mosquée Koutoubia à Marrakech',
+                hours: 'Extérieur seulement',
+                price: 'Gratuit (extérieur)',
+                best_time: 'Toute la journée',
+                full_description: 'La mosquée Koutoubia, construite sous la dynastie Almohade, est la plus grande mosquée de Marrakech. Son minaret de 77 mètres est un modèle de l\'architecture hispano-mauresque.'
+            },
+            
+            // ============ FÈS ============
+            {
+                id: 7,
+                name: 'Médina de Fès el-Bali',
+                city: 'Fès',
+                description: 'Plus grande médina du monde, labyrinthe de 9 400 ruelles classé UNESCO.',
+                latitude: 34.063,
+                longitude: -4.973,
+                category: 'Historique',
+                image: '/static/places/images/medina_fes.jpg',
+                image_alt: 'Médina de Fès',
+                hours: 'Toute la journée',
+                price: 'Gratuit',
+                best_time: 'Matin',
+                full_description: 'Fondée au 9ème siècle, la médina de Fès est la plus ancienne et la plus grande du monde arabe. Elle abrite mosquées, médersas, fondouks et des milliers d\'artisans.'
+            },
+            {
+                id: 8,
+                name: 'Université Al Quaraouiyine',
+                city: 'Fès',
+                description: 'Plus ancienne université au monde encore en activité, fondée en 859.',
+                latitude: 34.064,
+                longitude: -4.973,
+                category: 'Éducatif',
+                image: '/static/places/images/al_quaraouiyine.jpg',
+                image_alt: 'Université Al Quaraouiyine',
+                hours: 'Visite guidée seulement',
+                price: 'Non ouvert au public',
+                best_time: 'Sur rendez-vous',
+                full_description: 'Fondée en 859 par Fatima al-Fihriya, l\'Université Al Quaraouiyine est la plus ancienne université du monde encore en activité. Elle fut un grand centre d\'enseignement des sciences islamiques.'
+            },
+            {
+                id: 9,
+                name: 'Tanneries Chouara',
+                city: 'Fès',
+                description: 'Tanneries traditionnelles utilisant des techniques ancestrales du Moyen Âge.',
+                latitude: 34.065,
+                longitude: -4.980,
+                category: 'Artisanal',
+                image: '/static/places/images/tanneries_fes.jpg',
+                image_alt: 'Tanneries Chouara à Fès',
+                hours: '8h00 - 19h00',
+                price: 'Gratuit (vue depuis les terrasses)',
+                best_time: 'Matin',
+                full_description: 'Les tanneries Chouara utilisent des méthodes de tannage du cuir inchangées depuis le Moyen Âge. Les cuves colorées offrent un spectacle unique et photographique.'
+            },
+            
+            // ============ MEKNÈS ============
+            {
+                id: 10,
+                name: 'Bab Mansour',
+                city: 'Meknès',
+                description: 'Porte monumentale considérée comme la plus belle du Maroc.',
+                latitude: 33.894,
+                longitude: -5.565,
+                category: 'Architectural',
+                image: '/static/places/images/bab_mansour.jpg',
+                image_alt: 'Bab Mansour à Meknès',
+                hours: 'Toujours visible',
+                price: 'Gratuit',
+                best_time: 'Fin d\'après-midi',
+                full_description: 'Construite entre 1672 et 1673, Bab Mansour est la plus grande et plus ornée des portes de Meknès. Elle marque l\'entrée principale de la ville impériale.'
+            },
+            {
+                id: 11,
+                name: 'Mausolée Moulay Ismail',
+                city: 'Meknès',
+                description: 'Tombeau du sultan Moulay Ismail, fondateur de Meknès comme capitale.',
+                latitude: 33.892,
+                longitude: -5.563,
+                category: 'Royal',
+                image: '/static/places/images/mausolee_ismail.jpg',
+                image_alt: 'Mausolée Moulay Ismail',
+                hours: '9h00 - 12h00, 15h00 - 18h00',
+                price: 'Gratuit',
+                best_time: 'Matin',
+                full_description: 'Ce mausolée abrite la tombe du sultan Moulay Ismail qui régna de 1672 à 1727 et fit de Meknès la capitale du Maroc. C\'est l\'un des rares sanctuaires marocains ouverts aux non-musulmans.'
+            },
+            {
+                id: 12,
+                name: 'Place El-Hedim',
+                city: 'Meknès',
+                description: 'Grande place animée entre la médina et Bab Mansour, cœur social de la ville.',
+                latitude: 33.893,
+                longitude: -5.566,
+                category: 'Culturel',
+                image: '/static/places/images/place_elhedim.jpg',
+                image_alt: 'Place El-Hedim à Meknès',
+                hours: 'Toute la journée',
+                price: 'Gratuit',
+                best_time: 'En soirée',
+                full_description: 'Cette grande place, semblable à la Jamaa el-Fna de Marrakech, est le cœur social de Meknès. Elle s\'anime le soir avec des spectacles de rue, des vendeurs et des restaurants.'
+            },
+            
+            // ============ RABAT ============
+            {
+                id: 13,
+                name: 'Tour Hassan',
+                city: 'Rabat',
+                description: 'Minaret inachevé du 12ème siècle, symbole de Rabat et site UNESCO.',
+                latitude: 34.024,
+                longitude: -6.822,
+                category: 'Historique',
+                image: '/static/places/images/tour_hassan.jpg',
+                image_alt: 'Tour Hassan à Rabat',
+                hours: 'Toujours visible',
+                price: 'Gratuit',
+                best_time: 'Toute la journée',
+                full_description: 'La Tour Hassan est le minaret d\'une mosquée inachevée du 12ème siècle, devenue le symbole de Rabat. Haute de 44 mètres, elle domine l\'embouchure du Bouregreg.'
+            },
+            {
+                id: 14,
+                name: 'Kasbah des Oudayas',
+                city: 'Rabat',
+                description: 'Forteresse historique avec jardin andalou et vue sur l\'océan Atlantique.',
+                latitude: 34.030,
+                longitude: -6.836,
+                category: 'Historique',
+                image: '/static/places/images/kasbah_oudayas.jpg',
+                image_alt: 'Kasbah des Oudayas à Rabat',
+                hours: '8h00 - 20h00',
+                price: 'Gratuit',
+                best_time: 'Après-midi',
+                full_description: 'La Kasbah des Oudayas est une forteresse du 12ème siècle offrant une vue magnifique sur l\'océan Atlantique et l\'embouchure du Bouregreg. Elle abrite un charmant jardin andalou et un musée.'
+            },
+            {
+                id: 15,
+                name: 'Mausolée Mohammed V',
+                city: 'Rabat',
+                description: 'Tombeau royal d\'architecture marocaine moderne, abritant trois rois.',
+                latitude: 34.023,
+                longitude: -6.823,
+                category: 'Royal',
+                image: '/static/places/images/mausolee_mohammed5.jpg',
+                image_alt: 'Mausolée Mohammed V à Rabat',
+                hours: '9h00 - 18h00',
+                price: 'Gratuit',
+                best_time: 'Matin',
+                full_description: 'Ce mausolée abrite les tombes du roi Mohammed V et de ses fils Hassan II et Moulay Abdellah. C\'est un chef-d\'œuvre de l\'architecture marocaine moderne, avec son toit pyramidal en tuiles vertes.'
+            },
+            
+            // ============ CASABLANCA ============
+            {
+                id: 16,
+                name: 'Mosquée Hassan II',
+                city: 'Casablanca',
+                description: 'Plus grande mosquée d\'Afrique avec minaret de 210 mètres, partiellement sur la mer.',
+                latitude: 33.607,
+                longitude: -7.632,
+                category: 'Religieux',
+                image: '/static/places/images/hassan2.jpg',
+                image_alt: 'Mosquée Hassan II à Casablanca',
+                hours: '9h00 - 17h00 (visites)',
+                price: '120 DH',
+                best_time: 'Matin',
+                full_description: 'La mosquée Hassan II est la plus grande mosquée du Maroc et la 3ème plus grande au monde. Son minaret de 210 mètres est le plus haut du monde. Particularité unique : elle est construite partiellement sur la mer.'
+            },
+            {
+                id: 17,
+                name: 'Quartier Habous',
+                city: 'Casablanca',
+                description: 'Quartier historique mélangeant architecture traditionnelle et moderne, avec souk artisanal.',
+                latitude: 33.573,
+                longitude: -7.632,
+                category: 'Architectural',
+                image: '/static/places/images/quartier_habous.jpg',
+                image_alt: 'Quartier Habous à Casablanca',
+                hours: 'Toute la journée',
+                price: 'Gratuit',
+                best_time: 'Matin',
+                full_description: 'Le quartier Habous, construit dans les années 1930, est un mélange d\'architecture marocaine traditionnelle et moderne. Il abrite un souk artisanal, des librairies et la célèbre pâtisserie Bennis.'
+            },
+            {
+                id: 18,
+                name: 'Cathédrale Sacré-Cœur',
+                city: 'Casablanca',
+                description: 'Ancienne cathédrale de style art déco, maintenant centre culturel.',
+                latitude: 33.594,
+                longitude: -7.618,
+                category: 'Architectural',
+                image: '/static/places/images/cathedrale_casablanca.jpg',
+                image_alt: 'Cathédrale Sacré-Cœur à Casablanca',
+                hours: 'Extérieur seulement',
+                price: 'Gratuit',
+                best_time: 'Toute la journée',
+                full_description: 'La cathédrale Sacré-Cœur, de style art déco, est un témoignage de l\'histoire coloniale de Casablanca. Construite dans les années 1930, elle est aujourd\'hui un centre culturel.'
+            },
+            
+            // ============ OUJDA ============
+            {
+                id: 19,
+                name: 'Médina d\'Oujda',
+                city: 'Oujda',
+                description: 'Vieille ville historique avec souks traditionnels, entourée de remparts.',
+                latitude: 34.681,
+                longitude: -1.908,
+                category: 'Historique',
+                image: '/static/places/images/medina_oujda.jpg',
+                image_alt: 'Médina d\'Oujda',
+                hours: 'Toute la journée',
+                price: 'Gratuit',
+                best_time: 'Matin',
+                full_description: 'La médina d\'Oujda, entourée de remparts, conserve son authenticité avec ses souks traditionnels, ses ruelles étroites et son ambiance typiquement marocaine.'
+            },
+            {
+                id: 20,
+                name: 'Mosquée Sidi Yahya',
+                city: 'Oujda',
+                description: 'Mosquée historique du 13ème siècle, important centre spirituel de la ville.',
+                latitude: 34.680,
+                longitude: -1.908,
+                category: 'Religieux',
+                image: '/static/places/images/sidi_yahya.jpg',
+                image_alt: 'Mosquée Sidi Yahya à Oujda',
+                hours: 'Extérieur seulement',
+                price: 'Gratuit',
+                best_time: 'Toute la journée',
+                full_description: 'La mosquée Sidi Yahya, construite au 13ème siècle, est un important centre spirituel d\'Oujda. Elle est dédiée à Sidi Yahya ben Younes, saint patron de la ville.'
+            },
+            {
+                id: 21,
+                name: 'Parc Lalla Aïcha',
+                city: 'Oujda',
+                description: 'Jardin public historique au cœur de la ville, espace de détente et de verdure.',
+                latitude: 34.683,
+                longitude: -1.911,
+                category: 'Naturel',
+                image: '/static/places/images/parc_oujda.jpg',
+                image_alt: 'Parc Lalla Aïcha à Oujda',
+                hours: '8h00 - 20h00',
+                price: 'Gratuit',
+                best_time: 'Après-midi',
+                full_description: 'Le parc Lalla Aïcha est un jardin public historique offrant un espace de détente au cœur d\'Oujda. Avec ses allées ombragées et ses fleurs, c\'est un havre de paix pour les habitants.'
+            },
+            
+            // ============ AGADIR ============
+            {
+                id: 22,
+                name: 'Kasbah d\'Agadir Oufella',
+                city: 'Agadir',
+                description: 'Ruines de la forteresse avec vue panoramique sur la baie d\'Agadir.',
+                latitude: 30.433,
+                longitude: -9.615,
+                category: 'Historique',
+                image: '/static/places/images/kasbah_agadir.jpg',
+                image_alt: 'Kasbah d\'Agadir Oufella',
+                hours: 'Toujours visible',
+                price: 'Gratuit',
+                best_time: 'Coucher de soleil',
+                full_description: 'La Kasbah d\'Agadir Oufella, construite en 1540, offre une vue panoramique exceptionnelle sur la baie d\'Agadir. Détruite par le séisme de 1960, ses ruines rappellent l\'histoire de la ville.'
+            },
+            {
+                id: 23,
+                name: 'Vallée des Oiseaux',
+                city: 'Agadir',
+                description: 'Jardin zoologique avec diverses espèces d\'oiseaux et animaux, en plein centre-ville.',
+                latitude: 30.423,
+                longitude: -9.598,
+                category: 'Naturel',
+                image: '/static/places/images/vallee_oiseaux.jpg',
+                image_alt: 'Vallée des Oiseaux à Agadir',
+                hours: '9h00 - 18h00',
+                price: 'Gratuit',
+                best_time: 'Matin',
+                full_description: 'La Vallée des Oiseaux est un parc zoologique situé en plein centre-ville d\'Agadir. On y trouve diverses espèces d\'oiseaux, mais aussi des singes, des crocodiles et des flamants roses.'
+            },
+            {
+                id: 24,
+                name: 'Marina d\'Agadir',
+                city: 'Agadir',
+                description: 'Port de plaisance moderne avec restaurants, boutiques et promenades face à l\'océan.',
+                latitude: 30.416,
+                longitude: -9.619,
+                category: 'Moderne',
+                image: '/static/places/images/marina_agadir.jpg',
+                image_alt: 'Marina d\'Agadir',
+                hours: 'Toute la journée',
+                price: 'Gratuit',
+                best_time: 'En soirée',
+                full_description: 'La marina d\'Agadir est un port de plaisance moderne avec restaurants, boutiques et promenades face à l\'océan. C\'est le lieu idéal pour une promenade en bord de mer et un dîner face aux yachts.'
+            }
+        ];
+
+        // ===========================================
+        // CONFIGURATION DE LA CARTE
+        // ===========================================
+        let map = L.map('map').setView([31.7917, -7.0926], 6);
+        let markers = [];
+        let currentFilter = 'all';
+
+        // Ajouter la carte OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors | Maroc Tourisme'
+        }).addTo(map);
+
+        // ===========================================
+        // FONCTIONS UTILITAIRES
+        // ===========================================
+        
+        // Obtenir l'icône en fonction de la catégorie
+        function getIconForCategory(category) {
+            const icons = {
+                'Historique': 'fas fa-landmark',
+                'Culturel': 'fas fa-theater-masks',
+                'Religieux': 'fas fa-mosque',
+                'Architectural': 'fas fa-archway',
+                'Naturel': 'fas fa-tree',
+                'Artisanal': 'fas fa-hands',
+                'Royal': 'fas fa-crown',
+                'Moderne': 'fas fa-building',
+                'Éducatif': 'fas fa-graduation-cap'
+            };
+            return icons[category] || 'fas fa-map-marker-alt';
+        }
+        
+        // Obtenir la classe CSS pour le marqueur
+        function getMarkerClass(category) {
+            const classes = {
+                'Historique': 'marker-historique',
+                'Culturel': 'marker-culturel',
+                'Religieux': 'marker-religieux',
+                'Architectural': 'marker-architectural',
+                'Naturel': 'marker-naturel',
+                'Artisanal': 'marker-artisanal',
+                'Royal': 'marker-royal',
+                'Moderne': 'marker-moderne',
+                'Éducatif': 'marker-educatif'
+            };
+            return classes[category] || 'marker-default';
+        }
+        
+        // Créer un marqueur personnalisé
+        function createCustomMarker(category) {
+            const markerClass = getMarkerClass(category);
+            const iconHtml = `<i class="${getIconForCategory(category)}"></i>`;
+            
+            return L.divIcon({
+                className: `custom-marker ${markerClass}`,
+                html: iconHtml,
+                iconSize: [40, 40],
+                iconAnchor: [20, 40]
+            });
+        }
+        
+        // Fonction pour vérifier si une image existe
+        function checkImageExists(imageUrl, callback) {
+            const img = new Image();
+            img.onload = function() { callback(true); };
+            img.onerror = function() { callback(false); };
+            img.src = imageUrl;
+        }
+        
+        // Ajouter un monument sur la carte
+        function addMonumentToMap(monument) {
+            const icon = createCustomMarker(monument.category);
+            
+            const marker = L.marker([monument.latitude, monument.longitude], { 
+                icon: icon,
+                title: monument.name
+            }).addTo(map);
+            
+            // Vérifier si l'image existe
+            let imageHtml = '';
+            checkImageExists(monument.image, function(exists) {
+                if (exists) {
+                    imageHtml = `<img class="popup-image" src="${monument.image}" alt="${monument.image_alt}">`;
+                } else {
+                    imageHtml = `
+                        <div class="image-not-found">
+                            <div>
+                                <i class="fas fa-image" style="font-size: 40px; margin-bottom: 10px;"></i><br>
+                                Image non disponible
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Mettre à jour le popup si le marqueur est déjà ouvert
+                if (marker.isPopupOpen()) {
+                    marker.setPopupContent(createPopupContent(monument, imageHtml));
+                }
+            });
+            
+            // Créer le contenu du popup initial
+            const popupContent = createPopupContent(monument, 
+                `<div class="image-not-found">
+                    <div>
+                        <i class="fas fa-spinner fa-spin" style="font-size: 40px; margin-bottom: 10px;"></i><br>
+                        Chargement de l'image...
+                    </div>
+                </div>`
+            );
+            
+            marker.bindPopup(popupContent);
+            marker.monumentData = monument;
+            markers.push(marker);
+            
+            return marker;
+        }
+        
+        // Créer le contenu HTML du popup
+        function createPopupContent(monument, imageHtml) {
+            return `
+                <div style="padding: 8px;">
+                    <div class="popup-title">${monument.name}</div>
+                    <div class="popup-city">
+                        <i class="fas fa-city"></i> ${monument.city}
+                    </div>
+                    <div class="popup-category">${monument.category}</div>
+                    ${imageHtml}
+                    <div class="popup-description">${monument.description}</div>
+                    <div class="popup-details">
+                        <div><strong><i class="fas fa-clock"></i> Horaires:</strong> ${monument.hours}</div>
+                        <div><strong><i class="fas fa-ticket-alt"></i> Prix:</strong> ${monument.price}</div>
+                        <div><strong><i class="fas fa-calendar-alt"></i> Meilleure période:</strong> ${monument.best_time}</div>
+                    </div>
+                    <button class="popup-btn" onclick="showMonumentDetails(${monument.id})">
+                        <i class="fas fa-info-circle"></i> Voir les détails complets
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Afficher les détails d'un monument
+        window.showMonumentDetails = function(id) {
+            const monument = monumentsData.find(m => m.id === id);
+            if (monument) {
+                alert(
+                    `🏛️ ${monument.name}\n\n` +
+                    `📍 Ville: ${monument.city}\n` +
+                    `🏷️ Catégorie: ${monument.category}\n` +
+                    `⏰ Horaires: ${monument.hours}\n` +
+                    `💰 Prix: ${monument.price}\n` +
+                    `📅 Meilleure période: ${monument.best_time}\n\n` +
+                    `📖 Description complète:\n${monument.full_description}`
+                );
+            }
+        };
+        
+        // Charger tous les monuments
+        function loadAllMonuments(filter = 'all') {
+            // Supprimer les marqueurs existants
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+            
+            // Filtrer les monuments
+            const filteredMonuments = filter === 'all' 
+                ? monumentsData 
+                : monumentsData.filter(m => m.city === filter);
+            
+            // Ajouter les marqueurs sur la carte
+            filteredMonuments.forEach(monument => {
+                addMonumentToMap(monument);
+            });
+            
+            // Mettre à jour la liste
+            updatePlacesList(filteredMonuments);
+            
+            // Mettre à jour les statistiques
+            updateStatistics();
+            
+            // Ajuster la vue de la carte
+            if (filteredMonuments.length > 0) {
+                const bounds = L.latLngBounds(filteredMonuments.map(m => [m.latitude, m.longitude]));
+                map.fitBounds(bounds.pad(0.1));
+            } else {
+                // Si aucun résultat, revenir à la vue générale
+                map.setView([31.7917, -7.0926], 6);
+            }
+        }
+        
+        // Mettre à jour la liste des lieux
+        function updatePlacesList(monuments) {
+            const placeList = document.getElementById('placeList');
+            const placeCount = document.getElementById('placeCount');
+            
+            placeList.innerHTML = '';
+            placeCount.textContent = monuments.length;
+            
+            monuments.forEach(monument => {
+                const placeItem = document.createElement('div');
+                placeItem.className = 'place-item';
+                placeItem.dataset.id = monument.id;
+                
+                placeItem.innerHTML = `
+                    <div class="place-name">
+                        <span>${monument.name}</span>
+                        <span style="font-size: 12px; color: #0d5e9c;">#${monument.id}</span>
+                    </div>
+                    <div class="place-city">
+                        <i class="fas fa-map-pin"></i> ${monument.city}
+                    </div>
+                    <div class="place-category">${monument.category}</div>
+                `;
+                
+                placeItem.addEventListener('click', function() {
+                    // Centrer la carte sur ce monument
+                    map.setView([monument.latitude, monument.longitude], 14);
+                    
+                    // Ouvrir le popup
+                    const marker = markers.find(m => m.monumentData.id === monument.id);
+                    if (marker) {
+                        marker.openPopup();
+                    }
+                    
+                    // Mettre en évidence dans la liste
+                    document.querySelectorAll('.place-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+                
+                placeList.appendChild(placeItem);
+            });
+        }
+        
+        // Mettre à jour les statistiques
+        function updateStatistics() {
+            const totalPlaces = monumentsData.length;
+            const cities = [...new Set(monumentsData.map(m => m.city))].length;
+            const categories = [...new Set(monumentsData.map(m => m.category))].length;
+            
+            document.getElementById('totalPlaces').textContent = totalPlaces;
+            document.getElementById('citiesCount').textContent = cities;
+            document.getElementById('categoriesCount').textContent = categories;
+        }
+        
+        // Rechercher des monuments
+        function searchMonuments(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                loadAllMonuments(currentFilter);
+                return;
+            }
+            
+            const filtered = monumentsData.filter(monument => {
+                return (
+                    monument.name.toLowerCase().includes(searchTerm) ||
+                    monument.city.toLowerCase().includes(searchTerm) ||
+                    monument.description.toLowerCase().includes(searchTerm) ||
+                    monument.category.toLowerCase().includes(searchTerm)
+                );
+            });
+            
+            // Mettre à jour l'affichage
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+            
+            filtered.forEach(monument => {
+                addMonumentToMap(monument);
+            });
+            
+            updatePlacesList(filtered);
+            
+            if (filtered.length > 0) {
+                const bounds = L.latLngBounds(filtered.map(m => [m.latitude, m.longitude]));
+                map.fitBounds(bounds.pad(0.1));
+            }
+        }
+        
+        // ===========================================
+        // ÉVÉNEMENTS ET INITIALISATION
+        // ===========================================
+        
+        // Filtres
+        document.querySelectorAll('.filter-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.filter-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                currentFilter = this.dataset.filter;
+                loadAllMonuments(currentFilter);
+            });
+        });
+        
+        // Recherche
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            searchMonuments(e.target.value);
+        });
+        
+        // Contrôles de la carte
+        document.getElementById('zoomIn').addEventListener('click', function() {
+            map.zoomIn();
+        });
+        
+        document.getElementById('zoomOut').addEventListener('click', function() {
+            map.zoomOut();
+        });
+        
+        document.getElementById('resetView').addEventListener('click', function() {
+            map.setView([31.7917, -7.0926], 6);
+        });
+        
+        document.getElementById('locateMe').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    
+                    map.setView([userLat, userLng], 13);
+                    
+                    // Ajouter un marqueur pour la position utilisateur
+                    L.marker([userLat, userLng], {
+                        icon: L.divIcon({
+                            className: 'user-location-marker',
+                            html: '<i class="fas fa-user"></i>',
+                            iconSize: [40, 40],
+                            iconAnchor: [20, 40]
+                        })
+                    }).addTo(map).bindPopup('Votre position actuelle').openPopup();
+                });
+            } else {
+                alert("La géolocalisation n'est pas supportée par votre navigateur.");
+            }
+        });
+        
+        // Initialisation
+        function initMap() {
+            loadAllMonuments();
+            console.log('Carte interactive des monuments du Maroc chargée avec succès !');
+            console.log('Nombre de monuments :', monumentsData.length);
+            console.log('Villes représentées :', [...new Set(monumentsData.map(m => m.city))].join(', '));
+            console.log('Images chargées depuis : /static/places/images/');
+        }
+        
+        // Démarrer la carte
+        initMap();
+    </script>
+</body>
+</html>

@@ -1,16 +1,17 @@
 ﻿# places/views.py
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect
 
-def place_list(request):
-    # Liste complète des 24 lieux avec images locales
-    places = [
+# Fonction pour récupérer tous les lieux (évite la duplication)
+def get_all_places():
+    """Retourne la liste complète des 24 lieux touristiques du Maroc"""
+    return [
         # ============ TANGER ============
         {
             'id': 1,
             'name': 'Kasbah des Musées',
             'city': 'Tanger',
             'description': 'Ancienne résidence des sultans, transformée en musée d\'art marocain avec vue panoramique sur le détroit de Gibraltar.',
-            'image_url': 'kasbah_musees.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'kasbah_musee.jpg',
             'image_alt': 'Kasbah des Musées à Tanger',
             'lat': 35.788, 
             'lng': -5.812,
@@ -25,7 +26,7 @@ def place_list(request):
             'name': 'Grottes d\'Hercule',
             'city': 'Tanger',
             'description': 'Grottes naturelles spectaculaires avec une ouverture en forme d\'Afrique sur l\'océan Atlantique.',
-            'image_url': 'grottes_hercule.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'grottes_hercule.jpg',
             'image_alt': 'Grottes d\'Hercule à Tanger',
             'lat': 35.752, 
             'lng': -5.928,
@@ -40,7 +41,7 @@ def place_list(request):
             'name': 'Médina de Tanger',
             'city': 'Tanger',
             'description': 'Vieille ville historique aux ruelles étroites, souks animés, et architecture traditionnelle marocaine.',
-            'image_url': 'medina_tanger.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'medina_tanger.jpg',
             'image_alt': 'Médina de Tanger',
             'lat': 35.786, 
             'lng': -5.813,
@@ -57,7 +58,7 @@ def place_list(request):
             'name': 'Place Jemaa el-Fna',
             'city': 'Marrakech',
             'description': 'Place emblématique classée au patrimoine de l\'UNESCO.',
-            'image_url': 'jemaa_elfna.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'jemaa_elfna.jpg',
             'image_alt': 'Place Jemaa el-Fna à Marrakech',
             'lat': 31.626, 
             'lng': -7.989,
@@ -72,7 +73,7 @@ def place_list(request):
             'name': 'Palais Bahia',
             'city': 'Marrakech',
             'description': 'Chef-d\'œuvre de l\'architecture marocaine du 19ème siècle.',
-            'image_url': 'palais_bahia.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'palais_bahia.jpg',
             'image_alt': 'Palais Bahia à Marrakech',
             'lat': 31.619, 
             'lng': -7.973,
@@ -87,7 +88,7 @@ def place_list(request):
             'name': 'Mosquée Koutoubia',
             'city': 'Marrakech',
             'description': 'Symbole de Marrakech, son minaret du 12ème siècle a inspiré la Giralda de Séville.',
-            'image_url': 'mosquee_koutoubia.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'mosquee_koutoubia.jpg',
             'image_alt': 'Mosquée Koutoubia à Marrakech',
             'lat': 31.624, 
             'lng': -7.994,
@@ -104,7 +105,7 @@ def place_list(request):
             'name': 'Médina de Fès el-Bali',
             'city': 'Fès',
             'description': 'Plus grande médina du monde, labyrinthe de 9 400 ruelles classé UNESCO.',
-            'image_url': 'medina_fes.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'medina_fes.jpg',
             'image_alt': 'Médina de Fès',
             'lat': 34.063, 
             'lng': -4.973,
@@ -119,7 +120,7 @@ def place_list(request):
             'name': 'Université Al Quaraouiyine',
             'city': 'Fès',
             'description': 'Plus ancienne université au monde encore en activité, fondée en 859.',
-            'image_url': 'al_quaraouiyine.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'al_quaraouiyine.jpg',
             'image_alt': 'Université Al Quaraouiyine',
             'lat': 34.064, 
             'lng': -4.973,
@@ -134,7 +135,7 @@ def place_list(request):
             'name': 'Tanneries Chouara',
             'city': 'Fès',
             'description': 'Tanneries traditionnelles utilisant des techniques ancestrales.',
-            'image_url': 'tanneries_fes.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'tanneries_fes.jpg',
             'image_alt': 'Tanneries Chouara à Fès',
             'lat': 34.065, 
             'lng': -4.980,
@@ -151,7 +152,7 @@ def place_list(request):
             'name': 'Bab Mansour',
             'city': 'Meknès',
             'description': 'Porte monumentale considérée comme la plus belle du Maroc.',
-            'image_url': 'bab_mansour.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'bab_mansour.jpg',
             'image_alt': 'Bab Mansour à Meknès',
             'lat': 33.894, 
             'lng': -5.565,
@@ -166,7 +167,7 @@ def place_list(request):
             'name': 'Mausolée Moulay Ismail',
             'city': 'Meknès',
             'description': 'Tombeau du sultan Moulay Ismail, fondateur de Meknès.',
-            'image_url': 'mausolee_ismail.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'mausolee_ismail.jpg',
             'image_alt': 'Mausolée Moulay Ismail',
             'lat': 33.892, 
             'lng': -5.563,
@@ -181,7 +182,7 @@ def place_list(request):
             'name': 'Place El-Hedim',
             'city': 'Meknès',
             'description': 'Grande place animée entre la médina et Bab Mansour.',
-            'image_url': 'place_elhedim.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'place_elhedim.jpg',
             'image_alt': 'Place El-Hedim à Meknès',
             'lat': 33.893, 
             'lng': -5.566,
@@ -198,7 +199,7 @@ def place_list(request):
             'name': 'Tour Hassan',
             'city': 'Rabat',
             'description': 'Minaret inachevé du 12ème siècle, symbole de Rabat.',
-            'image_url': 'tour_hassan.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'tour_hassan.jpg',
             'image_alt': 'Tour Hassan à Rabat',
             'lat': 34.024, 
             'lng': -6.822,
@@ -213,7 +214,7 @@ def place_list(request):
             'name': 'Kasbah des Oudayas',
             'city': 'Rabat',
             'description': 'Forteresse historique avec jardin andalou et vue sur l\'océan.',
-            'image_url': 'kasbah_oudayas.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'kasbah_oudayas.jpg',
             'image_alt': 'Kasbah des Oudayas à Rabat',
             'lat': 34.030, 
             'lng': -6.836,
@@ -228,7 +229,7 @@ def place_list(request):
             'name': 'Mausolée Mohammed V',
             'city': 'Rabat',
             'description': 'Tombeau royal d\'architecture marocaine moderne.',
-            'image_url': 'mausolee_mohammed5.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'mausolee_mohammed5.jpg',
             'image_alt': 'Mausolée Mohammed V à Rabat',
             'lat': 34.023, 
             'lng': -6.823,
@@ -245,7 +246,7 @@ def place_list(request):
             'name': 'Mosquée Hassan II',
             'city': 'Casablanca',
             'description': 'Plus grande mosquée d\'Afrique avec minaret de 210 mètres.',
-            'image_url': 'hassan2.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'hassan2.jpg',
             'image_alt': 'Mosquée Hassan II à Casablanca',
             'lat': 33.607, 
             'lng': -7.632,
@@ -260,7 +261,7 @@ def place_list(request):
             'name': 'Quartier Habous',
             'city': 'Casablanca',
             'description': 'Quartier historique mélangeant architecture traditionnelle et moderne.',
-            'image_url': 'quartier_habous.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'quartier_habous.jpg',
             'image_alt': 'Quartier Habous à Casablanca',
             'lat': 33.573, 
             'lng': -7.632,
@@ -275,7 +276,7 @@ def place_list(request):
             'name': 'Cathédrale Sacré-Cœur',
             'city': 'Casablanca',
             'description': 'Ancienne cathédrale de style art déco, maintenant centre culturel.',
-            'image_url': 'cathedrale_casablanca.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'cathedrale_casablanca.jpg',
             'image_alt': 'Cathédrale Sacré-Cœur à Casablanca',
             'lat': 33.594, 
             'lng': -7.618,
@@ -292,7 +293,7 @@ def place_list(request):
             'name': 'Médina d\'Oujda',
             'city': 'Oujda',
             'description': 'Vieille ville historique avec souks traditionnels.',
-            'image_url': 'medina_oujda.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'medina_oujda.jpg',
             'image_alt': 'Médina d\'Oujda',
             'lat': 34.681, 
             'lng': -1.908,
@@ -307,7 +308,7 @@ def place_list(request):
             'name': 'Mosquée Sidi Yahya',
             'city': 'Oujda',
             'description': 'Mosquée historique du 13ème siècle.',
-            'image_url': 'sidi_yahya.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'sidi_yahya.jpg',
             'image_alt': 'Mosquée Sidi Yahya à Oujda',
             'lat': 34.680, 
             'lng': -1.908,
@@ -322,7 +323,7 @@ def place_list(request):
             'name': 'Parc Lalla Aïcha',
             'city': 'Oujda',
             'description': 'Jardin public historique au cœur de la ville.',
-            'image_url': 'parc_oujda.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'parc_oujda.jpg',
             'image_alt': 'Parc Lalla Aïcha à Oujda',
             'lat': 34.683, 
             'lng': -1.911,
@@ -339,7 +340,7 @@ def place_list(request):
             'name': 'Kasbah d\'Agadir Oufella',
             'city': 'Agadir',
             'description': 'Ruines de la forteresse avec vue sur la baie d\'Agadir.',
-            'image_url': 'kasbah_agadir.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'kasbah_agadir.jpg',
             'image_alt': 'Kasbah d\'Agadir Oufella',
             'lat': 30.433, 
             'lng': -9.615,
@@ -354,7 +355,7 @@ def place_list(request):
             'name': 'Vallée des Oiseaux',
             'city': 'Agadir',
             'description': 'Jardin zoologique avec diverses espèces d\'oiseaux.',
-            'image_url': 'vallee_oiseaux.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'vallee_oiseaux.jpg',
             'image_alt': 'Vallée des Oiseaux à Agadir',
             'lat': 30.423, 
             'lng': -9.598,
@@ -369,7 +370,7 @@ def place_list(request):
             'name': 'Marina d\'Agadir',
             'city': 'Agadir',
             'description': 'Port de plaisance moderne avec restaurants et boutiques.',
-            'image_url': 'marina_agadir.jpg',  # CHANGÉ: 'image' → 'image_url'
+            'image_url': 'marina_agadir.jpg',
             'image_alt': 'Marina d\'Agadir',
             'lat': 30.416, 
             'lng': -9.619,
@@ -380,12 +381,14 @@ def place_list(request):
             'full_description': 'La marina d\'Agadir est un port de plaisance moderne avec restaurants, boutiques et promenades face à l\'océan.'
         }
     ]
+
+# ============ VUES ============
+
+def place_list(request):
+    """Affiche la liste des lieux touristiques avec filtre par ville"""
+    places = get_all_places()
     
-    # SUPPRIME CETTE PARTIE - PAS BESOIN CAR ON A DÉJÀ 'image_url'
-    # for place in places:
-    #     place['image_url'] = place['image']  # Déjà fait ci-dessus
-    
-    # Filtrer par ville
+    # Filtrer par ville si un filtre est spécifié
     city_filter = request.GET.get('city', '')
     if city_filter:
         filtered_places = [p for p in places if p['city'].lower() == city_filter.lower()]
@@ -397,26 +400,30 @@ def place_list(request):
     return render(request, 'places/list.html', {'places': places})
 
 def place_detail(request, place_id):
-    # Appeler place_list pour récupérer toutes les données
-    all_places_response = place_list(request)
-    
-    # Extraire les données selon le type de réponse
-    if hasattr(all_places_response, 'context_data'):
-        all_places = all_places_response.context_data['places']
-    else:
-        # Sinon créer une liste vide
-        all_places = []
+    """Affiche le détail d'un lieu touristique spécifique"""
+    places = get_all_places()
     
     # Trouver le lieu spécifique
     place = None
-    for p in all_places:
+    for p in places:
         if p['id'] == int(place_id):
             place = p
             break
     
     if not place:
-        # Rediriger vers la liste si pas trouvé
-        from django.shortcuts import redirect
         return redirect('place_list')
     
     return render(request, 'places/detail.html', {'place': place})
+
+def map_view(request):
+    """Affiche la carte interactive avec tous les lieux géolocalisés"""
+    places = get_all_places()
+    
+    # Préparer les données pour la carte
+    map_data = {
+        'places': places,
+        'total_places': len(places),
+        'cities_count': len(set(p['city'] for p in places))  # Nombre de villes uniques
+    }
+    
+    return render(request, 'places/map_view.html', map_data)
