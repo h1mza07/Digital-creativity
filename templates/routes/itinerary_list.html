@@ -652,14 +652,15 @@
             </div>
         </div>
 
-        <!-- Bouton retour -->
+        <!-- Boutons d'action -->
         <div class="text-center mt-5 mb-5">
             <a href="/" class="btn btn-maroc">
                 <i class="fas fa-arrow-left me-2"></i>Retour à l'accueil
             </a>
             {% if user.is_authenticated %}
-            <a href="{% url 'create_itinerary' %}" class="btn btn-personal ms-3">
-                <i class="fas fa-plus-circle me-2"></i>Créer un itinéraire
+            <!-- Supprimé le bouton create_itinerary qui causait l'erreur -->
+            <a href="{% url 'profile' %}" class="btn btn-personal ms-3">
+                <i class="fas fa-user-circle me-2"></i>Mon profil
             </a>
             {% endif %}
         </div>
