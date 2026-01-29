@@ -16,11 +16,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.apps.UsersConfig',
+    'users',
     'worldcup2030',
     'cities.apps.CitiesConfig',
     'places.apps.PlacesConfig',
-    'routes.apps.RoutesConfig',
+    'routes',
     'hotels.apps.HotelsConfig',
 ]
 

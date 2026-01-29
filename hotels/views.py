@@ -23,3 +23,4 @@ def hotel_list_by_city(request, city_id):
     return render(request, 'hotels/hotel_list.html', {
         'title': f'Hôtels - Ville ID {city_id}'
     })
+

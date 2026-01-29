@@ -1,23 +1,18 @@
+# places/admin.py
 from django.contrib import admin
-from .models import Place
+from .models import Stadium, Place
+
+@admin.register(Stadium)
+class StadiumAdmin(admin.ModelAdmin):
+    list_display = ['name', 'city', 'capacity', 'is_world_cup_venue']
+    list_filter = ['city', 'is_world_cup_venue']
+    search_fields = ['name', 'city__name']
+    readonly_fields = ['created_at'] if hasattr(Stadium, 'created_at') else []
+
 
 @admin.register(Place)
 class PlaceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'city', 'created_at')
-    list_filter = ('city',)
-    search_fields = ('name', 'description', 'city__name')
-    ordering = ('-created_at',)
-    list_per_page = 20
-    
-    fieldsets = (
-        ('Informations principales', {
-            'fields': ('name', 'city', 'description')
-        }),
-        ('Localisation', {
-            'fields': ('latitude', 'longitude')
-        }),
-        ('Image', {
-            'fields': ('image',),
-            'classes': ('collapse',)
-        }),
-    )
+    list_display = ['name', 'city', 'place_type', 'is_free']
+    list_filter = ['city', 'place_type', 'is_free']
+    search_fields = ['name', 'city__name', 'description']
+    ordering = ['name']

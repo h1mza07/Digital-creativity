@@ -1,92 +1,80 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Itinéraires Hôtel → Stade</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-        .card { border-radius: 20px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s; }
-        .card:hover { transform: translateY(-10px); }
-        .card-header { background: linear-gradient(90deg, #ff8a00, #da1b60); color: white; font-weight: bold; font-size: 1.3rem; }
-        .btn-maps { background: linear-gradient(135deg, #00c6ff, #0072ff); color: white; font-weight: bold; padding: 12px; border-radius: 15px; width: 100%; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,114,255,0.4); }
-        .btn-maps:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,114,255,0.6); }
-        .stadium-badge { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; display: inline-block; margin-bottom: 10px; }
-        .info-box { background: #f8f9ff; border-radius: 15px; padding: 15px; margin: 10px 0; text-align: center; }
-        .info-value { font-size: 1.8rem; font-weight: bold; color: #667eea; }
-        .header { text-align: center; color: white; margin-bottom: 40px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .header h1 { font-size: 3rem; margin-bottom: 15px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🏆 Itinéraires Hôtel → Stade</h1>
-            <p>Découvrez comment rejoindre les stades depuis votre hôtel</p>
-        </div>
+{% extends "base.html" %}
 
-        <div class="row">
-            {% for itinerary in itineraries %}
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            {{ itinerary.title }}
-                        </div>
-                        <div class="card-body">
-                            {% if 'Stade' in itinerary.title %}
-                                <span class="stadium-badge">🏟️ {{ itinerary.stadium_name }}</span>
-                            {% endif %}
-                            
-                            <p class="text-muted">{{ itinerary.description|truncatewords:20 }}</p>
-                            
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="info-box">
-                                        <small>📏 Distance</small>
-                                        <div class="info-value">{{ itinerary.distance }} km</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="info-box">
-                                        <small>🏨 Hôtel</small>
-                                        <div class="info-value">{{ itinerary.hotel_name }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="info-box">
-                                        <small>⭐ Note</small>
-                                        <div class="info-value">{{ itinerary.hotel_rating }}/5</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="info-box">
-                                        <small>💰 Prix</small>
-                                        <div class="info-value">{{ itinerary.hotel_price }} MAD</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <a href="https://www.google.com/maps/dir/{{ itinerary.city }}/{{ itinerary.stadium_name }}" 
-                               target="_blank" 
-                               class="btn btn-maps">
-                                🗺️ Voir sur Google Maps
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {% empty %}
-                <div class="col-12 text-center py-5">
-                    <div class="alert alert-warning" style="border-radius: 20px; font-size: 1.3rem;">
-                        <h3>📭 Aucun itinéraire trouvé</h3>
-                        <p>Créez un nouvel itinéraire ou contactez l'administrateur</p>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+{% block title %}Mes Itinéraires Hôtel → Stade{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">🚗 Mes Itinéraires Hôtel → Stade</h1>
+        <a href="{% url 'routes:itinerary_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Nouvel itinéraire
+        </a>
     </div>
-</body>
-</html>
+
+    {% if not itineraries %}
+    <div class="alert alert-info mt-4">
+        <i class="fas fa-info-circle me-2"></i>
+        Aucun itinéraire hôtel → stade trouvé. Créez votre premier itinéraire pour commencer !
+    </div>
+    {% else %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-3 g-4">
+        {% for itinerary in itineraries %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <!-- Image -->
+                {% if itinerary.image %}
+                <img src="{{ itinerary.image.url }}" class="card-img-top" alt="{{ itinerary.title }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-route fa-3x text-muted"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <!-- En-tête -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0">{{ itinerary.title }}</h5>
+                        <span class="badge bg-{{ itinerary.difficulty|default:'facile' }}">
+                            {{ itinerary.get_difficulty_display }}
+                        </span>
+                    </div>
+                    
+                    <!-- Détails hôtel -->
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fas fa-hotel text-warning me-2 mt-1"></i>
+                        <div>
+                            <h6 class="mb-0">{{ itinerary.hotel.name }}</h6>
+                            <small class="text-muted">
+                                {{ itinerary.hotel.rating }} étoiles • {{ itinerary.hotel.price }}€/nuit
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <!-- Détails stade -->
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fas fa-stadium text-primary me-2 mt-1"></i>
+                        <div>
+                            <h6 class="mb-0">{{ itinerary.stadium.name }}</h6>
+                            <small class="text-muted">
+                                Distance : {{ itinerary.distance }} km
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <!-- Boutons d'action -->
+                    <div class="d-flex gap-2 mt-4">
+                        <a href="{% url 'routes:itinerary_detail' pk=itinerary.pk %}" class="btn btn-outline-primary flex-grow-1">
+                            <i class="fas fa-eye me-2"></i>Détails
+                        </a>
+                        <a href="#" class="btn btn-success flex-grow-1">
+                            <i class="fas fa-map-marked-alt me-2"></i>Carte
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

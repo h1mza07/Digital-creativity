@@ -25,6 +25,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Marrakech'],
             'rating': 5,
             'price': 220.00,
+            'address': 'Avenue Mohammed V, Marrakech 40000',
             'image_filename': 'marrakech/almansour.jpg'
         },
         {
@@ -33,6 +34,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Marrakech'],
             'rating': 4,
             'price': 130.00,
+            'address': 'Avenue Houman El Fetouaki, Marrakech 40000',
             'image_filename': 'marrakech/elmamounia.jpg'
         },
         {
@@ -41,6 +43,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Marrakech'],
             'rating': 3,
             'price': 35.00,
+            'address': 'Rue Riad Laarousse, Marrakech 40000',
             'image_filename': 'marrakech/backbarkershostelkech.jpg'
         },
         
@@ -51,6 +54,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Rabat'],
             'rating': 5,
             'price': 240.00,
+            'address': 'Avenue de la Victoire, Rabat 10000',
             'image_filename': 'rabat/sofitel.jpg'
         },
         {
@@ -59,6 +63,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Rabat'],
             'rating': 4,
             'price': 120.00,
+            'address': 'Avenue Mohammed V, Rabat 10000',
             'image_filename': 'rabat/premier.jpg'
         },
         {
@@ -67,6 +72,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Rabat'],
             'rating': 3,
             'price': 30.00,
+            'address': 'Rue des Consuls, Rabat 10000',
             'image_filename': 'rabat/hostel.jpg'
         },
         
@@ -77,6 +83,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Casablanca'],
             'rating': 5,
             'price': 450.00,
+            'address': 'Boulevard de la Corniche, Casablanca 20000',
             'image_filename': 'casablanca/Fourseason.jpg'
         },
         {
@@ -85,6 +92,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Casablanca'],
             'rating': 4,
             'price': 150.00,
+            'address': 'Avenue Hassan II, Casablanca 20000',
             'image_filename': 'casablanca/kenzibusiness.jpg'
         },
         {
@@ -93,6 +101,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Casablanca'],
             'rating': 3,
             'price': 40.00,
+            'address': 'Rue Mohammed El Beqal, Casablanca 20000',
             'image_filename': 'casablanca/budget.jpg'
         },
         
@@ -103,6 +112,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Fès'],
             'rating': 5,
             'price': 210.00,
+            'address': 'Rue Boukhessissat, Fès 30000',
             'image_filename': 'fes/Riadfes.jpg'
         },
         {
@@ -111,6 +121,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Fès'],
             'rating': 4,
             'price': 110.00,
+            'address': 'Avenue Hassan II, Fès 30000',
             'image_filename': 'fes/fesheritage.jpg'
         },
         {
@@ -119,6 +130,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Fès'],
             'rating': 3,
             'price': 28.00,
+            'address': 'Derb Sidi Boughaba, Fès 30000',
             'image_filename': 'fes/fesmedinahostel.jpg'
         },
         
@@ -129,14 +141,16 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Agadir'],
             'rating': 5,
             'price': 230.00,
+            'address': 'Boulevard de la Corniche, Agadir 80000',
             'image_filename': 'agadir/RoyalAtlas.jpg'
         },
         {
-            'name': 'Gadir Bay Hotel',
+            'name': 'Agadir Bay Hotel',
             'description': 'Hôtel 4 étoiles moderne avec accès direct à la plage',
             'city': cities_map['Agadir'],
             'rating': 4,
             'price': 140.00,
+            'address': 'Avenue Mohammed V, Agadir 80000',
             'image_filename': 'agadir/gadirBayHotel.jpg'
         },
         {
@@ -145,6 +159,7 @@ def add_hotels(apps, schema_editor):
             'city': cities_map['Agadir'],
             'rating': 3,
             'price': 32.00,
+            'address': 'Rue de la Plage, Agadir 80000',
             'image_filename': 'agadir/SurfHostel.jpg'
         },
     ]
@@ -165,7 +180,7 @@ def remove_hotels(apps, schema_editor):
         'Sofitel Rabat', 'Rabat Premier Hotel', 'Rabat Travelers Hostel',
         'Four Seasons Casablanca', 'Kenzi Business Hotel', 'Casablanca Budget Hostel',
         'Riad Fès', 'Fès Heritage Hotel', 'Fès Medina Hostel',
-        'Royal Atlas Agadir', 'Gadir Bay Hotel', 'Surf Hostel Agadir'
+        'Royal Atlas Agadir', 'Agadir Bay Hotel', 'Surf Hostel Agadir'
     ]
     Hotel.objects.filter(name__in=hotels_to_delete).delete()
 

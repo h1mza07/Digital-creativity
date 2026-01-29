@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>{{ title }}</h4>
+                </div>
+                
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Titre -->
+                        <div class="mb-3">
+                            <label class="form-label">Titre de l'itinéraire <span class="text-danger">*</span></label>
+                            <input type="text" name="title" class="form-control" required>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea name="description" class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <!-- Hôtel -->
+                        <div class="mb-3">
+                            <label class="form-label">Hôtel <span class="text-danger">*</span></label>
+                            <select name="hotel" class="form-select" required>
+                                <option value="">Sélectionnez un hôtel</option>
+                                {% for hotel in hotels %}
+                                <option value="{{ hotel.id }}">
+                                    {{ hotel.name }} ({{ hotel.city }}) - {{ hotel.rating }}★ - {{ hotel.price }}€/nuit
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Stade -->
+                        <div class="mb-3">
+                            <label class="form-label">Stade <span class="text-danger">*</span></label>
+                            <select name="stadium" class="form-select" required>
+                                <option value="">Sélectionnez un stade</option>
+                                {% for stadium in stadiums %}
+                                <option value="{{ stadium.id }}">
+                                    {{ stadium.name }} ({{ stadium.city }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Difficulté -->
+                        <div class="mb-3">
+                            <label class="form-label">Difficulté</label>
+                            <select name="difficulty" class="form-select">
+                                <option value="facile">Facile</option>
+                                <option value="moyen" selected>Moyen</option>
+                                <option value="difficile">Difficile</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Meilleure saison -->
+                        <div class="mb-3">
+                            <label class="form-label">Meilleure saison</label>
+                            <input type="text" name="best_season" class="form-control" placeholder="Printemps, Été, etc.">
+                        </div>
+                        
+                        <!-- Équipement requis -->
+                        <div class="mb-3">
+                            <label class="form-label">Équipement requis</label>
+                            <textarea name="required_equipment" class="form-control" rows="2" 
+                                      placeholder="Chaussures de marche, eau, etc."></textarea>
+                        </div>
+                        
+                        <!-- Contact -->
+                        <div class="mb-3">
+                            <label class="form-label">Contact / Info utile</label>
+                            <input type="text" name="contact_info" class="form-control" 
+                                   placeholder="Numéro d'urgence, site web, etc.">
+                        </div>
+                        
+                        <!-- Boutons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'routes:itinerary_list' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Créer l'itinéraire
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

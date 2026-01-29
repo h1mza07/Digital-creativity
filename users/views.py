@@ -42,7 +42,7 @@ def profile(request):
         form = ProfileForm(instance=profile)
 
     return render(request, 'users/profile.html', {
-        'form': form,
+        'profile': profile,
         'favorites': favorites
     })
 

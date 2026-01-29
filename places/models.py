@@ -1,33 +1,52 @@
 ﻿from django.db import models
-from cities.models import City  # Importe le modèle City existant
+from cities.models import City
 
-class Place(models.Model):
-    name = models.CharField(max_length=200, verbose_name="Nom du lieu")
-    description = models.TextField(verbose_name="Description")
-    city = models.ForeignKey(
-        City, 
-        on_delete=models.CASCADE, 
-        related_name='places',
-        verbose_name="Ville"
-    )
-    latitude = models.FloatField(verbose_name="Latitude", help_text="Ex: 31.6295")
-    longitude = models.FloatField(verbose_name="Longitude", help_text="Ex: -7.9811")
-    image = models.ImageField(
-        upload_to='places/',
-        blank=True,
-        null=True,
-        verbose_name="Image du lieu"
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = "Lieu touristique"
-        verbose_name_plural = "Lieux touristiques"
-
+class Stadium(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='stadiums')
+    address = models.CharField(max_length=300, blank=True)
+    capacity = models.IntegerField(default=0)
+    image = models.ImageField(upload_to='stadiums/', blank=True, null=True)
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
+    built_year = models.IntegerField(null=True, blank=True)
+    is_world_cup_venue = models.BooleanField(default=True)
+    
     def __str__(self):
         return f"{self.name} ({self.city.name})"
-        # Dans places/models.py
-latitude = models.FloatField(verbose_name="Latitude", blank=True, null=True)
-longitude = models.FloatField(verbose_name="Longitude", blank=True, null=True)
+    
+    class Meta:
+        ordering = ['name']
+        verbose_name = "Stade"
+        verbose_name_plural = "Stades"
+
+
+class Place(models.Model):
+    PLACE_TYPE_CHOICES = [
+        ('monument', 'Monument'),
+        ('museum', 'Musée'),
+        ('park', 'Parc'),
+        ('market', 'Marché'),
+        ('restaurant', 'Restaurant'),
+        ('other', 'Autre'),
+    ]
+    
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='places')
+    place_type = models.CharField(max_length=50, choices=PLACE_TYPE_CHOICES, default='other')
+    address = models.CharField(max_length=300, blank=True)
+    image = models.ImageField(upload_to='places/', blank=True, null=True)
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
+    entrance_fee = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    is_free = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.name} ({self.city.name})"
+    
+    class Meta:
+        ordering = ['name']
+        verbose_name = "Lieu"
+        verbose_name_plural = "Lieux"

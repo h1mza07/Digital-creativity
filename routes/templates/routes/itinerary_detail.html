@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+        {% extends "base.html" %}
 
 {% block title %}{{ itinerary.title }}{% endblock %}
 
@@ -8,55 +8,59 @@
         <div class="col-md-8">
             <div class="card shadow-sm mb-4">
                 {% if itinerary.image %}
-                    <img src="{{ itinerary.image.url }}" class="card-img-top img-fluid" alt="{{ itinerary.title }}">
+                <img src="{{ itinerary.image.url }}" class="card-img-top" alt="{{ itinerary.title }}" style="height: 300px; object-fit: cover;">
                 {% else %}
-                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
-                        <span class="text-muted">Aucune image disponible</span>
-                    </div>
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+                    <i class="fas fa-route fa-3x text-muted"></i>
+                </div>
                 {% endif %}
                 
                 <div class="card-body">
-                    <h1 class="card-title">{{ itinerary.title }}</h1>
-                    <p class="card-text">
-                        <strong>Durée :</strong> {{ itinerary.duration_days }} jours<br>
-                        <strong>Difficulté :</strong> {{ itinerary.difficulty }}<br>
-                        <strong>Ville :</strong> {{ itinerary.city }}
-                    </p>
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h1 class="card-title">{{ itinerary.title }}</h1>
+                        <span class="badge bg-{{ itinerary.difficulty|default:'facile' }}">
+                            {{ itinerary.get_difficulty_display }}
+                        </span>
+                    </div>
+                    
+                    <p class="card-text">{{ itinerary.description }}</p>
                     
                     <div class="mt-4">
-                        <h4>Parcours</h4>
-                        <div class="d-flex align-items-center mb-3">
+                        <h4>📍 Parcours</h4>
+                        
+                        <!-- Hôtel -->
+                        <div class="d-flex align-items-center mb-3 p-3 bg-light rounded">
                             <i class="fas fa-hotel fa-2x text-warning me-3"></i>
                             <div>
-                                <h5>{{ itinerary.hotel_name }}</h5>
-                                <p>{{ itinerary.hotel_rating }} étoiles • {{ itinerary.hotel_price }}€/nuit</p>
+                                <h5>{{ itinerary.hotel.name }}</h5>
+                                <p class="mb-0">
+                                    <i class="fas fa-star text-warning"></i> {{ itinerary.hotel.rating }} étoiles • 
+                                    {{ itinerary.hotel.price }}€/nuit
+                                </p>
+                                <p class="text-muted mb-0">{{ itinerary.hotel.address }}</p>
                             </div>
                         </div>
                         
-                        <div class="d-flex align-items-center mb-3">
+                        <!-- Stade -->
+                        <div class="d-flex align-items-center mb-3 p-3 bg-light rounded">
                             <i class="fas fa-stadium fa-2x text-primary me-3"></i>
                             <div>
-                                <h5>{{ itinerary.stadium_name }}</h5>
-                                <p>Distance : {{ itinerary.distance }} km</p>
+                                <h5>{{ itinerary.stadium.name }}</h5>
+                                <p class="mb-0">Distance : {{ itinerary.distance }} km</p>
+                                <p class="text-muted mb-0">{{ itinerary.stadium.address }}</p>
                             </div>
                         </div>
                         
-                        <div class="mt-4">
-                            <a href="#" class="btn btn-primary btn-lg w-100">
-                                <i class="fas fa-map-marked-alt me-2"></i> Voir la carte
+                        <!-- Boutons d'action -->
+                        <div class="d-flex gap-2 mt-4">
+                            <a href="{% url 'routes:itinerary_list' %}" class="btn btn-outline-secondary flex-grow-1">
+                                <i class="fas fa-arrow-left me-2"></i>Retour à la liste
+                            </a>
+                            <a href="#" class="btn btn-success flex-grow-1">
+                                <i class="fas fa-map-marked-alt me-2"></i>Voir la carte
                             </a>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="d-flex justify-content-between">
-                <a href="{% url 'itinerary_list' %}" class="btn btn-outline-secondary">
-                    ← Retour à la liste
-                </a>
-                <div>
-                    <a href="#" class="btn btn-success me-2">✅ Réserver</a>
-                    <a href="#" class="btn btn-outline-danger">❤️ Ajouter aux favoris</a>
                 </div>
             </div>
         </div>
@@ -69,13 +73,13 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <strong>Meilleure période :</strong> {{ itinerary.best_season }}
+                            <strong>Meilleure période :</strong> {{ itinerary.best_season|default:"Non spécifiée" }}
                         </li>
                         <li class="list-group-item">
-                            <strong>Équipement requis :</strong> {{ itinerary.required_equipment }}
+                            <strong>Équipement requis :</strong> {{ itinerary.required_equipment|default:"Aucun" }}
                         </li>
                         <li class="list-group-item">
-                            <strong>Contact :</strong> {{ itinerary.contact_info }}
+                            <strong>Contact :</strong> {{ itinerary.contact_info|default:"Non disponible" }}
                         </li>
                     </ul>
                     
