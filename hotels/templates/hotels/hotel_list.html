@@ -1,18 +1,58 @@
 {% extends "base.html" %}
 
-{% block title %}Liste des hôtels{% endblock %}
+{% block title %}Liste des hôtels - Maroc Tourisme 2030{% endblock %}
 
 {% block content %}
-<h1>Liste des hôtels</h1>
-<ul>
-    {% for hotel in hotels %}
-        <li>
-            <strong>{{ hotel.name }}</strong> - {{ hotel.city }} 
-            ({{ hotel.stars }} étoiles) - {{ hotel.price_per_night }} MAD/nuit
-        </li>
-    {% empty %}
-        <li>Aucun hôtel trouvé.</li>
-    {% endfor %}
-</ul>
-<a href="/routes/">Voir les itinéraires</a>
+<div class="container mt-4">
+    <h1>🏨 Liste des hôtels</h1>
+    <p class="lead">Découvrez les meilleurs hôtels au Maroc, près des sites touristiques et des stades de la Coupe du Monde 2030.</p>
+
+    <!-- Barre de recherche (optionnelle) -->
+    <form method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Rechercher un hôtel ou une ville..." value="{{ request.GET.q }}">
+            <button class="btn btn-primary" type="submit">🔍 Rechercher</button>
+        </div>
+    </form>
+
+    {% if hotels %}
+        <div class="row">
+        {% for hotel in hotels %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    {% if hotel.image %}
+                        <img src="{{ hotel.image.url }}" class="card-img-top" alt="{{ hotel.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="fas fa-hotel fa-3x"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ hotel.name }}</h5>
+                        <p class="card-text">
+                            <i class="fas fa-map-marker-alt text-muted"></i> {{ hotel.city.name }}
+                        </p>
+                        <p class="card-text">{{ hotel.description|truncatewords:20 }}</p>
+                        <div class="mt-auto">
+                            <span class="badge bg-warning text-dark">{{ hotel.rating }} ⭐</span>
+                            <span class="badge bg-info">{{ hotel.price }} MAD/nuit</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="{% url 'hotel_detail' pk=hotel.pk %}" class="btn btn-outline-primary btn-sm">Voir détails</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Aucun hôtel disponible pour le moment.
+        </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="/" class="btn btn-secondary">← Retour à l'accueil</a>
+    </div>
+</div>
 {% endblock %}
