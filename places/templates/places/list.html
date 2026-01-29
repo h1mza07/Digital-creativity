@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="text-center mb-4">Monuments Historiques du Maroc</h1>
+    
+    <!-- Filtre -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get">
+                <div class="row">
+                    <div class="col-md-8">
+                        <select name="city" class="form-select" onchange="this.form.submit()">
+                            <option value="">Toutes les villes</option>
+                            <option value="Tanger" {% if selected_city == "Tanger" %}selected{% endif %}>Tanger (3)</option>
+                            <option value="Marrakech" {% if selected_city == "Marrakech" %}selected{% endif %}>Marrakech (3)</option>
+                            <option value="Fès" {% if selected_city == "Fès" %}selected{% endif %}>Fès (3)</option>
+                            <option value="Meknès" {% if selected_city == "Meknès" %}selected{% endif %}>Meknès (3)</option>
+                            <option value="Rabat" {% if selected_city == "Rabat" %}selected{% endif %}>Rabat (3)</option>
+                            <option value="Casablanca" {% if selected_city == "Casablanca" %}selected{% endif %}>Casablanca (3)</option>
+                            <option value="Oujda" {% if selected_city == "Oujda" %}selected{% endif %}>Oujda (3)</option>
+                            <option value="Agadir" {% if selected_city == "Agadir" %}selected{% endif %}>Agadir (3)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{% url 'place_list' %}" class="btn btn-outline-secondary w-100">Tout voir (24)</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Liste des monuments -->
+    <div class="row">
+        {% for place in places %}
+        <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card h-100">
+                <!-- CORRECTION ICI : places/images/ au lieu de images/ -->
+                <img src="{% static 'places/images/' %}{{ place.image_url }}" 
+                     class="card-img-top" 
+                     alt="{{ place.image_alt }}"
+                     style="height: 200px; object-fit: cover;"
+                     onerror="this.onerror=null; this.src='{% static 'places/images/default.jpg' %}';">
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ place.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <i class="bi bi-geo-alt"></i> {{ place.city }}
+                    </h6>
+                    <p class="card-text">{{ place.description|truncatechars:80 }}</p>
+                    
+                    <div class="mt-2">
+                        <span class="badge bg-primary">{{ place.category }}</span>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <a href="{% url 'place_detail' place.id %}" class="btn btn-primary w-100">
+                        Voir détails
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">Aucun monument trouvé.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,19 +1,10 @@
-# routes/urls.py
 from django.urls import path
 from . import views
-
-app_name = 'routes'
+from django.shortcuts import redirect
 
 urlpatterns = [
-    # Liste des itinéraires
+    path('', lambda request: redirect('itinerary_list'), name='routes_root'),
     path('my-itineraries/', views.itinerary_list, name='itinerary_list'),
-    
-    # Détails d'un itinéraire
-    path('my-itineraries/<int:pk>/', views.itinerary_detail, name='itinerary_detail'),
-    
-    # Créer un itinéraire
-    path('my-itineraries/create/', views.itinerary_create, name='itinerary_create'),
-    
-    # Supprimer un itinéraire
-    path('my-itineraries/<int:pk>/delete/', views.itinerary_delete, name='itinerary_delete'),
+    path('itinerary/create/', views.itinerary_create, name='itinerary_create'),
+    path('itinerary/<int:pk>/', views.itinerary_detail, name='itinerary_detail'),
 ]

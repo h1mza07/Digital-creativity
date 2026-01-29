@@ -1,7 +1,7 @@
-# routes/apps.py
 from django.apps import AppConfig
+import os
 
 class RoutesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'routes'
-    verbose_name = 'Routes et Itinéraires'
+    path = os.path.dirname(__file__)

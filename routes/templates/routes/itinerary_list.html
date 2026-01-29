@@ -1,80 +1,49 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des itinéraires</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: var(--bg-color); color: var(--text-color); }
+        .filter-box { margin-bottom: 20px; }
+        select, button { padding: 8px; margin-right: 10px; }
+        .itinerary { background: var(--card-bg); padding: 15px; margin-bottom: 10px; border-radius: 6px; }
+        .stars { color: gold; }
+    </style>
+</head>
+<body>
+    <h1>Itinéraires disponibles</h1>
 
-{% block title %}Mes Itinéraires Hôtel → Stade{% endblock %}
-
-{% block content %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">🚗 Mes Itinéraires Hôtel → Stade</h1>
-        <a href="{% url 'routes:itinerary_create' %}" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>Nouvel itinéraire
-        </a>
+    <!-- Formulaire de filtre -->
+    <div class="filter-box">
+        <form method="get">
+            <label for="rating">Filtrer par note minimale :</label>
+            <select name="rating" id="rating">
+                <option value="">Toutes les notes</option>
+                <option value="1" {% if selected_rating == '1' %}selected{% endif %}>★ 1+</option>
+                <option value="2" {% if selected_rating == '2' %}selected{% endif %}>★★ 2+</option>
+                <option value="3" {% if selected_rating == '3' %}selected{% endif %}>★★★ 3+</option>
+                <option value="4" {% if selected_rating == '4' %}selected{% endif %}>★★★★ 4+</option>
+                <option value="5" {% if selected_rating == '5' %}selected{% endif %}>★★★★★ 5</option>
+            </select>
+            <button type="submit">Appliquer</button>
+            {% if selected_rating %}
+                <a href="{% url 'itinerary_list' %}">Voir tous</a>
+            {% endif %}
+        </form>
     </div>
 
-    {% if not itineraries %}
-    <div class="alert alert-info mt-4">
-        <i class="fas fa-info-circle me-2"></i>
-        Aucun itinéraire hôtel → stade trouvé. Créez votre premier itinéraire pour commencer !
-    </div>
-    {% else %}
-    <div class="row row-cols-1 row-cols-md-2 row-cols-3 g-4">
-        {% for itinerary in itineraries %}
-        <div class="col">
-            <div class="card h-100 shadow-sm border-0">
-                <!-- Image -->
-                {% if itinerary.image %}
-                <img src="{{ itinerary.image.url }}" class="card-img-top" alt="{{ itinerary.title }}" style="height: 200px; object-fit: cover;">
-                {% else %}
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                    <i class="fas fa-route fa-3x text-muted"></i>
-                </div>
-                {% endif %}
-                
-                <div class="card-body">
-                    <!-- En-tête -->
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="card-title mb-0">{{ itinerary.title }}</h5>
-                        <span class="badge bg-{{ itinerary.difficulty|default:'facile' }}">
-                            {{ itinerary.get_difficulty_display }}
-                        </span>
-                    </div>
-                    
-                    <!-- Détails hôtel -->
-                    <div class="d-flex align-items-start mb-3">
-                        <i class="fas fa-hotel text-warning me-2 mt-1"></i>
-                        <div>
-                            <h6 class="mb-0">{{ itinerary.hotel.name }}</h6>
-                            <small class="text-muted">
-                                {{ itinerary.hotel.rating }} étoiles • {{ itinerary.hotel.price }}€/nuit
-                            </small>
-                        </div>
-                    </div>
-                    
-                    <!-- Détails stade -->
-                    <div class="d-flex align-items-start mb-3">
-                        <i class="fas fa-stadium text-primary me-2 mt-1"></i>
-                        <div>
-                            <h6 class="mb-0">{{ itinerary.stadium.name }}</h6>
-                            <small class="text-muted">
-                                Distance : {{ itinerary.distance }} km
-                            </small>
-                        </div>
-                    </div>
-                    
-                    <!-- Boutons d'action -->
-                    <div class="d-flex gap-2 mt-4">
-                        <a href="{% url 'routes:itinerary_detail' pk=itinerary.pk %}" class="btn btn-outline-primary flex-grow-1">
-                            <i class="fas fa-eye me-2"></i>Détails
-                        </a>
-                        <a href="#" class="btn btn-success flex-grow-1">
-                            <i class="fas fa-map-marked-alt me-2"></i>Carte
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <!-- Liste des itinéraires -->
+    {% for itinerary in itineraries %}
+        <div class="itinerary">
+            <h3>{{ itinerary.name }}</h3>
+            <p>{{ itinerary.description|truncatewords:20 }}</p>
+            <p><strong>Durée :</strong> {{ itinerary.duration_days }} jours</p>
+            <p><strong>Difficulté :</strong> {{ itinerary.get_difficulty_display }}</p>
+            <p class="stars">★ {{ itinerary.rating }}/5</p>
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-</div>
-{% endblock %}
+    {% empty %}
+        <p>Aucun itinéraire trouvé.</p>
+    {% endfor %}
+</body>
+</html>

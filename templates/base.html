@@ -53,7 +53,7 @@
             {% if user.is_authenticated %}
 
                 {% if request.path != '/users/profile/' %}
-                  <a href="{% url 'profile' %}">Profil</a>
+                    <a href="{% url 'profile' %}" class="btn btn-outline-primary">Profil</a>
                 {% endif %}
 
                 <form method="post" action="{% url 'logout' %}">

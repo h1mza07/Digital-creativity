@@ -1,15 +1,19 @@
-# config/urls.py
-from django.contrib import admin
+﻿from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home
-from users.views import profile 
-from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('worldcup2030/', include('worldcup2030.urls')),
     path('routes/', include('routes.urls')),
-    path('profile/', profile, name='profile'),  
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('cities/', include('cities.urls')),
+    path('users/', include('users.urls')),
+    path('places/', include('places.urls')),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

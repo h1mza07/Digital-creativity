@@ -1,129 +1,102 @@
-# routes/views.py
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Itinerary
+from .models import CustomItinerary, ItineraryStop, Itinerary
+from places.models import Place
+from hotels.models import Hotel
 
 @login_required
 def itinerary_list(request):
-    """
-    Affiche UNIQUEMENT les itinéraires hôtel → stade de l'utilisateur connecté
-    """
-    # 🔑 FILTRAGE : ne montre que les itinéraires avec hôtel + stade
-    itineraries = Itinerary.objects.filter(
-        created_by=request.user,
-        hotel__isnull=False,
-        stadium__isnull=False
-    ).select_related('hotel', 'stadium', 'created_by').order_by('-created_at')
+    public_itineraries = Itinerary.objects.filter(user__isnull=True)  # Itinéraires publics
     
-    context = {
-        'itineraries': itineraries,
-        'title': 'Itinéraires Hôtel → Stade',
-        'has_itineraries': itineraries.exists()
-    }
+    if request.user.is_authenticated:
+        personal_itineraries = Itinerary.objects.filter(user=request.user)  # Itinéraires personnels
+    else:
+        personal_itineraries = []
+    
+    return render(request, 'routes/itinerary_list.html', {
+        'public_itineraries': public_itineraries,
+        'personal_itineraries': personal_itineraries,
+        'title': 'Mes itinéraires'
+    })
+    
+    # Itineraires personnels (si connecté)
+    if request.user.is_authenticated:
+        personal_itineraries = Itinerary.objects.filter(user=request.user)
+        context['personal_itineraries'] = personal_itineraries
     
     return render(request, 'routes/itinerary_list.html', context)
-
-
-@login_required
-def itinerary_detail(request, pk):
-    """
-    Affiche les détails d'un itinéraire spécifique
-    """
-    # 🔑 Vérifie que l'itinéraire appartient à l'utilisateur
-    itinerary = get_object_or_404(
-        Itinerary, 
-        pk=pk, 
-        created_by=request.user
-    )
-    
-    context = {
-        'itinerary': itinerary,
-        'title': itinerary.title
-    }
-    
-    return render(request, 'routes/itinerary_detail.html', context)
-
 
 @login_required
 def itinerary_create(request):
     """
-    Crée un nouvel itinéraire hôtel → stade
+    Crée un nouvel itinéraire personnalisé
     """
-    from hotels.models import Hotel
-    from places.models import Stadium
-    
-    if request.method == 'POST':
-        # Récupérer les données du formulaire
-        hotel_id = request.POST.get('hotel')
-        stadium_id = request.POST.get('stadium')
+    if request.method == "POST":
         title = request.POST.get('title')
-        description = request.POST.get('description')
-        difficulty = request.POST.get('difficulty', 'facile')
-        best_season = request.POST.get('best_season', '')
-        required_equipment = request.POST.get('required_equipment', '')
-        contact_info = request.POST.get('contact_info', '')
-        
-        try:
-            hotel = Hotel.objects.get(id=hotel_id)
-            stadium = Stadium.objects.get(id=stadium_id)
-            
-            # Créer l'itinéraire
-            itinerary = Itinerary.objects.create(
-                title=title,
-                description=description,
-                hotel=hotel,
-                stadium=stadium,
-                city=hotel.city.name if hotel.city else 'Marrakech',
-                difficulty=difficulty,
-                best_season=best_season,
-                required_equipment=required_equipment,
-                contact_info=contact_info,
-                hotel_name=hotel.name,
-                hotel_rating=hotel.rating,
-                hotel_price=hotel.price,
-                hotel_address=hotel.address,
-                stadium_name=stadium.name,
-                stadium_address=stadium.address,
-                distance=10.5,  # Valeur par défaut, à calculer avec API
-                total_price=hotel.price,
-                created_by=request.user
-            )
-            
-            messages.success(request, 'Itinéraire créé avec succès !')
-            return redirect('routes:itinerary_detail', pk=itinerary.pk)
-            
-        except Exception as e:
-            messages.error(request, f'Erreur lors de la création : {str(e)}')
-    
-    # GET request - afficher le formulaire
-    hotels = Hotel.objects.all().select_related('city')
-    stadiums = Stadium.objects.all().select_related('city')
-    
-    context = {
-        'hotels': hotels,
-        'stadiums': stadiums,
-        'title': 'Créer un itinéraire'
-    }
-    
-    return render(request, 'routes/itinerary_form.html', context)
+        itinerary = Itinerary.objects.create(
+            user=request.user, 
+            title=title, 
+            name=name, 
+            description=description,)
+        return redirect('itinerary_detail', pk=itinerary.pk)
 
+
+def itinerary_detail(request, pk):
+    """
+    Affiche le détail d'un itinéraire personnalisé
+    """
+    itinerary = get_object_or_404(Itinerary, pk=pk, user=request.user)
+    places = Place.objects.all()
+    hotels = Hotel.objects.all()
+    return render(request, 'routes/itinerary_detail.html', {
+        'itinerary': itinerary,
+        'places': places,
+        'hotels': hotels
+    })
 
 @login_required
-def itinerary_delete(request, pk):
+def add_stop(request, pk):
     """
-    Supprime un itinéraire
+    Ajoute une étape (lieu ou hôtel) à un itinéraire
     """
-    itinerary = get_object_or_404(Itinerary, pk=pk, created_by=request.user)
-    
-    if request.method == 'POST':
-        itinerary.delete()
-        messages.success(request, 'Itinéraire supprimé avec succès !')
-        return redirect('routes:itinerary_list')
-    
-    context = {
-        'itinerary': itinerary,
-        'title': 'Supprimer l\'itinéraire'
-    }
-    
-    return render(request, 'routes/itinerary_confirm_delete.html', context)
+    itinerary = get_object_or_404(Itinerary, pk=pk, user=request.user)
+    if request.method == "POST":
+        place_id = request.POST.get('place')
+        hotel_id = request.POST.get('hotel')
+        order = itinerary.stops.count() + 1
+
+        if place_id:
+            place = get_object_or_404(Place, id=place_id)
+            ItineraryStop.objects.create(itinerary=itinerary, order=order, place=place)
+        elif hotel_id:
+            hotel = get_object_or_404(Hotel, id=hotel_id)
+            ItineraryStop.objects.create(itinerary=itinerary, order=order, hotel=hotel)
+
+    return redirect('itinerary_detail', pk=pk)
+
+@login_required
+def remove_stop(request, itinerary_id, stop_id):
+    """
+    Supprime une étape d'un itinéraire
+    """
+    stop = get_object_or_404(ItineraryStop, id=stop_id, itinerary_id=itinerary_id)
+    if stop.itinerary.user == request.user:
+        stop.delete()
+    return redirect('itinerary_detail', pk=itinerary_id)
+    public_itineraries = Itinerary.objects.all()
+    return render(request, 'routes/itinerary_list.html', {
+        'public_itineraries': public_itineraries,
+        'title': 'Liste des itinéraires'
+    })
+
+def itinerary_detail(request, pk):
+    itinerary = get_object_or_404(Itinerary, pk=pk)
+    return render(request, 'routes/itinerary_detail.html', {
+        'itinerary': itinerary
+    })
+
+def itinerary_create(request):
+    # on redirige vers la liste
+    from django.shortcuts import redirect
+    return redirect('itinerary_list')
+
