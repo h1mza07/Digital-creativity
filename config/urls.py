@@ -12,6 +12,7 @@ urlpatterns = [
     path('cities/', include('cities.urls')),
     path('users/', include('users.urls')),
     path('hotels/', include('hotels.urls')),
+    path('places/', include('places.urls')), 
 ]
 
 if settings.DEBUG:
