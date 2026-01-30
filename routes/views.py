@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User # AJOUTÉ : Import nécessaire pour le User de secours
 from .models import Itinerary
-#from .forms import ItineraryForm
 from django.http import JsonResponse
 
 @login_required
@@ -13,60 +11,45 @@ def itinerary_list(request):
 
 @login_required
 def itinerary_create(request):
-    # Mapping complet basé sur tes dossiers d'images (image_2dbd89.png)
     mapping_destinations = {
-        # RABAT
         'Sofitel': ('Rabat', 'Stade Prince Moulay Abdellah'),
         'Premier': ('Rabat', 'Stade Prince Moulay Abdellah'),
         'Hostel': ('Rabat', 'Stade Prince Moulay Abdellah'),
-        # MARRAKECH
         'Elmamounia': ('Marrakech', 'Grand Stade de Marrakech'),
         'Almansour': ('Marrakech', 'Grand Stade de Marrakech'),
         'Backparkershostelkech': ('Marrakech', 'Grand Stade de Marrakech'),
-        # CASABLANCA
         'Fourseason': ('Casablanca', 'Grand Stade de Casablanca (Benslimane)'),
         'Kenzibusiness': ('Casablanca', 'Grand Stade de Casablanca (Benslimane)'),
         'Budget': ('Casablanca', 'Grand Stade de Casablanca (Benslimane)'),
-        # AGADIR
         'RoyalAtlas': ('Agadir', 'Stade Adrar'),
         'GadirBayHotel': ('Agadir', 'Stade Adrar'),
         'SurfHostel': ('Agadir', 'Stade Adrar'),
-        # FES
         'Riadfes': ('Fès', 'Complexe Sportif de Fès'),
         'Fesheritage': ('Fès', 'Complexe Sportif de Fès'),
         'Fesmedinahostel': ('Fès', 'Complexe Sportif de Fès'),
     }
-
-    if request.method == 'POST':
-        form = ItineraryForm(request.POST)
-        if form.is_valid():
-            itinerary = form.save(commit=False)
-            itinerary.user = request.user
-            
-            hotel_selectionne = request.POST.get('hotel_name')
-            
-            # Récupération de la ville et du stade selon l'hôtel
-            ville_stade = mapping_destinations.get(hotel_selectionne, ("Maroc", "Stade CM 2030"))
-            itinerary.city = ville_stade[0]
-            itinerary.stadium_name = ville_stade[1]
-            
-            # Génération de l'URL Google Maps automatique
-            base_url = "https://www.google.com/maps/dir/?api=1"
-            itinerary.google_maps_url = f"{base_url}&origin={hotel_selectionne}+{itinerary.city}+Morocco&destination={itinerary.stadium_name}&travelmode=driving"
-            
-            itinerary.save()
-            return redirect('itinerary_list')
-    else:
-        form = ItineraryForm()
     
-    return render(request, 'routes/itinerary_form.html', {'form': form})
+    if request.method == 'POST':
+        hotel_selectionne = request.POST.get('hotel_name')
+        
+        if hotel_selectionne:
+            ville_stade = mapping_destinations.get(hotel_selectionne, ("Maroc", "Stade CM 2030"))
+            
+            itinerary = Itinerary.objects.create(
+                user=request.user,
+                hotel_name=hotel_selectionne,
+                city=ville_stade[0],
+                stadium_name=ville_stade[1],
+                google_maps_url=f"https://www.google.com/maps/dir/?api=1&origin={hotel_selectionne}+{ville_stade[0]}+Morocco&destination={ville_stade[1]}&travelmode=driving"
+            )
+            return redirect('itinerary_list')
+    
+    return render(request, 'routes/itinerary_form.html')
 
 @login_required
-
-
 def itinerary_detail(request, pk):
     itinerary = get_object_or_404(Itinerary, pk=pk)
-    return render(request, 'routes/itinerary_detail.html', {'itinerary': itinerary })
+    return render(request, 'routes/itinerary_detail.html', {'itinerary': itinerary})
 
 def get_google_maps_url(request):
     hotel = request.GET.get('hotel', '')
