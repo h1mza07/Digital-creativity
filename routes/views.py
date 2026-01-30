@@ -9,8 +9,8 @@ from django.http import JsonResponse
 def itinerary_list(request):
     itineraries = Itinerary.objects.all().order_by('-created_at') 
     print(f"DEBUG: {itineraries.count()} routes trouvées") 
+    return render(request, 'routes/itinerary_list.html', {'itineraries': itineraries})
 
-    return render(request, 'routes/itinerary_list.html', {'itineraries': itineraries}) 
 @login_required
 def itinerary_create(request):
     # Mapping complet basé sur tes dossiers d'images (image_2dbd89.png)
