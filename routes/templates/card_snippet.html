@@ -1,17 +1,17 @@
 <div class="col-md-4">
     <div class="route-card">
         <div class="route-body">
-            <div class="mb-2">
-                <span class="badge bg-light text-dark shadow-sm">📍 {{ city }}</span>
-            </div>
-            <h3 class="route-title">{{ hotel }}</h3>
-            <p class="small text-muted">
+            <span class="badge bg-light text-dark mb-2 shadow-sm">📍 {{ city }}</span>
+            <h3 class="fw-bold mb-3" style="color: var(--maroc-green); font-size: 1.3rem;">{{ hotel }}</h3>
+            
+            <p class="mb-3">
                 <i class="fas fa-futbol text-success me-2"></i>Vers : <strong>{{ stadium }}</strong>
             </p>
+            
             <hr>
-            <a href="https://www.google.com/maps/dir/?api=1&origin={{ hotel|urlencode }}+{{ city|urlencode }}+Maroc&destination={{ stadium|urlencode }}&travelmode=driving" 
+            <a href="https://www.google.com/maps/dir/{{ hotel|urlencode }}+{{ city|urlencode }}+Maroc/{{ stadium|urlencode }}+Maroc" 
                target="_blank" class="btn-maps">
-                <i class="fas fa-directions me-2"></i>Guider via Google Maps
+                <i class="fas fa-map-marked-alt me-2"></i>Voir sur Maps
             </a>
         </div>
     </div>
