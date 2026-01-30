@@ -1,51 +1,33 @@
-<!-- templates/routes/itinerary_list.html -->
 {% extends "base.html" %}
-
-{% block title %}Liste des itinéraires{% endblock %}
-
 {% block content %}
-<h1>🌍 Liste des itinéraires</h1>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-success">🏆 Guide Coupe du Monde 2030</h1>
+        <p class="lead">Nos 15 itinéraires exclusifs vers les stades du Maroc</p>
+    </div>
 
-{% if public_itineraries %}
-    <h2>Itinéraires publics</h2>
+
     <div class="row">
-    {% for itinerary in public_itineraries %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ itinerary.name }}</h5>
-                    <p class="card-text">{{ itinerary.description|truncatewords:15 }}</p>
-                    <p><strong>Durée :</strong> {{ itinerary.duration_days }} jours</p>
-                    <p><strong>Note :</strong> {{ itinerary.rating }} ⭐</p>
-                    <a href="{% url 'itinerary_detail' pk=itinerary.pk %}" class="btn btn-primary">Voir détails</a>
+        {% for itinerary in itineraries %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow border-0">
+                    <div class="card-header bg-dark text-white small fw-bold">📍 {{ itinerary.city }}</div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-primary">{{ itinerary.hotel_name }}</h5>
+                        <p class="card-text">
+                            <i class="fas fa-arrow-right"></i> Destination : <strong>{{ itinerary.stadium_name }}</strong>
+                        </p>
+                        
+                        <div class="d-grid mt-4">
+                            <a href="{{ itinerary.google_maps_url }}" target="_blank" class="btn btn-success fw-bold">
+                                🗺️ Itinéraire Google Maps
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
-{% else %}
-    <div class="alert alert-info">
-        Aucun itinéraire public trouvé.
-    </div>
-{% endif %}
-
-{% if personal_itineraries %}
-    <h2 class="mt-5">Mes itinéraires</h2>
-    <div class="row">
-    {% for itinerary in personal_itineraries %}
-        <div class="col-md-4 mb-4">
-            <div class="card border-success">
-                <div class="card-body">
-                    <h5 class="card-title text-success">{{ itinerary.name }} <small>(Personnel)</small></h5>
-                    <p class="card-text">{{ itinerary.description|truncatewords:15 }}</p>
-                    <a href="{% url 'itinerary_detail' pk=itinerary.pk %}" class="btn btn-success">Voir</a>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-    </div>
-{% endif %}
-
-<a href="/" class="btn btn-secondary mt-4">← Retour à l'accueil</a>
-
+</div>
 {% endblock %}
+
