@@ -1,79 +1,206 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Itinéraires Coupe du Monde 2030{% endblock %}
+{% block title %}Itinéraires - Maroc Tourisme 2030 ⚽{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-success">🏆 Coupe du Monde Maroc 2030</h1>
-        <p class="lead text-muted">Trouvez votre itinéraire depuis votre hôtel vers les stades officiels.</p>
-        <div class="badge bg-dark px-3 py-2 fs-6">
-            <i class="fas fa-route"></i> {{ itineraries|length }} trajets disponibles
-        </div>
+<style>
+    :root {
+        --maroc-red: #C1272D;
+        --maroc-green: #006233;
+        --maroc-gold: #D4AF37;
+        --maroc-blue: #1E3A8A;
+        --hotel-orange: #fd7e14;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding-top: 20px;
+    }
+
+    /* Style identique à la Hero Banner des Hôtels */
+    .hero-banner-small {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                    url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 60px 0;
+        text-align: center;
+        border-radius: 20px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    /* Style des cartes identique aux Hotel-Cards */
+    .route-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        height: 100%;
+        border: none;
+    }
+
+    .route-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .route-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--maroc-green), var(--maroc-blue));
+    }
+
+    .route-image {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .route-body { padding: 25px; }
+
+    .route-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--maroc-green);
+        margin-bottom: 10px;
+    }
+
+    .route-location {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        color: #666;
+        font-size: 1rem;
+    }
+
+    .route-location i {
+        color: var(--hotel-orange);
+        margin-right: 10px;
+    }
+
+    /* Grille d'info comme sur la page hôtel */
+    .route-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    .info-box {
+        text-align: center;
+        padding: 10px;
+        background: #f8f9ff;
+        border-radius: 12px;
+        transition: all 0.3s;
+    }
+
+    .info-box:hover {
+        background: linear-gradient(135deg, var(--hotel-orange), #ffc107);
+        color: white;
+    }
+
+    .info-box span { display: block; font-size: 0.8rem; font-weight: 600; opacity: 0.8; }
+    .info-box strong { font-size: 1.1rem; }
+
+    .btn-maps {
+        background: linear-gradient(45deg, var(--hotel-orange), #ffc107);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 50px;
+        border: none;
+        font-weight: 600;
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(253, 126, 20, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-maps:hover {
+        transform: scale(1.05);
+        color: white;
+        box-shadow: 0 10px 20px rgba(253, 126, 20, 0.5);
+    }
+</style>
+
+<div class="container py-4">
+    <div class="hero-banner-small">
+        <h1 class="fw-bold">🧭 Mes Itinéraires 2030</h1>
+        <p class="lead">De votre hôtel vers l'effervescence du stade</p>
+        <span class="badge bg-success p-2 px-3">
+            <i class="fas fa-check-circle me-1"></i> {{ itineraries|length }} trajets configurés
+        </span>
     </div>
 
-    {% if itineraries %}
-        <div class="row">
-            {% for itinerary in itineraries %}
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 shadow-lg border-0 rounded-3 overflow-hidden">
-                        <div class="card-header bg-primary text-white text-center py-2 fw-bold text-uppercase">
-                            📍 {{ itinerary.city|default:"Destination Maroc" }}
+    <div class="row g-4">
+        {% for itinerary in itineraries %}
+            <div class="col-md-6 col-lg-4">
+                <div class="route-card">
+                    <img src="/static/image/pic4.jpg" class="route-image" alt="Trajet">
+                    
+                    <div class="route-body">
+                        <div class="route-location">
+                            <i class="fas fa-city"></i> <strong>{{ itinerary.city }}</strong>
                         </div>
                         
-                        <div class="card-body p-4 d-flex flex-column">
-                            <h4 class="card-title fw-bold mb-0 text-dark">{{ itinerary.hotel_name }}</h4>
-                            <p class="text-muted small mb-3"><i class="fas fa-hotel"></i> Hébergement Partenaire</p>
-                            
-                            <hr class="my-3">
+                        <h3 class="route-title">{{ itinerary.hotel_name }}</h3>
+                        
+                        <p class="text-muted small">
+                            <i class="fas fa-long-arrow-alt-right me-2 text-success"></i>
+                            Vers : <strong>{{ itinerary.stadium_name }}</strong>
+                        </p>
 
-                            <div class="bg-light p-3 rounded-2 mb-4">
-                                <label class="text-uppercase x-small fw-bold text-primary d-block mb-1">Stade de la Coupe du Monde :</label>
-                                <h5 class="fw-bold mb-0">
-                                    <i class="fas fa-stadium text-danger"></i> {{ itinerary.stadium_name }}
-                                </h5>
+                        <div class="route-info">
+                            <div class="info-box">
+                                <span>Ville</span>
+                                <strong>{{ itinerary.city|slice:":3" }}</strong>
                             </div>
-
-                            <p class="card-text text-secondary mb-4 flex-grow-1">
-                                {{ itinerary.description|truncatewords:15 }}
-                            </p>
-
-                            <div class="d-grid gap-2">
-                                {% if itinerary.google_maps_url %}
-                                    <a href="{{ itinerary.google_maps_url }}" target="_blank" class="btn btn-success btn-lg shadow">
-                                        <i class="fas fa-map-marker-alt"></i> Guider vers le Stade
-                                    </a>
-                                {% else %}
-                                    <button class="btn btn-secondary btn-lg" disabled>GPS indisponible</button>
-                                {% endif %}
-                                
-                                <a href="{% url 'itinerary_detail' pk=itinerary.pk %}" class="btn btn-link btn-sm text-decoration-none text-muted">
-                                    Plus de détails sur ce trajet
-                                </a>
+                            <div class="info-box">
+                                <span>Match</span>
+                                <strong>2030</strong>
                             </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <a href="{{ itinerary.google_maps_url }}" target="_blank" class="btn btn-maps text-center d-block">
+                                <i class="fas fa-map-marked-alt me-2"></i> Guider via Google Maps
+                            </a>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="alert alert-warning text-center shadow-sm">
-            <i class="fas fa-exclamation-triangle"></i> Aucun itinéraire trouvé dans la base de données.
-        </div>
-    {% endif %}
-
-    <div class="text-center mt-5 mb-5">
-        <a href="/" class="btn btn-outline-secondary px-5">← Retour à l'accueil</a>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-light shadow-sm py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4>Aucun itinéraire enregistré</h4>
+                    <p>Utilisez le terminal pour générer vos 15 routes officielles.</p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </div>
 
-<style>
-    .card { transition: all 0.3s ease; border-radius: 15px; }
-    .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important; }
-    .btn-success { background-color: #198754; border: none; font-weight: bold; }
-    .btn-success:hover { background-color: #146c43; transform: scale(1.02); }
-    .x-small { font-size: 0.75rem; }
-</style>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.route-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    });
+</script>
 {% endblock %}
