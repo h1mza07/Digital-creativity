@@ -1,102 +1,73 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import CustomItinerary, ItineraryStop, Itinerary
-from places.models import Place
-from hotels.models import Hotel
+from django.contrib.auth.models import User # AJOUTÉ : Import nécessaire pour le User de secours
+from .models import Itinerary
+#from .forms import ItineraryForm
+from django.http import JsonResponse
 
-@login_required
 def itinerary_list(request):
-    public_itineraries = Itinerary.objects.filter(user__isnull=True)  # Itinéraires publics
-    
-    if request.user.is_authenticated:
-        personal_itineraries = Itinerary.objects.filter(user=request.user)  # Itinéraires personnels
-    else:
-        personal_itineraries = []
-    
+    """Affiche absolument TOUS les itinéraires sans filtrer par utilisateur pour le test"""
+    itineraries = Itinerary.objects.all().order_by('-created_at')
+
+    print(f"--- DEBUG: {itineraries.count()} itinéraires envoyés au template ---")
+
     return render(request, 'routes/itinerary_list.html', {
-        'public_itineraries': public_itineraries,
-        'personal_itineraries': personal_itineraries,
-        'title': 'Mes itinéraires'
+        'itineraries': itineraries
     })
-    
-    # Itineraires personnels (si connecté)
-    if request.user.is_authenticated:
-        personal_itineraries = Itinerary.objects.filter(user=request.user)
-        context['personal_itineraries'] = personal_itineraries
-    
-    return render(request, 'routes/itinerary_list.html', context)
 
 @login_required
 def itinerary_create(request):
-    """
-    Crée un nouvel itinéraire personnalisé
-    """
-    if request.method == "POST":
-        title = request.POST.get('title')
-        itinerary = Itinerary.objects.create(
-            user=request.user, 
-            title=title, 
-            name=name, 
-            description=description,)
-        return redirect('itinerary_detail', pk=itinerary.pk)
+    mapping_destinations = {
+        'Sofitel': 'Stade Prince Moulay Abdellah, Rabat',
+        'Premier Classe': 'Stade Prince Moulay Abdellah, Rabat',
+        'Hostel Rabat': 'Stade Prince Moulay Abdellah, Rabat',
+        'La Mamounia': 'Grand Stade de Marrakech',
+        'Al Mansour': 'Grand Stade de Marrakech',
+        'Backpackers Hostel': 'Grand Stade de Marrakech',
+        'Four Seasons': 'Grand Stade de Casablanca, Benslimane',
+        'Kenzi Business': 'Grand Stade de Casablanca, Benslimane',
+        'Budget Hotel': 'Grand Stade de Casablanca, Benslimane',
+        'Royal Atlas': 'Stade Adrar, Agadir',
+        'Gadir Bay Hotel': 'Stade Adrar, Agadir',
+        'Surf Hostel': 'Stade Adrar, Agadir',
+        'Riad Fes': 'Complexe Sportif de Fès',
+        'Fes Heritage': 'Complexe Sportif de Fès',
+        'Fes Medina Hostel': 'Complexe Sportif de Fès',
+    }
 
-
-def itinerary_detail(request, pk):
-    """
-    Affiche le détail d'un itinéraire personnalisé
-    """
-    itinerary = get_object_or_404(Itinerary, pk=pk, user=request.user)
-    places = Place.objects.all()
-    hotels = Hotel.objects.all()
-    return render(request, 'routes/itinerary_detail.html', {
-        'itinerary': itinerary,
-        'places': places,
-        'hotels': hotels
-    })
-
-@login_required
-def add_stop(request, pk):
-    """
-    Ajoute une étape (lieu ou hôtel) à un itinéraire
-    """
-    itinerary = get_object_or_404(Itinerary, pk=pk, user=request.user)
-    if request.method == "POST":
-        place_id = request.POST.get('place')
-        hotel_id = request.POST.get('hotel')
-        order = itinerary.stops.count() + 1
-
-        if place_id:
-            place = get_object_or_404(Place, id=place_id)
-            ItineraryStop.objects.create(itinerary=itinerary, order=order, place=place)
-        elif hotel_id:
-            hotel = get_object_or_404(Hotel, id=hotel_id)
-            ItineraryStop.objects.create(itinerary=itinerary, order=order, hotel=hotel)
-
-    return redirect('itinerary_detail', pk=pk)
+    if request.method == 'POST':
+        form = ItineraryForm(request.POST)
+        if form.is_valid():
+            itinerary = form.save(commit=False)
+            itinerary.user = request.user
+            
+            hotel_selectionne = request.POST.get('hotel_name')
+            itinerary.hotel_name = hotel_selectionne
+            
+            stade_destination = mapping_destinations.get(hotel_selectionne, "Stade de la Coupe du Monde, Maroc")
+            itinerary.stadium_name = stade_destination 
+            
+            base_url = "https://www.google.com/maps/dir/?api=1" # URL de production plus fiable
+            itinerary.google_maps_url = f"{base_url}&origin={hotel_selectionne}+Morocco&destination={stade_destination}&travelmode=driving"
+            
+            itinerary.save()
+            return redirect('itinerary_list') # Redirige vers la liste après création
+    else:
+        form = ItineraryForm()
+    
+    return render(request, 'routes/itinerary_form.html', {'form': form, 'title': 'Créer un itinéraire'})
 
 @login_required
-def remove_stop(request, itinerary_id, stop_id):
-    """
-    Supprime une étape d'un itinéraire
-    """
-    stop = get_object_or_404(ItineraryStop, id=stop_id, itinerary_id=itinerary_id)
-    if stop.itinerary.user == request.user:
-        stop.delete()
-    return redirect('itinerary_detail', pk=itinerary_id)
-    public_itineraries = Itinerary.objects.all()
-    return render(request, 'routes/itinerary_list.html', {
-        'public_itineraries': public_itineraries,
-        'title': 'Liste des itinéraires'
-    })
+
 
 def itinerary_detail(request, pk):
     itinerary = get_object_or_404(Itinerary, pk=pk)
-    return render(request, 'routes/itinerary_detail.html', {
-        'itinerary': itinerary
-    })
+    return render(request, 'routes/itinerary_detail.html', {'itinerary': itinerary })
 
-def itinerary_create(request):
-    # on redirige vers la liste
-    from django.shortcuts import redirect
-    return redirect('itinerary_list')
-
+def get_google_maps_url(request):
+    hotel = request.GET.get('hotel', '')
+    stadium_name = request.GET.get('stadium', '')
+    if hotel and stadium_name:
+        map_url = f"https://www.google.com/maps/dir/?api=1&origin={hotel}&destination={stadium_name}&travelmode=driving"
+        return JsonResponse({'success': True, 'map_url': map_url})
+    return JsonResponse({'success': False, 'error': 'Paramètres manquants'}, status=400)

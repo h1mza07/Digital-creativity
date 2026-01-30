@@ -3,7 +3,7 @@ from .models import Itinerary
 
 @admin.register(Itinerary)
 class ItineraryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'duration_days', 'difficulty', 'rating', 'views_count')
-    list_filter = ('difficulty', 'rating')
-    search_fields = ('name', 'description')
+    list_display = ('hotel_name', 'stadium_name', 'city', 'created_at')
+    list_filter = ('city', 'created_at')
+    search_fields = ('hotel_name', 'stadium_name')
     filter_horizontal = ('cities',)  
