@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from places import views 
+from hotels import views as hotels_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -15,6 +16,8 @@ urlpatterns = [
     path('places/', include('places.urls')),
     path('places/map/', views.map_view, name='map_view'),
     path('places/<int:place_id>/', views.place_detail, name='place_detail'),
+    path('hotels/', hotels_views.hotel_list, name='hotel_list'),
+    path('hotels/<int:pk>/', hotels_views.hotel_detail, name='hotel_detail'),
 ]
 
 if settings.DEBUG:
