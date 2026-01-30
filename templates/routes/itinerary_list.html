@@ -169,13 +169,14 @@
                                 <strong>2030</strong>
                             </div>
                         </div>
-
-                        <div class="mt-4">
-                            <a href="{{ itinerary.google_maps_url }}" target="_blank" class="btn btn-maps text-center d-block">
-                                <i class="fas fa-map-marked-alt me-2"></i> Guider via Google Maps
-                            </a>
+                           <div class="mt-4">
+                               <a href="https://www.google.com/maps/dir/?api=1&origin={{ itinerary.hotel_name|urlencode }}+{{ itinerary.city|urlencode }}+Maroc&destination={{ itinerary.stadium_name|urlencode }}&travelmode=driving" 
+                                  target="_blank" 
+                                  class="btn btn-maps text-center d-block">
+                                  <i class="fas fa-map-marked-alt me-2"></i> Guider via Google Maps
+                               </a>
+                           </div>
                         </div>
-                    </div>
                 </div>
             </div>
         {% empty %}
