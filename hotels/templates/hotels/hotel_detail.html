@@ -1,13 +1,829 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hotel.name }} - Maroc Tourisme 2030 ⚽</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --maroc-red: #C1272D;
+            --maroc-green: #006233;
+            --maroc-gold: #D4AF37;
+            --maroc-blue: #1E3A8A;
+            --map-green: #28a745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?_gl=1*1k4almy*_ga*MjIzNTg1NzczLjE3NjQ3MDE3MDc.*_ga_8JE65Q40S6*czE3Njk1NDg1MzIkbzIkZzEkdTE3Njk1NDg4NjYkajQwJGwwJGgw');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 50px;
+            border-radius: 0 0 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -180px;
+            left: -10%;
+            width: 120%;
+            height: 100px;
+            background: white;
+            transform: rotate(-3deg);
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(0, 98, 51, 0.4);
+            border: 2px solid var(--maroc-gold);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            border-bottom: 3px solid var(--maroc-green);
+            min-height: 60px;
+        }
+        
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 10px;
+        }
+        
+        .dropdown-item {
+            border-radius: 10px;
+            padding: 8px 15px;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .dropdown-menu {
+                width: 100%;
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 98, 51, 0.3);
+        }
+        
+        .card-title-custom {
+            color: var(--maroc-green);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
+            color: white;
+            padding: 60px 0;
+            margin: 50px 0;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '🏨';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+            margin-bottom: 10px;
+        }
+        
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+        }
+        
+        .hotel-detail-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 50px;
+        }
+        
+        .hotel-header {
+            background: linear-gradient(135deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .hotel-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .location {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .stars {
+            font-size: 1.5rem;
+            color: var(--maroc-gold);
+            margin-bottom: 20px;
+        }
+        
+        .hotel-image {
+            height: 400px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .hotel-body {
+            padding: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--maroc-green);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--maroc-green);
+            font-weight: 600;
+        }
+        
+        .hotel-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .info-box {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .info-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--maroc-green);
+        }
+        
+        .info-label {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .info-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--maroc-blue);
+        }
+        
+        .price-section {
+            background: linear-gradient(135deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0, 98, 51, 0.2);
+        }
+        
+        .price-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .price-value {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: var(--maroc-gold);
+        }
+        
+        .btn-back {
+            background: #f8f9fa;
+            color: var(--maroc-green);
+            padding: 10px 30px;
+            border: 2px solid var(--maroc-green);
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:hover {
+            background: var(--maroc-green);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-banner {
+                padding: 60px 0;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .hotel-header h1 {
+                font-size: 2rem;
+            }
+            
+            .hotel-body {
+                padding: 25px;
+            }
+            
+            .price-value {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="/">
+                <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/map/">
+                        <i class="fas fa-map me-1"></i>Carte
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom active" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
 
-{% block title %}{{ hotel.name }}{% endblock %}
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>Compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
 
-{% block content %}
-<h1>{{ hotel.name }}</h1>
-<p><strong>Ville :</strong> {{ hotel.city }}</p>
-<p><strong>Étoiles :</strong> {{ hotel.stars }}</p>
-<p><strong>Prix par nuit :</strong> {{ hotel.price_per_night }} MAD</p>
-<br>
-<a href="/hotels/city/{{ hotel.city.id }}/">← Retour à la liste</a> |
-<a href="/routes/">Itinéraires</a>
-{% endblock %}
+    <div class="hero-banner">
+        <div class="container">
+            <h1 class="hero-title">
+                {{ hotel.name }}
+            </h1>
+            <p class="hero-subtitle">
+                <i class="fas fa-map-marker-alt"></i> {{ hotel.city.name }}, Maroc
+            </p>
+            <span class="hero-badge">
+                {% for i in hotel.rating|make_list %}
+                    <i class="fas fa-star"></i>
+                {% endfor %}
+                {{ hotel.rating }}/5
+            </span>
+            <p class="mt-4">
+                Découvrez cet hôtel exceptionnel pour votre séjour<br>
+                pendant la Coupe du Monde 2030
+            </p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">{{ hotel.rooms_count }}</div>
+                        <p>CHAMBRES<br>DISPONIBLES</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">{{ hotel.rating }}</div>
+                        <p>NOTE<br>GLOBALE</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">{{ hotel.city.name|slice:":3" }}</div>
+                        <p>VILLE<br>HÔTE</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">{{ hotel.price }}</div>
+                        <p>MAD/NUIT<br>PRIX</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hotel-detail-card">
+            {% if hotel.image %}
+                <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="hotel-image">
+            {% else %}
+                <div style="height: 400px; background: linear-gradient(135deg, var(--maroc-green), var(--maroc-blue)); 
+                          display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-hotel" style="font-size: 8rem; color: white; opacity: 0.3;"></i>
+                </div>
+            {% endif %}
+
+            <div class="hotel-body">
+                <div class="mb-5">
+                    <h2 class="section-title">
+                        <i class="fas fa-info-circle me-2"></i>Description
+                    </h2>
+                    <p class="hotel-description">
+                        {{ hotel.description }}
+                    </p>
+                </div>
+
+                <div class="mb-5">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar me-2"></i>Informations
+                    </h2>
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-label">
+                                <i class="fas fa-bed me-1"></i> Chambres
+                            </div>
+                            <div class="info-value">{{ hotel.rooms_count }}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">
+                                <i class="fas fa-city me-1"></i> Ville
+                            </div>
+                            <div class="info-value">{{ hotel.city.name }}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">
+                                <i class="fas fa-star me-1"></i> Note
+                            </div>
+                            <div class="info-value">{{ hotel.rating }}/5</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">
+                                <i class="fas fa-map-pin me-1"></i> Adresse
+                            </div>
+                            <div class="info-value" style="font-size: 1.1rem;">{{ hotel.address }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price-label">
+                        <i class="fas fa-tag me-2"></i> Prix par nuit
+                    </div>
+                    <div class="price-value">{{ hotel.price }} MAD</div>
+                    <button class="btn btn-maroc btn-lg" onclick="showBookingModal()">
+                        <i class="fas fa-calendar-check me-2"></i> Réserver maintenant
+                    </button>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="/hotels/" class="btn btn-back">
+                        <i class="fas fa-arrow-left me-2"></i> Retour à la liste des hôtels
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="section-title">
+                    <i class="fas fa-hotel me-2"></i> Autres hôtels à {{ hotel.city.name }}
+                </h3>
+                <div class="row g-4">
+                    {% for similar_hotel in city_hotels|slice:":3" %}
+                        {% if similar_hotel.id != hotel.id %}
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div style="
+                                    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                                                url('{% if similar_hotel.image %}{{ similar_hotel.image.url }}{% else %}https://images.unsplash.com/photo-1564501049418-3c27787d01e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80{% endif %}');
+                                    background-size: cover;
+                                    background-position: center;
+                                    height: 200px;
+                                "></div>
+                                <div class="card-body p-4">
+                                    <h5 class="card-title-custom mb-2">{{ similar_hotel.name }}</h5>
+                                    <div class="mb-3">
+                                        {% for i in similar_hotel.rating|make_list %}
+                                            <i class="fas fa-star text-warning"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <p class="text-muted mb-3" style="font-size: 0.9rem;">
+                                        {{ similar_hotel.address|truncatechars:60 }}
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold" style="color: var(--maroc-green);">
+                                            {{ similar_hotel.price }} MAD
+                                        </span>
+                                        <a href="/hotels/{{ similar_hotel.id }}/" class="btn btn-sm btn-maroc">
+                                            Voir
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Aucun autre hôtel trouvé dans cette ville.
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5 mb-5">
+            <div class="col-lg-10 mx-auto">
+                <div class="card feature-card">
+                    <div class="card-body p-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="mb-3" style="color: var(--maroc-green);">
+                                    <i class="fas fa-map-marked-alt me-3"></i>
+                                    Trouvez votre hébergement idéal
+                                </h2>
+                                <p class="lead mb-4">
+                                    Explorez tous nos hôtels dans les villes hôtes 
+                                    de la Coupe du Monde 2030 pour un séjour mémorable.
+                                </p>
+                                <div class="d-flex gap-3">
+                                    <a href="/hotels/" class="btn btn-lg" style="
+                                        background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+                                        color: white;
+                                        padding: 12px 30px;
+                                        border-radius: 50px;
+                                        font-weight: 600;
+                                    ">
+                                        <i class="fas fa-hotel me-2"></i>
+                                        Voir tous les hôtels
+                                    </a>
+                                    <a href="/routes/" class="btn btn-outline-success btn-lg">
+                                        <i class="fas fa-route me-2"></i>
+                                        Itinéraires
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <i class="fas fa-concierge-bell fa-6x" style="color: var(--maroc-green); opacity: 0.7;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3">
+                        🇲🇦 MAROC 2030
+                    </div>
+                    <p>
+                        Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
+                    </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Équipe :</strong> 4 membres<br>
+                        <strong>Technologie :</strong> Django Full Stack
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
+                        <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/places/" class="text-light text-decoration-none mb-2 d-block">Lieux Touristiques</a></li>
+                        <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
+                        <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                        <li><a href="/admin/" class="text-light text-decoration-none mb-2 d-block">Administration</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Rôles de l'équipe</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Hamza Layachi: Configuration & Villes</li>
+                        <li class="mb-2">Imane Elassioui : Lieux & Cartographie</li>
+                        <li class="mb-2">Ibtissam Ainzura: Hôtels & Itinéraires</li>
+                        <li class="mb-2">Amina Chetti: Utilisateurs & Sécurité</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Projet académique - Tous droits réservés
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function showBookingModal() {
+            alert('Fonctionnalité de réservation à implémenter !\n\nHôtel : {{ hotel.name }}\nPrix : {{ hotel.price }} MAD\n\nPour le moment, cette fonctionnalité est en cours de développement.');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            const badge = document.querySelector('.hero-badge');
+            if (badge) {
+                setInterval(() => {
+                    badge.style.transform = badge.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

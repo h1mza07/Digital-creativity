@@ -1,81 +1,500 @@
-{% extends "base.html" %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - Maroc Tourisme 2030</title>
+    
+    <!-- MÊME HEAD QUE WORLD CUP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* TOUT LE CSS DE WORLD CUP */
+        :root {
+            --maroc-red: #C1272D;
+            --maroc-green: #006233;
+            --maroc-gold: #D4AF37;
+            --maroc-blue: #1E3A8A;
+            --map-green: #28a745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            border-bottom: 3px solid var(--maroc-green);
+            min-height: 60px;
+        }
+        
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
+        .btn-danger-custom {
+            background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(193, 39, 45, 0.3);
+        }
+        
+        .btn-danger-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(193, 39, 45, 0.5);
+            color: white;
+        }
+        
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .profile-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card-header-gradient {
+            background: linear-gradient(45deg, #006233, #1E3A8A);
+            color: white;
+            border: none;
+        }
+        
+        .card-header-danger {
+            background: linear-gradient(45deg, #C1272D, #D4AF37);
+            color: white;
+            border: none;
+        }
+        
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .favorite-item {
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR IDENTIQUE À WORLD CUP -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="/">
+                <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
 
-{% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-
-            <!-- Carte Profil -->
-            <div class="card shadow-lg border-0 mb-4">
-                <div class="card-header text-white" style="background: linear-gradient(45deg, #006233, #1E3A8A);">
-                    <h4 class="mb-0">
-                        <i class="fas fa-user-circle me-2"></i>Mon Profil
-                    </h4>
-                </div>
-                <div class="card-body">
-
-                    <!-- Avatar -->
-                    <div class="d-flex align-items-center mb-4">
-                        {% if user.profile.photo %}
-                            <img src="{{ user.profile.photo.url }}"
-                                 class="rounded-circle shadow me-3"
-                                 width="90" height="90"
-                                 style="object-fit: cover;">
-                        {% else %}
-                            <img src="{% static 'images/default_avatar.png' %}"
-                                 class="rounded-circle shadow me-3"
-                                 width="90" height="90">
-                        {% endif %}
-                        <div>
-                            <h5 class="mb-0">{{ user.username }}</h5>
-                            <small class="text-muted">Photo de profil actuelle</small>
-                        </div>
-                    </div>
-
-                    <!-- Formulaire -->
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label class="form-label">Changer la photo</label>
-                            {{ form.photo }}
-                        </div>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-upload me-2"></i>Mettre à jour la photo
-                        </button>
-                    </form>
-
-                </div>
-            </div>
-
-            <!-- Carte Favoris -->
-            <div class="card shadow-lg border-0">
-                <div class="card-header text-white" style="background: linear-gradient(45deg, #C1272D, #D4AF37);">
-                    <h4 class="mb-0">
-                        <i class="fas fa-heart me-2"></i>Mes Favoris
-                    </h4>
-                </div>
-                <div class="card-body">
-
-                    {% if favorites %}
-                        <ul class="list-group">
-                            {% for fav in favorites %}
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ fav.place_name }}
-                                    <a href="{% url 'remove_favorite' fav.id %}" class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-trash me-1"></i>Supprimer
-                                    </a>
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle active" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>{{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
                                 </li>
-                            {% endfor %}
-                        </ul>
+                            </ul>
+                        </div>
                     {% else %}
-                        <p class="text-muted text-center">Aucun favori pour le moment.</p>
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
                     {% endif %}
-
                 </div>
             </div>
+        </div>
+    </nav>
 
+    <!-- CONTENU PROFIL -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Titre de la page -->
+                <div class="text-center mb-5">
+                    <h1 style="color: #006233; font-weight: 700;">
+                        <i class="fas fa-user-circle me-3"></i>Mon Espace Personnel
+                    </h1>
+                    <p class="text-muted">Gérez votre profil et vos favoris</p>
+                </div>
+
+                <!-- Carte Profil -->
+                <div class="card profile-card mb-4">
+                    <div class="card-header card-header-gradient py-4">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-edit me-2"></i>Informations du Profil
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Avatar et infos -->
+                        <div class="row align-items-center mb-4">
+                            <div class="col-md-3 text-center mb-3 mb-md-0">
+                                {% if user.profile.photo %}
+                                    <img src="{{ user.profile.photo.url }}" 
+                                         class="avatar-circle"
+                                         alt="Photo de profil">
+                                {% else %}
+                                    <img src="{% static 'images/default_avatar.png' %}" 
+                                         class="avatar-circle"
+                                         alt="Photo par défaut">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-9">
+                                <h3 class="mb-2" style="color: #006233;">{{ user.username }}</h3>
+                                <p class="text-muted mb-1">
+                                    <i class="fas fa-envelope me-2"></i>{{ user.email }}
+                                </p>
+                                <p class="text-muted mb-0">
+                                    <i class="fas fa-calendar-alt me-2"></i>Membre depuis {{ user.date_joined|date:"d/m/Y" }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Formulaire de mise à jour photo -->
+                        <hr class="my-4">
+                        <h5 class="mb-3" style="color: #1E3A8A;">
+                            <i class="fas fa-camera me-2"></i>Modifier la photo de profil
+                        </h5>
+                        
+                        <form method="post" enctype="multipart/form-data" class="row g-3 align-items-center">
+                            {% csrf_token %}
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input type="file" name="photo" class="form-control" 
+                                           style="border-radius: 10px 0 0 10px; padding: 10px;">
+                                    <button type="submit" class="btn btn-maroc" style="border-radius: 0 10px 10px 0;">
+                                        <i class="fas fa-upload me-2"></i>Mettre à jour
+                                    </button>
+                                </div>
+                                <small class="text-muted">Formats acceptés : JPG, PNG, GIF. Taille max : 5MB</small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Carte Favoris -->
+                <div class="card profile-card">
+                    <div class="card-header card-header-danger py-4">
+                        <h4 class="mb-0">
+                            <i class="fas fa-heart me-2"></i>Mes Lieux Favoris
+                            {% if favorites %}
+                                <span class="badge bg-light text-danger ms-2">{{ favorites|length }}</span>
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        {% if favorites %}
+                            <div class="row">
+                                {% for fav in favorites %}
+                                    <div class="col-md-6 mb-3">
+                                        <div class="favorite-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1" style="color: #006233;">
+                                                        <i class="fas fa-map-marker-alt me-2"></i>{{ fav.place_name }}
+                                                    </h6>
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-calendar me-1"></i>
+                                                        Ajouté le {{ fav.created_at|date:"d/m/Y" }}
+                                                    </small>
+                                                </div>
+                                                <a href="{% url 'remove_favorite' fav.id %}" 
+                                                   class="btn btn-sm btn-danger-custom"
+                                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce favori ?')">
+                                                    <i class="fas fa-trash me-1"></i>Supprimer
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-heart-broken fa-3x mb-3" style="color: #ccc;"></i>
+                                <h5 class="text-muted mb-3">Aucun favori pour le moment</h5>
+                                <p class="text-muted mb-4">
+                                    Explorez les lieux touristiques et ajoutez-les à vos favoris !
+                                </p>
+                                <a href="/places/" class="btn btn-maroc">
+                                    <i class="fas fa-search me-2"></i>Découvrir les lieux
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Actions rapides -->
+                <div class="text-center mt-5">
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="/places/" class="btn btn-outline-success">
+                            <i class="fas fa-landmark me-2"></i>Explorer les lieux
+                        </a>
+                        <a href="/routes/" class="btn btn-outline-primary">
+                            <i class="fas fa-route me-2"></i>Voir les itinéraires
+                        </a>
+                        <a href="/cities/" class="btn btn-outline-info">
+                            <i class="fas fa-city me-2"></i>Découvrir les villes
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+
+    <!-- FOOTER IDENTIQUE À WORLD CUP -->
+    <footer class="footer-custom mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3" style="font-size: 2rem; font-weight: 800; color: #D4AF37;">
+                        🇲🇦 MAROC 2030
+                    </div>
+                    <p>
+                        Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
+                    </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Équipe :</strong> 4 membres<br>
+                        <strong>Technologie :</strong> Django Full Stack
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
+                        <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/places/" class="text-light text-decoration-none mb-2 d-block">Lieux Touristiques</a></li>
+                        <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
+                        <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                        <li><a href="/admin/" class="text-light text-decoration-none mb-2 d-block">Administration</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Rôles de l'équipe</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Hamza Layachi: Configuration & Villes</li>
+                        <li class="mb-2">Imane Elassioui : Lieux & Cartographie</li>
+                        <li class="mb-2">Ibtissam Ainzura: Hôtels & Itinéraires</li>
+                        <li class="mb-2">Amina Chetti: Utilisateurs & Sécurité</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Projet académique - Tous droits réservés
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation pour les cartes
+            const cards = document.querySelectorAll('.profile-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * (index + 1));
+            });
+            
+            // Animation pour les items favoris
+            const favorites = document.querySelectorAll('.favorite-item');
+            favorites.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 50 * (index + 1));
+            });
+        });
+    </script>
+</body>
+</html>

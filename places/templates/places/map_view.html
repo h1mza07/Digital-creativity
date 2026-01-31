@@ -132,7 +132,7 @@
         
         .search-box input:focus {
             outline: none;
-                    border-color: var(--maroc-blue);
+            border-color: var(--maroc-blue);
             box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
         }
         
@@ -603,9 +603,8 @@
             <div class="layer-control">
                 <select id="mapStyle">
                     <option value="cartodb">Carte Claire</option>
-                    <option value="osm">OpenStreetMap Standard</option>
-                    <option value="toner">Carte Toner</option>
-                    <option value="watercolor">Aquarelle</option>
+                    <option value="osm">OpenStreetMap</option>
+                    <option value="topo">Carte Topographique</option>
                 </select>
             </div>
         </div>
@@ -1017,7 +1016,7 @@
         let markers = [];
         let currentFilter = 'all';
 
-        // Définir les différentes options de cartes (sans clé API)
+        // Définir les différentes options de cartes
         const tileLayers = {
             cartodb: {
                 url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
@@ -1027,17 +1026,12 @@
             osm: {
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 attribution: '© OpenStreetMap contributors | Sahara Marocain',
-                name: 'OpenStreetMap Standard'
+                name: 'OpenStreetMap'
             },
-            toner: {
-                url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
-                attribution: 'Map tiles by Stamen Design, CC BY 3.0',
-                name: 'Carte Toner'
-            },
-            watercolor: {
-                url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg',
-                attribution: 'Map tiles by Stamen Design, CC BY 3.0',
-                name: 'Aquarelle'
+            topo: {
+                url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                attribution: '© OpenStreetMap contributors, SRTM',
+                name: 'Carte Topographique'
             }
         };
 
@@ -1068,7 +1062,7 @@
             const tileConfig = tileLayers[style];
             currentTileLayer = L.tileLayer(tileConfig.url, {
                 attribution: tileConfig.attribution,
-                maxZoom: 20
+                maxZoom: 19
             }).addTo(map);
         }
 

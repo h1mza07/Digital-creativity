@@ -1,207 +1,835 @@
-{% extends "base.html" %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinéraires - Maroc Tourisme 2030 ⚽</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --maroc-red: #C1272D;
+            --maroc-green: #006233;
+            --maroc-gold: #D4AF37;
+            --maroc-blue: #1E3A8A;
+            --map-green: #28a745;
+            --hotel-orange: #fd7e14;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('/static/image/pic4.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 50px;
+            border-radius: 0 0 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -180px;
+            left: -10%;
+            width: 120%;
+            height: 100px;
+            background: white;
+            transform: rotate(-3deg);
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--hotel-orange), var(--maroc-gold));
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(253, 126, 20, 0.4);
+            border: 2px solid var(--maroc-gold);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            border-bottom: 3px solid var(--maroc-green);
+            min-height: 60px;
+        }
+        
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 10px;
+        }
+        
+        .dropdown-item {
+            border-radius: 10px;
+            padding: 8px 15px;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .dropdown-menu {
+                width: 100%;
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+            position: relative;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(45deg, var(--hotel-orange), var(--maroc-gold));
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(253, 126, 20, 0.3);
+        }
+        
+        .card-title-custom {
+            color: var(--maroc-green);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
+            color: white;
+            padding: 60px 0;
+            margin: 50px 0;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '🧭';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+            margin-bottom: 10px;
+        }
+        
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+        }
+        
+        .route-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .route-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .route-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(45deg, var(--hotel-orange), var(--maroc-gold));
+        }
+        
+        .route-body {
+            padding: 25px;
+        }
+        
+        .route-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--maroc-green);
+            margin-bottom: 10px;
+            min-height: 50px;
+        }
+        
+        .btn-maps {
+            background: linear-gradient(45deg, var(--hotel-orange), #ffc107);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(253, 126, 20, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .btn-maps:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(253, 126, 20, 0.5);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-banner {
+                padding: 60px 0;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="/">
+                <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/map/">
+                        <i class="fas fa-map me-1"></i>Carte
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom active" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
 
-{% block title %}Itinéraires - Maroc Tourisme 2030 ⚽{% endblock %}
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>Compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
 
-{% block content %}
-<style>
-    :root {
-        --maroc-red: #C1272D;
-        --maroc-green: #006233;
-        --maroc-gold: #D4AF37;
-        --maroc-blue: #1E3A8A;
-        --hotel-orange: #fd7e14;
-    }
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        padding-top: 20px;
-    }
-
-    /* Style identique à la Hero Banner des Hôtels */
-    .hero-banner-small {
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                    url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg');
-        background-size: cover;
-        background-position: center;
-        color: white;
-        padding: 60px 0;
-        text-align: center;
-        border-radius: 20px;
-        margin-bottom: 40px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-
-    /* Style des cartes identique aux Hotel-Cards */
-    .route-card {
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        margin-bottom: 30px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        position: relative;
-        height: 100%;
-        border: none;
-    }
-
-    .route-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    .route-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5px;
-        background: linear-gradient(90deg, var(--maroc-green), var(--maroc-blue));
-    }
-
-    .route-image {
-        height: 200px;
-        width: 100%;
-        object-fit: cover;
-    }
-
-    .route-body { padding: 25px; }
-
-    .route-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--maroc-green);
-        margin-bottom: 10px;
-    }
-
-    .route-location {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        color: #666;
-        font-size: 1rem;
-    }
-
-    .route-location i {
-        color: var(--hotel-orange);
-        margin-right: 10px;
-    }
-
-    /* Grille d'info comme sur la page hôtel */
-    .route-info {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin: 15px 0;
-    }
-
-    .info-box {
-        text-align: center;
-        padding: 10px;
-        background: #f8f9ff;
-        border-radius: 12px;
-        transition: all 0.3s;
-    }
-
-    .info-box:hover {
-        background: linear-gradient(135deg, var(--hotel-orange), #ffc107);
-        color: white;
-    }
-
-    .info-box span { display: block; font-size: 0.8rem; font-weight: 600; opacity: 0.8; }
-    .info-box strong { font-size: 1.1rem; }
-
-    .btn-maps {
-        background: linear-gradient(45deg, var(--hotel-orange), #ffc107);
-        color: white;
-        padding: 12px 25px;
-        border-radius: 50px;
-        border: none;
-        font-weight: 600;
-        width: 100%;
-        box-shadow: 0 5px 15px rgba(253, 126, 20, 0.3);
-        transition: all 0.3s ease;
-    }
-
-    .btn-maps:hover {
-        transform: scale(1.05);
-        color: white;
-        box-shadow: 0 10px 20px rgba(253, 126, 20, 0.5);
-    }
-</style>
-
-<div class="container py-4">
-    <div class="hero-banner-small">
-        <h1 class="fw-bold">🧭 Mes Itinéraires 2030</h1>
-        <p class="lead">De votre hôtel vers l'effervescence du stade</p>
-        <span class="badge bg-success p-2 px-3">
-            <i class="fas fa-check-circle me-1"></i> {{ itineraries|length }} trajets configurés
-        </span>
+    <div class="hero-banner">
+        <div class="container">
+            <h1 class="hero-title">
+                Itinéraires
+            </h1>
+            <p class="hero-subtitle">
+                Guide des 15 itinéraires officiels pour la Coupe du Monde 2030
+            </p>
+            <span class="hero-badge">
+                🧭 Hôtels → Stades • Trajets directs
+            </span>
+            <p class="mt-4">
+                Trajets optimisés entre les hôtels et les stades<br>
+                pour une expérience fluide pendant la Coupe du Monde
+            </p>
+        </div>
     </div>
 
-    <div class="row g-4">
-        {% for itinerary in itineraries %}
-            <div class="col-md-6 col-lg-4">
+    <div class="container">
+        <div class="stats-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">15</div>
+                        <p>ITINÉRAIRES<br>OFFICIELS</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">5</div>
+                        <p>VILLES<br>HÔTES</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">5</div>
+                        <p>STADES<br>MODERNES</p>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">2030</div>
+                        <p>COUPE DU MONDE<br>AU MAROC</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
                 <div class="route-card">
-                    <img src="/static/image/pic4.jpg" class="route-image" alt="Trajet">
-                    
                     <div class="route-body">
-                        <div class="route-location">
-                            <i class="fas fa-city"></i> <strong>{{ itinerary.city }}</strong>
-                        </div>
-                        
-                        <h3 class="route-title">{{ itinerary.hotel_name }}</h3>
-                        
-                        <p class="text-muted small">
-                            <i class="fas fa-long-arrow-alt-right me-2 text-success"></i>
-                            Vers : <strong>{{ itinerary.stadium_name }}</strong>
-                        </p>
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Rabat</span>
+                        <h3 class="route-title">Sofitel Jardin des Roses</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Stade Prince Moulay Abdellah</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Sofitel+Jardin+des+Roses+Rabat&destination=Stade+Prince+Moulay+Abdellah" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Rabat</span>
+                        <h3 class="route-title">Premier Classe Rabat</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Stade Prince Moulay Abdellah</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Premier+Classe+Rabat&destination=Stade+Prince+Moulay+Abdellah" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Rabat</span>
+                        <h3 class="route-title">Hostel Rabat Medina</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Stade Prince Moulay Abdellah</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Hostel+Rabat+Medina&destination=Stade+Prince+Moulay+Abdellah" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="route-info">
-                            <div class="info-box">
-                                <span>Ville</span>
-                                <strong>{{ itinerary.city|slice:":3" }}</strong>
-                            </div>
-                            <div class="info-box">
-                                <span>Match</span>
-                                <strong>2030</strong>
-                            </div>
-                        </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Marrakech</span>
+                        <h3 class="route-title">La Mamounia</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Grand Stade de Marrakech</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=La+Mamounia+Marrakech&destination=Grand+Stade+de+Marrakech" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Marrakech</span>
+                        <h3 class="route-title">Al Mansour Eddahbi</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Grand Stade de Marrakech</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Al+Mansour+Eddahbi+Marrakech&destination=Grand+Stade+de+Marrakech" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Marrakech</span>
+                        <h3 class="route-title">Backpackers Hostel Kech</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Grand Stade de Marrakech</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Backpackers+Hostel+Kech&destination=Grand+Stade+de+Marrakech" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="mt-4">
-                            <a href="{{ itinerary.google_maps_url }}" target="_blank" class="btn btn-maps text-center d-block">
-                                <i class="fas fa-map-marked-alt me-2"></i> Guider via Google Maps
-                            </a>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Casablanca</span>
+                        <h3 class="route-title">Four Seasons Hotel</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Grand Stade de Casablanca</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Four+Seasons+Casablanca&destination=Grand+Stade+de+Casablanca" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Casablanca</span>
+                        <h3 class="route-title">Kenzi Tower Hotel</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Grand Stade de Casablanca</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Kenzi+Tower+Casablanca&destination=Grand+Stade+de+Casablanca" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Casablanca</span>
+                        <h3 class="route-title">Ibis Budget Casablanca</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Grand Stade de Casablanca</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Ibis+Budget+Casablanca&destination=Grand+Stade+de+Casablanca" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Agadir</span>
+                        <h3 class="route-title">Royal Atlas & Spa</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Stade Adrar</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Royal+Atlas+Agadir&destination=Stade+Adrar" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Agadir</span>
+                        <h3 class="route-title">Gadir Bay Hotel</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Stade Adrar</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Gadir+Bay+Hotel+Agadir&destination=Stade+Adrar" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Agadir</span>
+                        <h3 class="route-title">Surf Hostel Agadir</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Stade Adrar</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Surf+Hostel+Agadir&destination=Stade+Adrar" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Fès</span>
+                        <h3 class="route-title">Riad Fès - Relais & Châteaux</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Complexe Sportif de Fès</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Riad+Fes&destination=Complexe+Sportif+de+Fes" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Fès</span>
+                        <h3 class="route-title">Hôtel Sahrai</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Complexe Sportif de Fès</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Hotel+Sahrai+Fes&destination=Complexe+Sportif+de+Fes" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="route-card">
+                    <div class="route-body">
+                        <span class="badge bg-light text-dark mb-2 shadow-sm">📍 Fès</span>
+                        <h3 class="route-title">Fès Medina Hostel</h3>
+                        <p class="mb-3">⚽ Vers : <strong>Complexe Sportif de Fès</strong></p>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=Fes+Medina+Hostel&destination=Complexe+Sportif+de+Fes" target="_blank" class="btn-maps">🗺️ Voir sur Maps</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5 mb-5">
+            <div class="col-lg-10 mx-auto">
+                <div class="card feature-card">
+                    <div class="card-body p-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="mb-3" style="color: var(--maroc-green);">
+                                    <i class="fas fa-compass me-3"></i>
+                                    Trouvez votre itinéraire idéal
+                                </h2>
+                                <p class="lead mb-4">
+                                    Utilisez notre carte interactive pour visualiser 
+                                    tous les itinéraires entre les hôtels et les stades.
+                                </p>
+                                <div class="d-flex gap-3">
+                                    <a href="/places/map/" class="btn btn-lg" style="
+                                        background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+                                        color: white;
+                                        padding: 12px 30px;
+                                        border-radius: 50px;
+                                        font-weight: 600;
+                                    ">
+                                        <i class="fas fa-map-marked-alt me-2"></i>
+                                        Voir la carte interactive
+                                    </a>
+                                    <a href="/hotels/" class="btn btn-outline-success btn-lg">
+                                        <i class="fas fa-hotel me-2"></i>
+                                        Rechercher un hôtel
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <i class="fas fa-route fa-6x" style="color: var(--maroc-green); opacity: 0.7;"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% empty %}
-            <div class="col-12 text-center py-5">
-                <div class="alert alert-light shadow-sm py-5">
-                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                    <h4>Aucun itinéraire enregistré</h4>
-                    <p>Utilisez le terminal pour générer vos 15 routes officielles.</p>
+        </div>
+
+        <div class="row mt-5 align-items-center">
+            <div class="col-md-6">
+                <h2 class="mb-4" style="color: var(--maroc-green);">
+                    <i class="fas fa-info-circle me-3"></i>À propos du projet
+                </h2>
+                <p class="lead">
+                    Ce site a été développé dans le cadre du module <strong>Digital Creativity</strong>.
+                </p>
+                <p>
+                    Il présente les attractions touristiques du Maroc en prévision de la Coupe du Monde 2030,
+                    combinant technologie moderne et richesses culturelles marocaines.
+                </p>
+                <div class="mt-4">
+                    <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-maroc me-3">
+                        <i class="fab fa-github me-2"></i>Voir le code source
+                    </a>
+                    <button class="btn btn-outline-secondary">
+                        <i class="fas fa-users me-2"></i>Équipe de développement
+                    </button>
                 </div>
             </div>
-        {% endfor %}
+            <div class="col-md-6">
+                <div class="card feature-card">
+                    <div class="card-body p-4">
+                        <h4 class="card-title-custom mb-3">
+                            <i class="fas fa-cogs me-2"></i>Technologies utilisées
+                        </h4>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-primary p-3 w-100">Django 4.2</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-success p-3 w-100">Bootstrap 5</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-info p-3 w-100">PostgreSQL</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-warning p-3 w-100">JavaScript</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-danger p-3 w-100">Python</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <span class="badge bg-dark p-3 w-100">Git/GitHub</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.route-card').forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = `all 0.5s ease ${index * 0.1}s`;
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, 100);
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3">
+                        🇲🇦 MAROC 2030
+                    </div>
+                    <p>
+                        Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
+                    </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Équipe :</strong> 4 membres<br>
+                        <strong>Technologie :</strong> Django Full Stack
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
+                        <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/places/" class="text-light text-decoration-none mb-2 d-block">Lieux Touristiques</a></li>
+                        <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
+                        <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                        <li><a href="/admin/" class="text-light text-decoration-none mb-2 d-block">Administration</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Rôles de l'équipe</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Hamza Layachi: Configuration & Villes</li>
+                        <li class="mb-2">Imane Elassioui : Lieux & Cartographie</li>
+                        <li class="mb-2">Ibtissam Ainzura: Hôtels & Itinéraires</li>
+                        <li class="mb-2">Amina Chetti: Utilisateurs & Sécurité</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Projet académique - Tous droits réservés
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.route-card, .feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            const badge = document.querySelector('.hero-badge');
+            setInterval(() => {
+                badge.style.transform = badge.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+            }, 2000);
         });
-    });
-</script>
-{% endblock %}
-
+    </script>
+</body>
+</html>
