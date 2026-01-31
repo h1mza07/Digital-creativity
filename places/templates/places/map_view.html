@@ -6,13 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carte Interactive - Maroc Tourisme 2030 ⚽</title>
     
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
-    <!-- Bootstrap & Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
         :root {
@@ -20,6 +17,7 @@
             --maroc-green: #006233;
             --maroc-gold: #D4AF37;
             --maroc-blue: #1E3A8A;
+            --map-green: #28a745;
         }
         
         * {
@@ -32,61 +30,44 @@
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: #333;
-            padding-top: 70px;
+            padding-top: 80px;
         }
         
-        /* NAVBAR SIMPLE */
-        .navbar-custom {
-            background: rgba(255, 255, 255, 0.95) !important;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            border-bottom: 3px solid var(--maroc-green);
-            padding: 10px 0;
-        }
-        
-        .logo-img {
-            height: 70px;
-            width: auto;
-        }
-        
-        .nav-link-custom {
-            color: #333 !important;
-            font-weight: 600;
-            padding: 8px 20px !important;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link-custom:hover {
-            color: white !important;
-            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
-        }
-        
-        .nav-link-custom.active {
-            background: var(--maroc-green);
-            color: white !important;
-        }
-        
-        /* HERO SECTION */
         .hero-banner {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                         url('https://images.unsplash.com/photo-1539020140153-e479b8c22e70?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             color: white;
-            padding: 60px 0;
+            padding: 100px 0;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 50px;
+            border-radius: 0 0 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -180px;
+            left: -10%;
+            width: 120%;
+            height: 100px;
+            background: white;
+            transform: rotate(-3deg);
         }
         
         .hero-title {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             font-weight: 800;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
         
         .hero-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 25px;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
             opacity: 0.9;
         }
         
@@ -97,24 +78,256 @@
             padding: 10px 25px;
             border-radius: 50px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(0, 98, 51, 0.4);
+            border: 2px solid var(--maroc-gold);
         }
         
-        /* MAIN CONTAINER */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            border-bottom: 3px solid var(--maroc-green);
+            min-height: 60px;
+        }
+        
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 10px;
+        }
+        
+        .dropdown-item {
+            border-radius: 10px;
+            padding: 8px 15px;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .dropdown-menu {
+                width: 100%;
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 98, 51, 0.3);
+        }
+        
+        .card-title-custom {
+            color: var(--maroc-green);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
+            color: white;
+            padding: 60px 0;
+            margin: 50px 0;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '🗺️';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+            margin-bottom: 10px;
+        }
+        
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+        }
+        
         .main-container {
             display: flex;
-            height: calc(100vh - 300px);
-            margin: 0 20px 20px;
+            height: calc(100vh - 400px);
+            margin-bottom: 50px;
             gap: 20px;
         }
         
-        /* SIDEBAR */
         .sidebar {
             width: 350px;
             background: white;
             padding: 20px;
-            overflow-y: auto;
-            border-radius: 15px;
+            border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        
+        .map-container {
+            flex: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
         }
         
         .search-box {
@@ -125,15 +338,16 @@
         .search-box input {
             width: 100%;
             padding: 12px 15px 12px 45px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: 2px solid #eee;
+            border-radius: 15px;
             font-size: 16px;
+            transition: all 0.3s ease;
         }
         
         .search-box input:focus {
             outline: none;
-            border-color: var(--maroc-blue);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+            border-color: var(--maroc-green);
+            box-shadow: 0 0 0 3px rgba(0, 98, 51, 0.1);
         }
         
         .search-box i {
@@ -141,7 +355,7 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #666;
+            color: var(--maroc-green);
         }
         
         .filter-section {
@@ -154,6 +368,7 @@
             padding-bottom: 8px;
             border-bottom: 2px solid var(--maroc-green);
             font-size: 18px;
+            font-weight: 600;
         }
         
         .filter-options {
@@ -165,13 +380,13 @@
         .filter-option {
             padding: 12px 15px;
             background: #f8f9fa;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 12px;
             transition: all 0.3s;
-            border: 1px solid transparent;
+            border: 2px solid transparent;
         }
         
         .filter-option:hover {
@@ -193,14 +408,18 @@
             border-bottom: 1px solid #eee;
             cursor: pointer;
             transition: all 0.3s;
+            border-radius: 10px;
+            margin-bottom: 5px;
         }
         
         .place-item:hover {
             background: #f8f9fa;
+            transform: translateX(5px);
         }
         
         .place-item.active {
             background: #e8f5e9;
+            border-left: 4px solid var(--maroc-green);
         }
         
         .place-name {
@@ -223,7 +442,7 @@
             justify-content: space-between;
             background: #f8f9fa;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 15px;
             margin-top: 20px;
         }
         
@@ -244,20 +463,6 @@
             margin-top: 5px;
         }
         
-        /* MAP CONTAINER */
-        .map-container {
-            flex: 1;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-        
         .map-controls {
             position: absolute;
             top: 20px;
@@ -273,9 +478,9 @@
             height: 45px;
             background: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -287,33 +492,33 @@
         .map-btn:hover {
             background: var(--maroc-green);
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 98, 51, 0.3);
         }
         
-        /* STATS SECTION */
-        .stats-section {
-            background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
+        .custom-marker {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid;
             color: white;
-            padding: 40px 0;
-            margin: 40px 20px;
-            border-radius: 20px;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--maroc-gold);
-            margin-bottom: 10px;
-        }
-        
-        /* FOOTER */
-        .footer-simple {
-            background: #1a1a1a;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin-top: 30px;
-        }
+        .marker-historique { border-color: var(--maroc-blue); background: var(--maroc-blue); }
+        .marker-culturel { border-color: var(--maroc-green); background: var(--maroc-green); }
+        .marker-religieux { border-color: var(--maroc-red); background: var(--maroc-red); }
+        .marker-architectural { border-color: #8e44ad; background: #8e44ad; }
+        .marker-naturel { border-color: #2ecc71; background: #2ecc71; }
+        .marker-artisanal { border-color: #d35400; background: #d35400; }
+        .marker-royal { border-color: var(--maroc-gold); background: var(--maroc-gold); }
+        .marker-moderne { border-color: #16a085; background: #16a085; }
+        .marker-educatif { border-color: #9b59b6; background: #9b59b6; }
         
         @media (max-width: 1024px) {
             .main-container {
@@ -331,127 +536,95 @@
             }
         }
         
-        /* STYLES POUR LES MARQUEURS */
-        .custom-marker {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid;
-            color: white;
-            font-size: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        
-        .marker-historique {
-            border-color: var(--maroc-blue);
-            background: var(--maroc-blue);
-        }
-        
-        .marker-culturel {
-            border-color: var(--maroc-green);
-            background: var(--maroc-green);
-        }
-        
-        .marker-religieux {
-            border-color: var(--maroc-red);
-            background: var(--maroc-red);
-        }
-        
-        .marker-architectural {
-            border-color: #8e44ad;
-            background: #8e44ad;
-        }
-        
-        .marker-naturel {
-            border-color: #2ecc71;
-            background: #2ecc71;
-        }
-        
-        .marker-artisanal {
-            border-color: #d35400;
-            background: #d35400;
-        }
-        
-        .marker-royal {
-            border-color: var(--maroc-gold);
-            background: var(--maroc-gold);
-        }
-        
-        .marker-moderne {
-            border-color: #16a085;
-            background: #16a085;
-        }
-        
-        .marker-educatif {
-            border-color: #9b59b6;
-            background: #9b59b6;
-        }
-        
-        .marker-default {
-            border-color: #7f8c8d;
-            background: #7f8c8d;
-        }
-        
-        .leaflet-popup-content {
-            min-width: 280px;
-            font-family: 'Poppins', sans-serif;
-            padding: 10px;
-        }
-        
-        .popup-btn {
-            background: var(--maroc-green);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            width: 100%;
-            cursor: pointer;
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-banner {
+                padding: 60px 0;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- NAVBAR SIMPLE -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand navbar-brand-custom" href="/">
                 <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
             </a>
             
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link nav-link-custom" href="/">
-                    <i class="fas fa-home me-2"></i>Accueil
-                </a>
-                <a class="nav-link nav-link-custom" href="/places/">
-                    <i class="fas fa-landmark me-2"></i>Lieux
-                </a>
-                <a class="nav-link nav-link-custom active" href="/places/map/">
-                    <i class="fas fa-map me-2"></i>Carte
-                </a>
-                {% if user.is_authenticated %}
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-user me-2"></i>Profil
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
                     </a>
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
                     </a>
-                {% else %}
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
                     </a>
-                {% endif %}
+                    <a class="nav-link nav-link-custom active" href="/places/map/">
+                        <i class="fas fa-map me-1"></i>Carte
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>Compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
     <div class="hero-banner">
         <div class="container">
             <h1 class="hero-title">
-                CARTE INTERACTIVE
+                Carte Interactive
             </h1>
             <p class="hero-subtitle">
                 Explorez les monuments historiques du Maroc sur notre carte interactive
@@ -462,156 +635,182 @@
         </div>
     </div>
 
-    <!-- CONTENU PRINCIPAL -->
-    <div class="main-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Search -->
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Rechercher un monument, une ville...">
-            </div>
-            
-            <!-- Filters -->
-            <div class="filter-section">
-                <div class="filter-title">
-                    <i class="fas fa-filter"></i>
-                    <span>Filtrer par ville</span>
-                </div>
-                <div class="filter-options">
-                    <div class="filter-option active" data-filter="all">
-                        <i class="fas fa-layer-group"></i>
-                        <span>Toutes les villes (24)</span>
+    <div class="container">
+        <div class="stats-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">24</div>
+                        <p>MONUMENTS<br>SUR LA CARTE</p>
                     </div>
-                    <div class="filter-option" data-filter="Tanger">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Tanger (3)</span>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">8</div>
+                        <p>VILLES<br>MAROCAINES</p>
                     </div>
-                    <div class="filter-option" data-filter="Marrakech">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Marrakech (3)</span>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">10</div>
+                        <p>CATÉGORIES<br>DIFFÉRENTES</p>
                     </div>
-                    <div class="filter-option" data-filter="Fès">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Fès (3)</span>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-number">2030</div>
+                        <p>COUPE DU MONDE<br>AU MAROC</p>
                     </div>
-                    <div class="filter-option" data-filter="Meknès">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Meknès (3)</span>
-                    </div>
-                    <div class="filter-option" data-filter="Rabat">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Rabat (3)</span>
-                    </div>
-                    <div class="filter-option" data-filter="Casablanca">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Casablanca (3)</span>
-                    </div>
-                    <div class="filter-option" data-filter="Oujda">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Oujda (3)</span>
-                    </div>
-                    <div class="filter-option" data-filter="Agadir">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Agadir (3)</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Places List -->
-            <div class="places-list">
-                <div class="filter-title">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Monuments (<span id="placeCount">24</span>)</span>
-                </div>
-                <div id="placeList">
-                    <!-- La liste sera chargée par JavaScript -->
-                </div>
-            </div>
-            
-            <!-- Statistics -->
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalPlaces">24</div>
-                    <div class="stat-label">Monuments</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="citiesCount">8</div>
-                    <div class="stat-label">Villes</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="categoriesCount">10</div>
-                    <div class="stat-label">Catégories</div>
                 </div>
             </div>
         </div>
 
-        <!-- Map -->
-        <div class="map-container">
-            <div id="map"></div>
-            <div class="map-controls">
-                <button class="map-btn" id="zoomIn" title="Zoom avant">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <button class="map-btn" id="zoomOut" title="Zoom arrière">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button class="map-btn" id="locateMe" title="Me localiser">
-                    <i class="fas fa-location-crosshairs"></i>
-                </button>
-                <button class="map-btn" id="resetView" title="Vue d'ensemble">
-                    <i class="fas fa-globe-africa"></i>
-                </button>
+        <div class="main-container">
+            <div class="sidebar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Rechercher un monument, une ville...">
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-title">
+                        <i class="fas fa-filter"></i>
+                        <span>Filtrer par ville</span>
+                    </div>
+                    <div class="filter-options">
+                        <div class="filter-option active" data-filter="all">
+                            <i class="fas fa-layer-group"></i>
+                            <span>Toutes les villes (24)</span>
+                        </div>
+                        <div class="filter-option" data-filter="Tanger">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Tanger (3)</span>
+                        </div>
+                        <div class="filter-option" data-filter="Marrakech">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Marrakech (3)</span>
+                        </div>
+                        <div class="filter-option" data-filter="Fès">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Fès (3)</span>
+                        </div>
+                        <div class="filter-option" data-filter="Meknès">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Meknès (3)</span>
+                        </div>
+                        <div class="filter-option" data-filter="Rabat">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Rabat (3)</span>
+                        </div>
+                        <div class="filter-option" data-filter="Casablanca">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Casablanca (3)</span>
+                        </div>
+                        <div class="filter-option" data-filter="Oujda">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Oujda (3)</span>
+                        </div>
+                        <div class="filter-option" data-filter="Agadir">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Agadir (3)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="places-list">
+                    <div class="filter-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Monuments (<span id="placeCount">24</span>)</span>
+                    </div>
+                    <div id="placeList"></div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalPlaces">24</div>
+                        <div class="stat-label">Monuments</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="citiesCount">8</div>
+                        <div class="stat-label">Villes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="categoriesCount">10</div>
+                        <div class="stat-label">Catégories</div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- STATS SECTION -->
-    <div class="stats-section">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-3 mb-4">
-                    <div class="stat-number">24</div>
-                    <p>MONUMENTS<br>SUR LA CARTE</p>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="stat-number">8</div>
-                    <p>VILLES<br>MAROCAINES</p>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="stat-number">10</div>
-                    <p>CATÉGORIES<br>DIFFÉRENTES</p>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="stat-number">2030</div>
-                    <p>COUPE DU MONDE<br>AU MAROC</p>
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-controls">
+                    <button class="map-btn" id="zoomIn" title="Zoom avant">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="map-btn" id="zoomOut" title="Zoom arrière">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button class="map-btn" id="locateMe" title="Me localiser">
+                        <i class="fas fa-location-crosshairs"></i>
+                    </button>
+                    <button class="map-btn" id="resetView" title="Vue d'ensemble">
+                        <i class="fas fa-globe-africa"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="footer-simple">
+    <footer class="footer-custom">
         <div class="container">
-            <p class="mb-0">
-                © 2024 Carte Interactive - Maroc Tourisme 2030
-                | <a href="/" class="text-light">Accueil</a>
-                | <a href="/places/" class="text-light">Lieux</a>
-            </p>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3">
+                        🇲🇦 MAROC 2030
+                    </div>
+                    <p>
+                        Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
+                    </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Équipe :</strong> 4 membres<br>
+                        <strong>Technologie :</strong> Django Full Stack
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
+                        <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/places/" class="text-light text-decoration-none mb-2 d-block">Lieux Touristiques</a></li>
+                        <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
+                        <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                        <li><a href="/admin/" class="text-light text-decoration-none mb-2 d-block">Administration</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Rôles de l'équipe</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Hamza Layachi: Configuration & Villes</li>
+                        <li class="mb-2">Imane Elassioui : Lieux & Cartographie</li>
+                        <li class="mb-2">Ibtissam Ainzura: Hôtels & Itinéraires</li>
+                        <li class="mb-2">Amina Chetti: Utilisateurs & Sécurité</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Projet académique - Tous droits réservés
+                </p>
+            </div>
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
-    <!-- SCRIPT COMPLET POUR LA CARTE -->
     <script>
-        // ===========================================
-        // DONNÉES DES 24 MONUMENTS DU MAROC
-        // ===========================================
         const monumentsData = [
-            // TANGER
             {
                 id: 1,
                 name: 'Kasbah des Musées',
@@ -620,8 +819,6 @@
                 latitude: 35.788,
                 longitude: -5.812,
                 category: 'Historique',
-                image: '/static/places/images/kasbah_musee.jpg',
-                image_alt: 'Kasbah des Musées à Tanger',
                 hours: '9h00 - 18h00',
                 price: '20 DH',
                 best_time: 'Avril à Juin'
@@ -634,8 +831,6 @@
                 latitude: 35.752,
                 longitude: -5.928,
                 category: 'Naturel',
-                image: '/static/places/images/grottes_hercule.jpg',
-                image_alt: 'Grottes d\'Hercule à Tanger',
                 hours: '8h00 - 19h00',
                 price: '10 DH',
                 best_time: 'Toute l\'année'
@@ -648,14 +843,10 @@
                 latitude: 35.786,
                 longitude: -5.813,
                 category: 'Culturel',
-                image: '/static/places/images/medina_tanger.jpg',
-                image_alt: 'Médina de Tanger',
                 hours: 'Toute la journée',
                 price: 'Gratuit',
                 best_time: 'Matin ou fin d\'après-midi'
             },
-            
-            // MARRAKECH
             {
                 id: 4,
                 name: 'Place Jemaa el-Fna',
@@ -664,8 +855,6 @@
                 latitude: 31.626,
                 longitude: -7.989,
                 category: 'Culturel',
-                image: '/static/places/images/jemaa_elfna.jpg',
-                image_alt: 'Place Jemaa el-Fna à Marrakech',
                 hours: '24h/24',
                 price: 'Gratuit',
                 best_time: 'En soirée'
@@ -678,8 +867,6 @@
                 latitude: 31.619,
                 longitude: -7.973,
                 category: 'Architectural',
-                image: '/static/places/images/palais_bahia.jpg',
-                image_alt: 'Palais Bahia à Marrakech',
                 hours: '9h00 - 17h00',
                 price: '70 DH',
                 best_time: 'Octobre à Avril'
@@ -692,14 +879,10 @@
                 latitude: 31.624,
                 longitude: -7.994,
                 category: 'Religieux',
-                image: '/static/places/images/mosquee_koutoubia.jpg',
-                image_alt: 'Mosquée Koutoubia à Marrakech',
                 hours: 'Extérieur seulement',
                 price: 'Gratuit (extérieur)',
                 best_time: 'Toute la journée'
             },
-            
-            // FÈS
             {
                 id: 7,
                 name: 'Médina de Fès el-Bali',
@@ -708,8 +891,6 @@
                 latitude: 34.063,
                 longitude: -4.973,
                 category: 'Historique',
-                image: '/static/places/images/medina_fes.jpg',
-                image_alt: 'Médina de Fès',
                 hours: 'Toute la journée',
                 price: 'Gratuit',
                 best_time: 'Matin'
@@ -722,8 +903,6 @@
                 latitude: 34.064,
                 longitude: -4.973,
                 category: 'Éducatif',
-                image: '/static/places/images/al_quaraouiyine.jpg',
-                image_alt: 'Université Al Quaraouiyine',
                 hours: 'Visite guidée seulement',
                 price: 'Non ouvert au public',
                 best_time: 'Sur rendez-vous'
@@ -736,14 +915,10 @@
                 latitude: 34.065,
                 longitude: -4.980,
                 category: 'Artisanal',
-                image: '/static/places/images/tanneries_fes.jpg',
-                image_alt: 'Tanneries Chouara à Fès',
                 hours: '8h00 - 19h00',
                 price: 'Gratuit (vue depuis les terrasses)',
                 best_time: 'Matin'
             },
-            
-            // MEKNÈS
             {
                 id: 10,
                 name: 'Bab Mansour',
@@ -752,8 +927,6 @@
                 latitude: 33.894,
                 longitude: -5.565,
                 category: 'Architectural',
-                image: '/static/places/images/bab_mansour.jpg',
-                image_alt: 'Bab Mansour à Meknès',
                 hours: 'Toujours visible',
                 price: 'Gratuit',
                 best_time: 'Fin d\'après-midi'
@@ -766,8 +939,6 @@
                 latitude: 33.892,
                 longitude: -5.563,
                 category: 'Royal',
-                image: '/static/places/images/mausolee_ismail.jpg',
-                image_alt: 'Mausolée Moulay Ismail',
                 hours: '9h00 - 12h00, 15h00 - 18h00',
                 price: 'Gratuit',
                 best_time: 'Matin'
@@ -780,14 +951,10 @@
                 latitude: 33.893,
                 longitude: -5.566,
                 category: 'Culturel',
-                image: '/static/places/images/place_elhedim.jpg',
-                image_alt: 'Place El-Hedim à Meknès',
                 hours: 'Toute la journée',
                 price: 'Gratuit',
                 best_time: 'En soirée'
             },
-            
-            // RABAT
             {
                 id: 13,
                 name: 'Tour Hassan',
@@ -796,8 +963,6 @@
                 latitude: 34.024,
                 longitude: -6.822,
                 category: 'Historique',
-                image: '/static/places/images/tour_hassan.jpg',
-                image_alt: 'Tour Hassan à Rabat',
                 hours: 'Toujours visible',
                 price: 'Gratuit',
                 best_time: 'Toute la journée'
@@ -810,8 +975,6 @@
                 latitude: 34.030,
                 longitude: -6.836,
                 category: 'Historique',
-                image: '/static/places/images/kasbah_oudayas.jpg',
-                image_alt: 'Kasbah des Oudayas à Rabat',
                 hours: '8h00 - 20h00',
                 price: 'Gratuit',
                 best_time: 'Après-midi'
@@ -824,14 +987,10 @@
                 latitude: 34.023,
                 longitude: -6.823,
                 category: 'Royal',
-                image: '/static/places/images/mausolee_mohammed5.jpg',
-                image_alt: 'Mausolée Mohammed V à Rabat',
                 hours: '9h00 - 18h00',
                 price: 'Gratuit',
                 best_time: 'Matin'
             },
-            
-            // CASABLANCA
             {
                 id: 16,
                 name: 'Mosquée Hassan II',
@@ -840,8 +999,6 @@
                 latitude: 33.607,
                 longitude: -7.632,
                 category: 'Religieux',
-                image: '/static/places/images/hassan2.jpg',
-                image_alt: 'Mosquée Hassan II à Casablanca',
                 hours: '9h00 - 17h00 (visites)',
                 price: '120 DH',
                 best_time: 'Matin'
@@ -854,8 +1011,6 @@
                 latitude: 33.573,
                 longitude: -7.632,
                 category: 'Architectural',
-                image: '/static/places/images/quartier_habous.jpg',
-                image_alt: 'Quartier Habous à Casablanca',
                 hours: 'Toute la journée',
                 price: 'Gratuit',
                 best_time: 'Matin'
@@ -868,14 +1023,10 @@
                 latitude: 33.594,
                 longitude: -7.618,
                 category: 'Architectural',
-                image: '/static/places/images/cathedrale_casablanca.jpg',
-                image_alt: 'Cathédrale Sacré-Cœur à Casablanca',
                 hours: 'Extérieur seulement',
                 price: 'Gratuit',
                 best_time: 'Toute la journée'
             },
-            
-            // OUJDA
             {
                 id: 19,
                 name: 'Médina d\'Oujda',
@@ -884,8 +1035,6 @@
                 latitude: 34.681,
                 longitude: -1.908,
                 category: 'Historique',
-                image: '/static/places/images/medina_oujda.jpg',
-                image_alt: 'Médina d\'Oujda',
                 hours: 'Toute la journée',
                 price: 'Gratuit',
                 best_time: 'Matin'
@@ -898,8 +1047,6 @@
                 latitude: 34.680,
                 longitude: -1.908,
                 category: 'Religieux',
-                image: '/static/places/images/sidi_yahya.jpg',
-                image_alt: 'Mosquée Sidi Yahya à Oujda',
                 hours: 'Extérieur seulement',
                 price: 'Gratuit',
                 best_time: 'Toute la journée'
@@ -912,14 +1059,10 @@
                 latitude: 34.683,
                 longitude: -1.911,
                 category: 'Naturel',
-                image: '/static/places/images/parc_oujda.jpg',
-                image_alt: 'Parc Lalla Aïcha à Oujda',
                 hours: '8h00 - 20h00',
                 price: 'Gratuit',
                 best_time: 'Après-midi'
             },
-            
-            // AGADIR
             {
                 id: 22,
                 name: 'Kasbah d\'Agadir Oufella',
@@ -928,8 +1071,6 @@
                 latitude: 30.433,
                 longitude: -9.615,
                 category: 'Historique',
-                image: '/static/places/images/kasbah_agadir.jpg',
-                image_alt: 'Kasbah d\'Agadir Oufella',
                 hours: 'Toujours visible',
                 price: 'Gratuit',
                 best_time: 'Coucher de soleil'
@@ -942,8 +1083,6 @@
                 latitude: 30.423,
                 longitude: -9.598,
                 category: 'Naturel',
-                image: '/static/places/images/vallee_oiseaux.jpg',
-                image_alt: 'Vallée des Oiseaux à Agadir',
                 hours: '9h00 - 18h00',
                 price: 'Gratuit',
                 best_time: 'Matin'
@@ -956,30 +1095,20 @@
                 latitude: 30.416,
                 longitude: -9.619,
                 category: 'Moderne',
-                image: '/static/places/images/marina_agadir.jpg',
-                image_alt: 'Marina d\'Agadir',
                 hours: 'Toute la journée',
                 price: 'Gratuit',
                 best_time: 'En soirée'
             }
         ];
 
-        // ===========================================
-        // CONFIGURATION DE LA CARTE
-        // ===========================================
         let map = L.map('map').setView([31.7917, -7.0926], 6);
         let markers = [];
         let currentFilter = 'all';
 
-        // Ajouter la carte OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors | Maroc Tourisme'
         }).addTo(map);
 
-        // ===========================================
-        // FONCTIONS UTILITAIRES
-        // ===========================================
-        
         function getIconForCategory(category) {
             const icons = {
                 'Historique': 'fas fa-landmark',
@@ -1036,7 +1165,16 @@
                     <p><strong><i class="fas fa-city"></i> Ville:</strong> ${monument.city}</p>
                     <p><strong><i class="fas fa-tag"></i> Catégorie:</strong> ${monument.category}</p>
                     <p>${monument.description}</p>
-                    <button class="popup-btn" onclick="showMonumentDetails(${monument.id})">
+                    <button class="popup-btn" onclick="showMonumentDetails(${monument.id})" style="
+                        background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        padding: 10px;
+                        width: 100%;
+                        cursor: pointer;
+                        margin-top: 10px;
+                    ">
                         <i class="fas fa-info-circle"></i> Voir les détails
                     </button>
                 </div>
@@ -1167,10 +1305,6 @@
             }
         }
         
-        // ===========================================
-        // ÉVÉNEMENTS ET INITIALISATION
-        // ===========================================
-        
         document.querySelectorAll('.filter-option').forEach(option => {
             option.addEventListener('click', function() {
                 document.querySelectorAll('.filter-option').forEach(opt => {
@@ -1221,11 +1355,7 @@
             }
         });
         
-        function initMap() {
-            loadAllMonuments();
-        }
-        
-        initMap();
+        loadAllMonuments();
     </script>
 </body>
 </html>
