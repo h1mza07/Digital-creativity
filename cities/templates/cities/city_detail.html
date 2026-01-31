@@ -1,73 +1,821 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ city.name }} - Maroc Tourisme 2030</title>
+    <title>{{ city.name }} - Maroc Tourisme 2030 ⚽</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --maroc-red: #C1272D;
+            --maroc-green: #006233;
+            --maroc-gold: #D4AF37;
+            --maroc-blue: #1E3A8A;
+            --map-green: #28a745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('{% if city.image %}{{ city.image.url }}{% else %}/static/image/pic7.png{% endif %}');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 50px;
+            border-radius: 0 0 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -180px;
+            left: -10%;
+            width: 120%;
+            height: 100px;
+            background: white;
+            transform: rotate(-3deg);
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(0, 98, 51, 0.4);
+            border: 2px solid var(--maroc-gold);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            border-bottom: 3px solid var(--maroc-green);
+            min-height: 60px;
+        }
+        
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 10px;
+        }
+        
+        .dropdown-item {
+            border-radius: 10px;
+            padding: 8px 15px;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .dropdown-menu {
+                width: 100%;
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 98, 51, 0.3);
+        }
+        
+        .card-title-custom {
+            color: var(--maroc-green);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
+            color: white;
+            padding: 60px 0;
+            margin: 50px 0;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '🏙️';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+            margin-bottom: 10px;
+        }
+        
+        .city-image-large {
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .city-image-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .info-badge {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 2px solid var(--maroc-gold);
+        }
+        
+        .worldcup-badge {
+            background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 2px solid white;
+        }
+        
+        .map-container {
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .section-header {
+            color: var(--maroc-green);
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 50px 0 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--maroc-green);
+            position: relative;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--maroc-gold);
+        }
+        
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-banner {
+                padding: 60px 0;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .city-image-large {
+                height: 300px;
+                margin-top: 30px;
+            }
+            
+            .section-header {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-flag"></i> Maroc Tourisme
-                <span class="badge bg-success">CM 2030</span>
+            <a class="navbar-brand navbar-brand-custom" href="/">
+                <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
             </a>
-            <a href="/cities/" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left"></i> Retour aux villes
-            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
+                    </a>
+                    <a class="nav-link nav-link-custom active" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/map/">
+                        <i class="fas fa-map me-1"></i>Carte
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>Compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </nav>
 
-    <div class="container mt-5 pt-4">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>{{ city.name }}</h1>
-                <p class="lead">{{ city.description }}</p>
+    <div class="hero-banner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-transparent p-0 mb-4">
+                            <li class="breadcrumb-item"><a href="/" class="text-white">Accueil</a></li>
+                            <li class="breadcrumb-item"><a href="/cities/" class="text-white">Villes</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">{{ city.name }}</li>
+                        </ol>
+                    </nav>
+                    
+                    <h1 class="hero-title text-start">{{ city.name }}</h1>
+                    <p class="hero-subtitle text-start">{{ city.description|truncatechars:250 }}</p>
+                    
+                    <div class="text-start">
+                        <span class="hero-badge">
+                            {% if city.host_city %}🏟️ VILLE HÔTE CM2030{% else %}🏙️ VILLE MAROCAINE{% endif %}
+                        </span>
+                        {% if city.unesco_heritage %}
+                        <span class="info-badge ms-2">
+                            🏛️ PATRIMOINE UNESCO
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-4 d-none d-lg-block">
+                    <div class="city-image-large">
+                        <img src="/media/cities/{{ city.slug }}.jpg" 
+                             alt="{{ city.name }}"
+                             onerror="this.onerror=null; this.src='/media/cities/default.jpg'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="stat-number">
+                            {% if city.population %}
+                                {{ city.population|floatformat:0 }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <p>HABITANTS</p>
+                    </div>
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="stat-number">
+                            {% if city.area %}
+                                {{ city.area }} km²
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <p>SUPERFICIE</p>
+                    </div>
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="stat-number">
+                            {% if city.founded_year %}
+                                {{ city.founded_year }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <p>FONDATION</p>
+                    </div>
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="stat-number">
+                            {% if city.altitude %}
+                                {{ city.altitude }}m
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <p>ALTITUDE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-lg-8">
+                <h2 class="section-header">
+                    <i class="fas fa-landmark me-3"></i>
+                    À propos de {{ city.name }}
+                </h2>
                 
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header bg-primary text-white">
-                                <i class="fas fa-info-circle"></i> Informations
-                            </div>
-                            <div class="card-body">
-                                <p><strong>Population :</strong> {{ city.population|default:"Non spécifiée" }}</p>
-                                <p><strong>Coordonnées GPS :</strong></p>
-                                <p>Latitude : {{ city.latitude }}</p>
-                                <p>Longitude : {{ city.longitude }}</p>
+                <div class="feature-card p-4 mb-5">
+                    <p>{{ city.description|linebreaks }}</p>
+                    
+                    {% if city.host_city %}
+                    <div class="alert" style="
+                        background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
+                        color: white;
+                        border-radius: 15px;
+                        border: none;
+                        padding: 20px;
+                        margin-top: 20px;
+                    ">
+                        <h4 class="mb-3"><i class="fas fa-trophy me-2"></i>Coupe du Monde 2030</h4>
+                        <p class="mb-0">
+                            {{ city.name }} sera l'une des villes hôtes de la Coupe du Monde 2030 ! 
+                            La ville accueillera des matchs dans son stade moderne et offrira une 
+                            expérience unique aux visiteurs du monde entier.
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="info-card">
+                    <div class="card-body p-4">
+                        <div class="map-container">
+                            <i class="fas fa-map-marked-alt fa-4x mb-3" style="color: var(--maroc-green);"></i>
+                            <h4 class="mb-3">Carte de {{ city.name }}</h4>
+                            <p class="text-muted">
+                                <strong>Latitude:</strong> {{ city.latitude|default:"Non spécifié" }}<br>
+                                <strong>Longitude:</strong> {{ city.longitude|default:"Non spécifié" }}
+                            </p>
+                            <div class="alert alert-info mt-3">
+                                <small>
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Carte interactive à intégrer avec Leaflet/Google Maps
+                                </small>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header bg-success text-white">
-                                <i class="fas fa-map-marked-alt"></i> Localisation
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-body p-4">
+                        <h4 class="card-title-custom mb-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Informations pratiques
+                        </h4>
+                        
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="icon-circle bg-primary text-white me-3">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div>
+                                    <strong>Langue</strong><br>
+                                    <span class="text-muted">Arabe, Français, Amazigh</span>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <p>Cette ville est située au Maroc.</p>
-                                <div id="map" style="height: 200px; background-color: #e9ecef; border-radius: 5px;">
-                                    <p class="text-center mt-5">Carte interactive à venir</p>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="icon-circle bg-success text-white me-3">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div>
+                                    <strong>Monnaie</strong><br>
+                                    <span class="text-muted">Dirham marocain (MAD)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="icon-circle bg-info text-white me-3">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </div>
+                                <div>
+                                    <strong>Climat</strong><br>
+                                    <span class="text-muted">
+                                        {% if city.name == 'Marrakech' %}
+                                        Méditerranéen, chaud et sec
+                                        {% elif city.name == 'Casablanca' %}
+                                        Océanique tempéré
+                                        {% else %}
+                                        Tempéré méditerranéen
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-warning text-dark me-3">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div>
+                                    <strong>Spécialités</strong><br>
+                                    <span class="text-muted">
+                                        {% if city.name == 'Marrakech' %}
+                                        Tajine, couscous, thé à la menthe
+                                        {% elif city.name == 'Fès' %}
+                                        Pastilla, harira, gâteaux marocains
+                                        {% else %}
+                                        Cuisine marocaine traditionnelle
+                                        {% endif %}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="mt-4">
-                    <a href="/cities/" class="btn btn-primary">
-                        <i class="fas fa-list"></i> Voir toutes les villes
-                    </a>
-                    <a href="/" class="btn btn-outline-secondary">
-                        <i class="fas fa-home"></i> Retour à l'accueil
-                    </a>
+                <div class="info-card">
+                    <div class="card-body p-4">
+                        <h4 class="card-title-custom mb-4">
+                            <i class="fas fa-compass me-2"></i>
+                            Explorer davantage
+                        </h4>
+                        <div class="d-grid gap-3">
+                            <a href="/cities/" class="btn btn-maroc">
+                                <i class="fas fa-arrow-left me-2"></i>Retour aux villes
+                            </a>
+                            <a href="/routes/" class="btn btn-outline-primary">
+                                <i class="fas fa-route me-2"></i>Voir les itinéraires
+                            </a>
+                            <a href="/hotels/?city={{ city.name }}" class="btn btn-outline-success">
+                                <i class="fas fa-hotel me-2"></i>Rechercher un hôtel
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3">
+                        🇲🇦 MAROC 2030
+                    </div>
+                    <p>
+                        Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
+                    </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Équipe :</strong> 4 membres<br>
+                        <strong>Technologie :</strong> Django Full Stack
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
+                        <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/places/" class="text-light text-decoration-none mb-2 d-block">Lieux Touristiques</a></li>
+                        <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
+                        <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                        <li><a href="/admin/" class="text-light text-decoration-none mb-2 d-block">Administration</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Rôles de l'équipe</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Hamza Layachi: Configuration & Villes</li>
+                        <li class="mb-2">Imane Elassioui : Lieux & Cartographie</li>
+                        <li class="mb-2">Ibtissam Ainzura: Hôtels & Itinéraires</li>
+                        <li class="mb-2">Amina Chetti: Utilisateurs & Sécurité</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Projet académique - Tous droits réservés
+                </p>
+            </div>
+        </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.feature-card, .info-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            const badge = document.querySelector('.hero-badge');
+            if (badge) {
+                setInterval(() => {
+                    badge.style.transform = badge.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+                }, 2000);
+            }
+            
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const text = stat.textContent;
+                if (text !== '-') {
+                    const match = text.match(/[\d,.]+/);
+                    if (match) {
+                        const finalValue = parseFloat(match[0].replace(',', ''));
+                        if (!isNaN(finalValue)) {
+                            let startValue = 0;
+                            const duration = 2000;
+                            const increment = finalValue / (duration / 16);
+                            const suffix = text.includes('km²') ? ' km²' : text.includes('m') ? 'm' : '';
+                            
+                            const timer = setInterval(() => {
+                                startValue += increment;
+                                if (startValue >= finalValue) {
+                                    stat.textContent = finalValue.toLocaleString() + suffix;
+                                    clearInterval(timer);
+                                } else {
+                                    stat.textContent = Math.floor(startValue).toLocaleString() + suffix;
+                                }
+                            }, 16);
+                        }
+                    }
+                }
+            });
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                .icon-circle {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
 </html>
