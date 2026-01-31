@@ -505,10 +505,12 @@
                     </div>
                 </div>
                 <div class="col-lg-4 d-none d-lg-block">
-                    <div class="city-image-large">
-                        <img src="{% if city.image %}{{ city.image.url }}{% else %}https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80{% endif %}" 
-                             alt="{{ city.name }}">
-                    </div>
+    <div class="city-image-large">
+        <img src="/media/cities/{{ city.slug }}.jpg" 
+             alt="{{ city.name }}"
+             onerror="this.onerror=null; this.src='/media/cities/default.jpg'">
+    </div>
+</div>
                 </div>
             </div>
         </div>
