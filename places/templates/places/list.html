@@ -32,49 +32,13 @@
             padding-top: 80px;
         }
         
-        /* NAVBAR SIMPLE */
-        .navbar-custom {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            padding: 10px 0;
-            border-bottom: 3px solid var(--maroc-green);
-        }
-        
-        .logo-img {
-            height: 70px;
-            width: auto;
-            object-fit: contain;
-        }
-        
-        .nav-link-custom {
-            color: #333 !important;
-            font-weight: 600;
-            padding: 8px 20px !important;
-            margin: 0 5px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link-custom:hover {
-            color: white !important;
-            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
-            transform: translateY(-2px);
-        }
-        
-        .nav-link-custom.active {
-            background: var(--maroc-green);
-            color: white !important;
-        }
-        
-        /* HERO SECTION COMME HOME.HTML */
         .hero-banner {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                         url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             color: white;
-            padding: 80px 0;
+            padding: 100px 0;
             text-align: center;
             margin-bottom: 50px;
             border-radius: 0 0 40px 40px;
@@ -94,14 +58,14 @@
         }
         
         .hero-title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 800;
             margin-bottom: 20px;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
         
         .hero-subtitle {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             margin-bottom: 30px;
             opacity: 0.9;
         }
@@ -113,32 +77,242 @@
             padding: 10px 25px;
             border-radius: 50px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
             box-shadow: 0 5px 20px rgba(0, 98, 51, 0.4);
             border: 2px solid var(--maroc-gold);
         }
         
-        /* STATS SECTION COMME HOME.HTML */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            border-bottom: 3px solid var(--maroc-green);
+            min-height: 60px;
+        }
+        
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 10px;
+        }
+        
+        .dropdown-item {
+            border-radius: 10px;
+            padding: 8px 15px;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .dropdown-menu {
+                width: 100%;
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 98, 51, 0.3);
+        }
+        
+        .card-title-custom {
+            color: var(--maroc-green);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
         .stats-section {
             background: linear-gradient(135deg, var(--maroc-green) 0%, var(--maroc-blue) 100%);
             color: white;
-            padding: 50px 0;
-            margin: 40px 0;
+            padding: 60px 0;
+            margin: 50px 0;
             border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '🏛️';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
             color: var(--maroc-gold);
             margin-bottom: 10px;
         }
         
-        /* FILTRE SECTION */
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--maroc-gold);
+        }
+        
+        .card-bg-place {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('/static/image/pic2.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+        }
+        
         .filter-section {
             background: white;
             padding: 25px;
             border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-bottom: 30px;
         }
         
@@ -155,65 +329,15 @@
             padding: 12px;
         }
         
-        /* CARTES COMME HOME.HTML */
-        .feature-card {
-            border: none;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            height: 100%;
-            background: white;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-        
-        .card-img-top {
+        .place-card-img {
             height: 200px;
             object-fit: cover;
             border-bottom: 5px solid var(--maroc-green);
         }
         
-        .card-title-custom {
-            color: var(--maroc-green);
-            font-weight: 700;
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-        }
-        
-        .btn-maroc {
-            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
-            color: white;
-            padding: 10px 25px;
-            border-radius: 50px;
-            border: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
-        }
-        
-        .btn-maroc:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
-            color: white;
-        }
-        
-        /* FOOTER SIMPLE */
-        .footer-simple {
-            background: #1a1a1a;
-            color: white;
-            padding: 30px 0;
-            text-align: center;
-            margin-top: 50px;
-        }
-        
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
             
             .hero-banner {
@@ -221,51 +345,98 @@
             }
             
             .stat-number {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             
-            .col-md-4 {
-                margin-bottom: 20px;
+            .col-md-3 {
+                width: 50%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .col-md-3 {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- NAVBAR SIMPLE -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand navbar-brand-custom" href="/">
                 <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
             </a>
             
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link nav-link-custom" href="/">
-                    <i class="fas fa-home me-2"></i>Accueil
-                </a>
-                {% if user.is_authenticated %}
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-user me-2"></i>Profil
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
                     </a>
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
                     </a>
-                {% else %}
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                    <a class="nav-link nav-link-custom active" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
                     </a>
-                {% endif %}
+                    <a class="nav-link nav-link-custom" href="/places/map/">
+                        <i class="fas fa-map me-1"></i>Carte
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>Compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION COMME HOME.HTML -->
     <div class="hero-banner">
         <div class="container">
             <h1 class="hero-title">
                 LIEUX TOURISTIQUES
             </h1>
             <p class="hero-subtitle">
-                Explorez les lieux merveilleux du Maroc
+                Explorez les merveilles du Maroc
             </p>
             <span class="hero-badge">
                 🇲🇦 • 24 Monuments • 8 Villes
@@ -276,9 +447,7 @@
         </div>
     </div>
 
-    <!-- CONTENU PRINCIPAL -->
     <div class="container">
-        <!-- Section Filtres -->
         <div class="filter-section">
             <h2 class="filter-title">
                 <i class="fas fa-filter me-2"></i>Filtrer par ville
@@ -307,17 +476,20 @@
             </form>
         </div>
 
-        <!-- Liste des monuments -->
-        <div class="row">
+        <div class="row g-4 mb-5">
             {% for place in places %}
-            <div class="col-md-4 col-lg-3 mb-4">
+            <div class="col-md-4 col-lg-3">
                 <div class="feature-card h-100">
-                    <img src="{% static 'places/images/' %}{{ place.image_url }}" 
-                         class="card-img-top" 
-                         alt="{{ place.image_alt }}"
-                         onerror="this.onerror=null; this.src='{% static 'places/images/default.jpg' %}';">
-                    
+                    <div class="place-card-img" style="
+                        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                                    url('{% static 'places/images/' %}{{ place.image_url }}');
+                        background-size: cover;
+                        background-position: center;
+                    "></div>
                     <div class="card-body p-4">
+                        <div class="card-icon" style="background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));">
+                            <i class="fas fa-landmark"></i>
+                        </div>
                         <h3 class="card-title-custom mb-3">{{ place.name }}</h3>
                         <h6 class="text-muted mb-2">
                             <i class="fas fa-map-marker-alt me-1"></i> {{ place.city }}
@@ -346,7 +518,6 @@
             {% endfor %}
         </div>
 
-        <!-- STATS SECTION COMME HOME.HTML -->
         <div class="stats-section">
             <div class="container">
                 <div class="row text-center">
@@ -371,34 +542,89 @@
         </div>
     </div>
 
-    <!-- FOOTER SIMPLE -->
-    <footer class="footer-simple">
+    <!-- FOOTER DE HOME.HTML -->
+    <footer class="footer-custom">
         <div class="container">
-            <p class="mb-0">
-                © 2024 Lieux Touristiques - Maroc Tourisme 2030
-                | <a href="/" class="text-light">Accueil</a>
-                | <a href="/places/map/" class="text-light">Carte</a>
-            </p>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3">
+                        🇲🇦 MAROC 2030
+                    </div>
+                    <p>
+                        Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
+                    </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Équipe :</strong> 4 membres<br>
+                        <strong>Technologie :</strong> Django Full Stack
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
+                        <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/places/" class="text-light text-decoration-none mb-2 d-block">Lieux Touristiques</a></li>
+                        <li><a href="/places/map/" class="text-light text-decoration-none mb-2 d-block">Carte Interactive</a></li>
+                        <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
+                        <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Rôles de l'équipe</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Hamza Layachi: Configuration & Villes</li>
+                        <li class="mb-2">Imane Elassioui : Lieux & Cartographie</li>
+                        <li class="mb-2">Ibtissam Ainzura: Hôtels & Itinéraires</li>
+                        <li class="mb-2">Amina Chetti: Utilisateurs & Sécurité</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Projet académique - Tous droits réservés
+                </p>
+            </div>
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Animation pour les cartes
         document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.feature-card');
-            cards.forEach((card, index) => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.feature-card').forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, 100 * index);
+                observer.observe(card);
             });
+            
+            const badge = document.querySelector('.hero-badge');
+            if (badge) {
+                setInterval(() => {
+                    badge.style.transform = badge.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+                }, 2000);
+            }
         });
     </script>
 </body>
