@@ -132,7 +132,7 @@
         
         .search-box input:focus {
             outline: none;
-            border-color: var(--maroc-blue);
+                    border-color: var(--maroc-blue);
             box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
         }
         
@@ -256,6 +256,7 @@
         #map {
             width: 100%;
             height: 100%;
+            background: #e9ecef;
         }
         
         .map-controls {
@@ -288,6 +289,25 @@
             background: var(--maroc-green);
             color: white;
             transform: translateY(-2px);
+        }
+        
+        /* Layer control */
+        .layer-control {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .layer-control select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
         }
         
         /* STATS SECTION */
@@ -411,6 +431,23 @@
             width: 100%;
             cursor: pointer;
         }
+        
+        /* Style pour les étiquettes du Sahara marocain */
+        .sahara-label {
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 12px !important;
+            color: #C1272D !important;
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px white !important;
+        }
+        
+        .morocco-label {
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 14px !important;
+            color: #006233 !important;
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px white !important;
+        }
     </style>
 </head>
 <body>
@@ -451,13 +488,13 @@
     <div class="hero-banner">
         <div class="container">
             <h1 class="hero-title">
-                CARTE INTERACTIVE
+                CARTE INTERACTIVE DU MAROC 🇲🇦
             </h1>
             <p class="hero-subtitle">
-                Explorez les monuments historiques du Maroc sur notre carte interactive
+                Explorez les monuments historiques du Royaume du Maroc sur notre carte interactive
             </p>
             <span class="hero-badge">
-                🇲🇦 • 24 Monuments • 8 Villes
+                🇲🇦 • Sahara Marocain • 24 Monuments • 8 Villes
             </span>
         </div>
     </div>
@@ -563,6 +600,14 @@
                     <i class="fas fa-globe-africa"></i>
                 </button>
             </div>
+            <div class="layer-control">
+                <select id="mapStyle">
+                    <option value="cartodb">Carte Claire</option>
+                    <option value="osm">OpenStreetMap Standard</option>
+                    <option value="toner">Carte Toner</option>
+                    <option value="watercolor">Aquarelle</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -575,8 +620,8 @@
                     <p>MONUMENTS<br>SUR LA CARTE</p>
                 </div>
                 <div class="col-md-3 mb-4">
-                    <div class="stat-number">8</div>
-                    <p>VILLES<br>MAROCAINES</p>
+                    <div class="stat-number">12</div>
+                    <p>RÉGIONS<br>MAROCAINES</p>
                 </div>
                 <div class="col-md-3 mb-4">
                     <div class="stat-number">10</div>
@@ -594,7 +639,7 @@
     <footer class="footer-simple">
         <div class="container">
             <p class="mb-0">
-                © 2024 Carte Interactive - Maroc Tourisme 2030
+                © 2024 Carte Interactive - Maroc Tourisme 2030 | Sahara Marocain inclus
                 | <a href="/" class="text-light">Accueil</a>
                 | <a href="/places/" class="text-light">Lieux</a>
             </p>
@@ -965,16 +1010,133 @@
         ];
 
         // ===========================================
-        // CONFIGURATION DE LA CARTE
+        // CONFIGURATION DE LA CARTE - MAROC COMPLET
         // ===========================================
-        let map = L.map('map').setView([31.7917, -7.0926], 6);
+        let map;
+        let currentTileLayer;
         let markers = [];
         let currentFilter = 'all';
 
-        // Ajouter la carte OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors | Maroc Tourisme'
-        }).addTo(map);
+        // Définir les différentes options de cartes (sans clé API)
+        const tileLayers = {
+            cartodb: {
+                url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                attribution: '© OpenStreetMap contributors, © CARTO',
+                name: 'Carte Claire'
+            },
+            osm: {
+                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                attribution: '© OpenStreetMap contributors | Sahara Marocain',
+                name: 'OpenStreetMap Standard'
+            },
+            toner: {
+                url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+                attribution: 'Map tiles by Stamen Design, CC BY 3.0',
+                name: 'Carte Toner'
+            },
+            watercolor: {
+                url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg',
+                attribution: 'Map tiles by Stamen Design, CC BY 3.0',
+                name: 'Aquarelle'
+            }
+        };
+
+        // Initialiser la carte
+        function initMap() {
+            // Créer la carte centrée sur le Maroc
+            map = L.map('map').setView([28.5, -10], 6);
+            
+            // Ajouter la première couche de tuiles
+            changeMapStyle('cartodb');
+            
+            // Ajouter les étiquettes pour le Sahara marocain
+            addMoroccoLabels();
+            
+            // Ajouter le polygone du territoire marocain
+            addMoroccoTerritory();
+            
+            // Charger les monuments
+            loadAllMonuments();
+        }
+
+        // Changer le style de la carte
+        function changeMapStyle(style) {
+            if (currentTileLayer) {
+                map.removeLayer(currentTileLayer);
+            }
+            
+            const tileConfig = tileLayers[style];
+            currentTileLayer = L.tileLayer(tileConfig.url, {
+                attribution: tileConfig.attribution,
+                maxZoom: 20
+            }).addTo(map);
+        }
+
+        // Ajouter des étiquettes pour le Sahara marocain
+        function addMoroccoLabels() {
+            const moroccoLabels = [
+                {
+                    lat: 32.5,
+                    lng: -6,
+                    text: 'Royaume du Maroc 🇲🇦',
+                    className: 'morocco-label'
+                },
+                {
+                    lat: 26.5,
+                    lng: -12.5,
+                    text: 'Sahara Marocain',
+                    className: 'sahara-label'
+                },
+                {
+                    lat: 24.5,
+                    lng: -13.5,
+                    text: 'Dakhla-Oued Ed-Dahab',
+                    className: 'sahara-label'
+                },
+                {
+                    lat: 27.5,
+                    lng: -11,
+                    text: 'Laâyoune-Sakia El Hamra',
+                    className: 'sahara-label'
+                },
+                {
+                    lat: 34,
+                    lng: -6,
+                    text: 'Rabat - Capitale',
+                    className: 'morocco-label'
+                }
+            ];
+
+            moroccoLabels.forEach(label => {
+                L.marker([label.lat, label.lng], {
+                    icon: L.divIcon({
+                        className: label.className,
+                        html: `<div style="background: rgba(255, 255, 255, 0.8); padding: 5px 10px; border-radius: 10px; font-weight: bold; border: 1px solid #ddd;">${label.text}</div>`,
+                        iconSize: [150, 40],
+                        iconAnchor: [75, 20]
+                    }),
+                    interactive: false
+                }).addTo(map);
+            });
+        }
+
+        // Ajouter un polygone pour le territoire marocain complet
+        function addMoroccoTerritory() {
+            const moroccoTerritory = L.polygon([
+                [35.922, -13.168], // Nord-ouest
+                [35.922, -1.124],  // Nord-est
+                [21.336, -1.124],  // Sud-est
+                [21.336, -17.003], // Sud-ouest
+                [27.666, -13.159], // Ouest (côte atlantique)
+                [35.922, -13.168]  // Retour au point de départ
+            ], {
+                color: "#006233",
+                weight: 2,
+                fillColor: "#006233",
+                fillOpacity: 0.05,
+                dashArray: '5, 5'
+            }).addTo(map).bindPopup('<b>Sahara Marocain</b><br>Partie intégrante du Royaume du Maroc');
+        }
 
         // ===========================================
         // FONCTIONS UTILITAIRES
@@ -1083,7 +1245,8 @@
                 const bounds = L.latLngBounds(filteredMonuments.map(m => [m.latitude, m.longitude]));
                 map.fitBounds(bounds.pad(0.1));
             } else {
-                map.setView([31.7917, -7.0926], 6);
+                // Vue d'ensemble du Maroc complet incluant le Sahara
+                map.setView([28.5, -10], 6);
             }
         }
         
@@ -1196,7 +1359,8 @@
         });
         
         document.getElementById('resetView').addEventListener('click', function() {
-            map.setView([31.7917, -7.0926], 6);
+            // Vue d'ensemble du Maroc complet incluant le Sahara
+            map.setView([28.5, -10], 6);
         });
         
         document.getElementById('locateMe').addEventListener('click', function() {
@@ -1221,10 +1385,12 @@
             }
         });
         
-        function initMap() {
-            loadAllMonuments();
-        }
+        // Changer le style de la carte
+        document.getElementById('mapStyle').addEventListener('change', function(e) {
+            changeMapStyle(e.target.value);
+        });
         
+        // Initialiser la carte
         initMap();
     </script>
 </body>
