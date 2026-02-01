@@ -451,40 +451,75 @@
     </style>
 </head>
 <body>
-    <!-- NAVBAR SIMPLE -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand navbar-brand-custom" href="/">
                 <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
             </a>
             
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link nav-link-custom" href="/">
-                    <i class="fas fa-home me-2"></i>Accueil
-                </a>
-                <a class="nav-link nav-link-custom" href="/places/">
-                    <i class="fas fa-landmark me-2"></i>Lieux
-                </a>
-                <a class="nav-link nav-link-custom active" href="/places/map/">
-                    <i class="fas fa-map me-2"></i>Carte
-                </a>
-                {% if user.is_authenticated %}
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-user me-2"></i>Profil
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom active" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
                     </a>
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
                     </a>
-                {% else %}
-                    <a class="nav-link nav-link-custom" href="#">
-                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
                     </a>
-                {% endif %}
+                    <a class="nav-link nav-link-custom" href="/places/map/">
+                        <i class="fas fa-map me-1"></i>Carte
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>Compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
     <div class="hero-banner">
         <div class="container">
             <h1 class="hero-title">
@@ -634,11 +669,10 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
     <footer class="footer-simple">
         <div class="container">
             <p class="mb-0">
-                © 2024 Carte Interactive - Maroc Tourisme 2030 | Sahara Marocain inclus
+                © 2026 Explore Morocco 2030 - Projet académique - Tous droits réservés
                 | <a href="/" class="text-light">Accueil</a>
                 | <a href="/places/" class="text-light">Lieux</a>
             </p>
@@ -1132,9 +1166,7 @@
             }).addTo(map).bindPopup('<b>Sahara Marocain</b><br>Partie intégrante du Royaume du Maroc');
         }
 
-        // ===========================================
-        // FONCTIONS UTILITAIRES
-        // ===========================================
+       
         
         function getIconForCategory(category) {
             const icons = {
@@ -1324,9 +1356,6 @@
             }
         }
         
-        // ===========================================
-        // ÉVÉNEMENTS ET INITIALISATION
-        // ===========================================
         
         document.querySelectorAll('.filter-option').forEach(option => {
             option.addEventListener('click', function() {
@@ -1379,7 +1408,7 @@
             }
         });
         
-        // Changer le style de la carte
+        
         document.getElementById('mapStyle').addEventListener('change', function(e) {
             changeMapStyle(e.target.value);
         });
