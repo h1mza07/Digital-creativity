@@ -5,33 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coupe du Monde 2030 - Maroc Tourisme</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --maroc-red: #C1272D;
             --maroc-green: #006233;
             --maroc-gold: #D4AF37;
             --maroc-blue: #1E3A8A;
-            --map-green: #28a745;
         }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: #333;
             padding-top: 80px;
         }
-        
         .hero-banner {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                         url('https://images.unsplash.com/photo-1637203727317-3cc1a557cdbf?q=80&w=1112&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
@@ -45,7 +39,6 @@
             position: relative;
             overflow: hidden;
         }
-        
         .hero-banner::after {
             content: '';
             position: absolute;
@@ -56,20 +49,17 @@
             background: white;
             transform: rotate(-3deg);
         }
-        
         .hero-title {
             font-size: 3.5rem;
             font-weight: 800;
             margin-bottom: 20px;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
-        
         .hero-subtitle {
             font-size: 1.5rem;
             margin-bottom: 30px;
             opacity: 0.9;
         }
-        
         .hero-badge {
             display: inline-block;
             background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
@@ -83,13 +73,11 @@
             box-shadow: 0 5px 20px rgba(193, 39, 45, 0.4);
             border: 2px solid var(--maroc-gold);
         }
-        
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        
         .navbar-custom {
             background: rgba(255, 255, 255, 0.95) !important;
             backdrop-filter: blur(10px);
@@ -98,13 +86,11 @@
             border-bottom: 3px solid var(--maroc-green);
             min-height: 60px;
         }
-        
         .navbar-brand-custom {
             display: flex;
             align-items: center;
             padding: 0;
         }
-        
         .logo-img {
             height: 90px;
             width: auto;
@@ -112,23 +98,19 @@
             transition: transform 0.3s ease;
             margin-right: 10px;
         }
-        
         .logo-img:hover {
             transform: scale(1.05);
         }
-        
         .navbar-toggler {
             border: none;
             padding: 8px 12px;
             font-size: 1.25rem;
             color: var(--maroc-green);
         }
-        
         .navbar-toggler:focus {
             box-shadow: none;
             outline: none;
         }
-        
         .nav-link-custom {
             color: #333 !important;
             font-weight: 600;
@@ -140,38 +122,32 @@
             white-space: nowrap;
             font-size: 0.9rem;
         }
-        
         .nav-link-custom:hover {
             color: white !important;
             background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
         }
-        
         .nav-link-custom.active {
             background: var(--maroc-green);
             color: white !important;
         }
-        
         .dropdown-menu {
             border: none;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border-radius: 15px;
             padding: 10px;
         }
-        
         .dropdown-item {
             border-radius: 10px;
             padding: 8px 15px;
             margin: 2px 0;
             transition: all 0.3s ease;
         }
-        
         .dropdown-item:hover {
             background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
             color: white;
         }
-        
         @media (max-width: 991px) {
             .navbar-collapse {
                 background: white;
@@ -180,35 +156,29 @@
                 margin-top: 10px;
                 box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             }
-            
             .navbar-nav {
                 align-items: flex-start;
             }
-            
             .nav-link-custom {
                 padding: 10px 15px !important;
                 margin: 5px 0;
                 width: 100%;
                 font-size: 1rem;
             }
-            
             .dropdown-menu {
                 width: 100%;
                 box-shadow: none;
                 border: 1px solid #eee;
             }
-            
             .logo-img {
                 height: 70px;
             }
         }
-        
         @media (max-width: 576px) {
             .logo-img {
                 height: 60px;
             }
         }
-        
         .feature-card {
             border: none;
             border-radius: 20px;
@@ -218,12 +188,10 @@
             height: 100%;
             background: white;
         }
-        
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
-        
         .card-icon {
             width: 70px;
             height: 70px;
@@ -236,13 +204,11 @@
             font-size: 1.8rem;
             box-shadow: 0 10px 20px rgba(0, 98, 51, 0.3);
         }
-        
         .card-title-custom {
             color: var(--maroc-green);
             font-weight: 700;
             font-size: 1.5rem;
         }
-        
         .btn-maroc {
             background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
             color: white;
@@ -253,13 +219,11 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
         }
-        
         .btn-maroc:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
             color: white;
         }
-        
         .stats-section {
             background: linear-gradient(135deg, var(--maroc-red) 0%, var(--maroc-gold) 100%);
             color: white;
@@ -269,7 +233,6 @@
             position: relative;
             overflow: hidden;
         }
-        
         .stats-section::before {
             content: '⚽';
             position: absolute;
@@ -279,7 +242,6 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        
         .stat-number {
             font-size: 3rem;
             font-weight: 800;
@@ -287,40 +249,34 @@
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
         .table-custom {
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
         .table-custom thead th {
             background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
             color: white;
             border: none;
             font-weight: 600;
         }
-        
         .badge-custom {
             padding: 8px 15px;
             border-radius: 20px;
             font-weight: 600;
             border: none;
         }
-        
         .footer-custom {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: white;
             padding: 60px 0 20px;
             margin-top: 80px;
         }
-        
         .footer-logo {
             font-size: 2rem;
             font-weight: 800;
             color: var(--maroc-gold);
         }
-        
         .worldcup-highlight {
             background: linear-gradient(45deg, var(--maroc-red), var(--maroc-gold));
             color: white;
@@ -329,16 +285,13 @@
             margin: 30px 0;
             box-shadow: 0 10px 30px rgba(193, 39, 45, 0.3);
         }
-        
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
             }
-            
             .hero-banner {
                 padding: 60px 0;
             }
-            
             .stat-number {
                 font-size: 2.5rem;
             }
@@ -351,12 +304,10 @@
             <a class="navbar-brand navbar-brand-custom" href="/">
                 <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
             </a>
-            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto">
                     <a class="nav-link nav-link-custom active" href="/">
@@ -380,7 +331,6 @@
                     <a class="nav-link nav-link-custom" href="/hotels/">
                         <i class="fas fa-hotel me-1"></i>Hôtels
                     </a>
-
                     {% if user.is_authenticated %}
                         <div class="nav-item dropdown">
                             <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
@@ -414,7 +364,6 @@
             </div>
         </div>
     </nav>
-
     <div class="hero-banner">
         <div class="container">
             <h1 class="hero-title">
@@ -432,7 +381,6 @@
             </p>
         </div>
     </div>
-
     <div class="container">
         <div class="stats-section">
             <div class="container">
@@ -456,7 +404,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row mt-5">
             <div class="col-lg-8">
                 <div class="feature-card">
@@ -474,7 +421,6 @@
                             et l'économie du pays, tout en présentant la richesse culturelle 
                             marocaine au monde entier.
                         </p>
-                        
                         <div class="worldcup-highlight">
                             <h4 class="mb-3"><i class="fas fa-calendar-alt me-2"></i>Dates importantes</h4>
                             <div class="row">
@@ -491,7 +437,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="col-lg-4">
                 <div class="feature-card">
                     <div class="card-body p-4">
@@ -501,16 +446,16 @@
                             </div>
                             <h4 class="card-title-custom">Carte des stades</h4>
                         </div>
-                        
                         <div class="text-center p-4 border rounded mb-4">
                             <i class="fas fa-map-marker-alt fa-4x mb-3" style="color: var(--maroc-red);"></i>
                             <h5>Carte interactive</h5>
                             <p class="text-muted mt-3">
-                                Une carte interactive montrant l'emplacement 
-                                des stades au Maroc.
+                                Explorez la carte interactive des stades de la Coupe du Monde 2030 au Maroc.
                             </p>
+                            <a href="/places/map/" class="btn btn-maroc mt-3">
+                                <i class="fas fa-map me-2"></i>Voir la carte
+                            </a>
                         </div>
-                        
                         <div class="alert alert-info">
                             <small>
                                 <i class="fas fa-code me-1"></i>
@@ -522,11 +467,9 @@
                 </div>
             </div>
         </div>
-
         <h3 class="mb-4 mt-5" style="color: var(--maroc-green);">
             <i class="fas fa-city me-3"></i>Villes hôtes marocaines
         </h3>
-        
         <div class="table-responsive table-custom">
             <table class="table table-hover mb-5">
                 <thead>
@@ -597,7 +540,6 @@
                 </tbody>
             </table>
         </div>
-
         <div class="row mt-5 mb-5">
             <div class="col-lg-10 mx-auto">
                 <div class="card feature-card">
@@ -637,7 +579,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row mt-5 align-items-center">
             <div class="col-md-6">
                 <h2 class="mb-4" style="color: var(--maroc-green);">
@@ -690,7 +631,6 @@
             </div>
         </div>
     </div>
-
     <footer class="footer-custom">
         <div class="container">
             <div class="row">
@@ -741,16 +681,13 @@
             </div>
         </div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
             };
-            
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -759,14 +696,12 @@
                     }
                 });
             }, observerOptions);
-            
             document.querySelectorAll('.feature-card').forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(card);
             });
-            
             const badge = document.querySelector('.hero-badge');
             setInterval(() => {
                 badge.style.transform = badge.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
