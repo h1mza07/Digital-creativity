@@ -1,27 +1,441 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
-    <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 20px;">
-        <h3 class="text-center mb-4" style="color:#006233;">
-            <i class="fas fa-user-plus me-2"></i>Créer un compte
-        </h3>
-
-        <form method="post">
-            {% csrf_token %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Maroc Tourisme 2030</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --maroc-red: #C1272D;
+            --maroc-green: #006233;
+            --maroc-gold: #D4AF37;
+            --maroc-blue: #1E3A8A;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            border-bottom: 3px solid var(--maroc-green);
+            min-height: 60px;
+        }
+        
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .logo-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            font-size: 1.25rem;
+            color: var(--maroc-green);
+        }
+        
+        .nav-link-custom {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            margin: 2px 3px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link-custom:hover {
+            color: white !important;
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .nav-link-custom.active {
+            background: var(--maroc-green);
+            color: white !important;
+        }
+        
+        .btn-maroc {
+            background: linear-gradient(45deg, var(--maroc-green), var(--maroc-blue));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 98, 51, 0.3);
+        }
+        
+        .btn-maroc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 98, 51, 0.5);
+            color: white;
+        }
+        
+        .footer-custom {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .register-card {
+            border: 2px solid #006233;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .register-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .form-control:focus {
+            border-color: #006233;
+            box-shadow: 0 0 0 0.25rem rgba(0, 98, 51, 0.25);
+        }
+        
+        .form-label {
+            color: #1a1a1a;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            padding: 12px;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+        
+        .error-message {
+            color: var(--maroc-red);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .helptext {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
             
-            {{ form.as_p }}
-
-            <button type="submit" class="btn btn-success w-100 mt-3">
-                <i class="fas fa-user-check me-2"></i>S'inscrire
+            .navbar-nav {
+                align-items: flex-start;
+            }
+            
+            .nav-link-custom {
+                padding: 10px 15px !important;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 1rem;
+            }
+            
+            .logo-img {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+            
+            .register-card {
+                margin: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="/">
+                <img src="{% static 'image/logo.png' %}" alt="Maroc Tourisme 2030" class="logo-img">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
             </button>
-        </form>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-custom" href="/">
+                        <i class="fas fa-home me-1"></i>Accueil
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/cities/">
+                        <i class="fas fa-city me-1"></i>Villes
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/places/">
+                        <i class="fas fa-landmark me-1"></i>Lieux
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/worldcup2030/">
+                        <i class="fas fa-trophy me-1"></i>CM 2030
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/routes/">
+                        <i class="fas fa-route me-1"></i>Itinéraires
+                    </a>
+                    <a class="nav-link nav-link-custom" href="/hotels/">
+                        <i class="fas fa-hotel me-1"></i>Hôtels
+                    </a>
 
-        <div class="text-center mt-3">
-            <small>Déjà inscrit ?
-                <a href="{% url 'login' %}">Connectez-vous</a>
-            </small>
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>Compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user-circle me-2"></i>Mon Profil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link nav-link-custom" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                        <a class="nav-link nav-link-custom active" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FORMULAIRE D'INSCRIPTION -->
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="card register-card p-4" style="max-width: 450px; width: 100%;">
+            <h3 class="text-center mb-4" style="color:#006233; font-weight: 700;">
+                <i class="fas fa-user-plus me-2"></i>Créer un compte
+            </h3>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <!-- Afficher les erreurs générales -->
+                {% if form.errors %}
+                    <div class="alert alert-danger mb-3">
+                        <strong>Veuillez corriger les erreurs ci-dessous :</strong>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <div class="error-message">{{ error }}</div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Nom d'utilisateur -->
+                <div class="form-group mb-3">
+                    <label class="form-label">Nom d'utilisateur</label>
+                    <input type="text" name="username" class="form-control" 
+                           value="{{ form.username.value|default:'' }}"
+                           placeholder="Choisissez un nom d'utilisateur" 
+                           required
+                           maxlength="150">
+                    {% if form.username.help_text %}
+                        <small class="form-text text-muted">{{ form.username.help_text }}</small>
+                    {% endif %}
+                </div>
+
+                <!-- Email -->
+                <div class="form-group mb-3">
+                    <label class="form-label">Adresse email</label>
+                    <input type="email" name="email" class="form-control" 
+                           value="{{ form.email.value|default:'' }}"
+                           placeholder="votre@email.com" 
+                           required>
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="form-group mb-4">
+                    <label class="form-label">Mot de passe</label>
+                    <input type="password" name="password" class="form-control" 
+                           placeholder="••••••••" 
+                           required>
+                    <div class="password-requirements">
+                        <small>
+                            <ul class="mb-0 ps-3 mt-2">
+                                <li>Au moins 8 caractères</li>
+                                <li>Ne pas utiliser un mot de passe trop commun</li>
+                            </ul>
+                        </small>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-maroc w-100">
+                    <i class="fas fa-user-check me-2"></i>S'inscrire
+                </button>
+            </form>
+
+            <div class="text-center mt-4" style="color: #666;">
+                <small>Déjà inscrit ? 
+                    <a href="{% url 'login' %}" style="color: #C1272D; text-decoration: none; font-weight: 600;">
+                        Connectez-vous
+                    </a>
+                </small>
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+
+    <!-- FOOTER -->
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3" style="font-size: 2rem; font-weight: 800; color: #D4AF37;">
+                        🇲🇦 MAROC 2030
+                    </div>
+                    <p>
+                        Votre guide numérique pour découvrir le Maroc à l'occasion de la Coupe du Monde 2030.
+                    </p>
+                    <p class="mt-3">
+                        <strong>Module :</strong> Digital Creativity<br>
+                        <strong>Équipe :</strong> 4 membres<br>
+                        <strong>Technologie :</strong> Django Full Stack
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none mb-2 d-block">Accueil</a></li>
+                        <li><a href="/cities/" class="text-light text-decoration-none mb-2 d-block">Villes</a></li>
+                        <li><a href="/places/" class="text-light text-decoration-none mb-2 d-block">Lieux Touristiques</a></li>
+                        <li><a href="/worldcup2030/" class="text-light text-decoration-none mb-2 d-block">Coupe du Monde</a></li>
+                        <li><a href="/routes/" class="text-light text-decoration-none mb-2 d-block">Itinéraires</a></li>
+                        <li><a href="/admin/" class="text-light text-decoration-none mb-2 d-block">Administration</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Rôles de l'équipe</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Hamza Layachi: Configuration & Villes</li>
+                        <li class="mb-2">Imane Elassioui : Lieux & Cartographie</li>
+                        <li class="mb-2">Ibtissam Ainzura: Hôtels & Itinéraires</li>
+                        <li class="mb-2">Amina Chetti: Utilisateurs & Sécurité</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="https://github.com/h1mza07/Digital-creativity" class="btn btn-outline-light btn-sm">
+                            <i class="fab fa-github me-2"></i>Code source GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 Maroc Tourisme 2030 - Projet académique - Tous droits réservés
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation pour la carte d'inscription
+            const card = document.querySelector('.register-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Appliquer des styles aux champs du formulaire
+            const inputs = document.querySelectorAll('input.form-control');
+            inputs.forEach(input => {
+                input.style.borderRadius = '10px';
+                input.style.border = '1px solid #ddd';
+                input.style.padding = '12px';
+                input.style.fontSize = '0.95rem';
+                input.style.width = '100%';
+            });
+            
+            // Détection de soumission du formulaire
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                console.log('Formulaire en cours de soumission...');
+                
+                // Validation basique côté client
+                const username = document.querySelector('input[name="username"]').value;
+                const email = document.querySelector('input[name="email"]').value;
+                const password = document.querySelector('input[name="password"]').value;
+                
+                if (!username || !email || !password) {
+                    alert('Veuillez remplir tous les champs obligatoires.');
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
