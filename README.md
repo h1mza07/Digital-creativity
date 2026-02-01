@@ -1,9 +1,9 @@
-# Tourisme Maroc - Coupe du Monde 2030
+# Explore Morocco 2030
 
 Projet Django de promotion touristique du Maroc pour la Coupe du Monde 2030. Développé par une équipe de 4 étudiants.
 
 ## Équipe
-- **Membre 1** : Hamza Layachi : Backend Core, villes, Coupe du Monde
+- **Membre 1** : Hamza Layachi : Backend Core, home page ,villes, Coupe du Monde
 - **Membre 2** : Ibtissam Ainzura : Hôtels et lieux touristiques
 - **Membre 3** : Imane El assioui : Itinéraires et routes
 - **Membre 4** : Amina chetti : Utilisateurs et authentification
